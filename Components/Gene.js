@@ -13,6 +13,8 @@ export default class Gene extends React.Component {
 
     render() {
 
+        // console.log(this.props);
+
         var values = [];
         for (var i in this.props) {
             values.push(

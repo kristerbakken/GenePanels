@@ -15,32 +15,45 @@ export default class Panel extends React.Component {
         }
 
         // console.log(genes);
+        
+        
+        const values = [
+            "Gene name",
+            "Inheritance",
+            "Frequency HI external",
+            "Frequency HI internal",
+            "Frequency LOW external",
+            "Frequency LOW internal",
+            "Disease mode"
+        ];
+
+        const headings = [];
+        for (const i in values) {
+            headings.push(<th>{values[i]}</th>);
+        }
 
         const listItems = genes
             .map(item => {
                 return (
                         <Gene key={item.name}
                               name={item.name}
-                              inheritance={item.values["Inheritance"]}
-                              frequencyHiExternal={item.values["Frequency HI external"]}
-                              frequencyHiInternal={item.values["Frequency HI internal"]}
-                              frequencyLowExternal={item.values["Frequency LOW external"]}
-                              frequencyLowInternal={item.values["Frequency LOW internal"]}
+                              inheritance={item.values[values[1]]}
+                              frequencyHiExternal={item.values[values[2]]}
+                              frequencyHiInternal={item.values[values[3]]}
+                              frequencyLowExternal={item.values[values[4]]}
+                              frequencyLowInternal={item.values[values[5]]}
+                              diseaseMode={item.values[values[6]]}
                         />
                 )
             });
+
 
 
         return (
             <div>
                 <table>
                     <tr>
-                        <th>Gene name</th>
-                        <th>Inheritance</th>
-                        <th>Frequency HI External</th>
-                        <th>Frequency HI Internal</th>
-                        <th>Frequency LOW External</th>
-                        <th>Frequency LOW Internal</th>
+                        {headings}
                     </tr>
                     {listItems}
                 </table>
