@@ -6,17 +6,6 @@ export default class Panel extends React.Component {
 
     render() {
 
-        var genes = API.getGenes().genes;
-
-        var allGenes = [];
-
-        for (var item in genes) {
-            allGenes.push(genes[item]);
-        }
-
-        // console.log(genes);
-        
-        
         const values = [
             "Gene name",
             "Inheritance",
@@ -27,12 +16,13 @@ export default class Panel extends React.Component {
             "Disease mode"
         ];
 
+        /*Creates a heading for each entry in "values" */
         const headings = [];
         for (const i in values) {
             headings.push(<th>{values[i]}</th>);
         }
 
-        const listItems = genes
+        const allGenes = API.getGenes().genes
             .map(item => {
                 return (
                         <Gene key={item.name}
@@ -55,7 +45,7 @@ export default class Panel extends React.Component {
                     <tr>
                         {headings}
                     </tr>
-                    {listItems}
+                    {allGenes}
                 </table>
 
             </div>
