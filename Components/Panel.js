@@ -4,6 +4,43 @@ import API from "../api";
 
 export default class Panel extends React.Component {
 
+    constructor(props) {
+        super();
+        this.state = {
+            group: "default",
+
+        };
+
+        this.handleChange = this.handleChange.bind(this);
+    }
+
+    handleChange(event) {
+        this.setState({group: event.target.value});
+        this.forceUpdate();
+    }
+
+    setGroupGene() {
+        var gene = {};
+        if (this.state.group = "default") {
+            console.log("DEFAULT");
+            gene = <Gene key={"group"}
+                         name={"Group"}
+                // inheritance={def.freq_cutoffs.AD}
+                         inheritance="AD1"
+
+            />;
+        } else {
+            console.log("NOT DEFAULT");
+            gene = <Gene key={"group"}
+                         name={"Group"}
+                // inheritance={def.freq_cutoffs.AD}
+                         inheritance="ADD"
+
+            />;
+        }
+        return gene;
+    }
+
     render() {
 
         const values = [
@@ -15,6 +52,14 @@ export default class Panel extends React.Component {
             "Frequency LOW internal",
             "Disease mode"
         ];
+
+
+
+        /* Groupings */
+        var groups = API.getGenePanelConfig();
+        console.log(groups);
+
+
 
         /*Creates a heading for each entry in "values" */
         const headings = [];
@@ -37,15 +82,42 @@ export default class Panel extends React.Component {
                 )
             });
 
+        /* Creates a gene based on the global default */
+        var def = API.getGlobalDefault();
+        console.log(def);
+        var i = 0;
+        allGenes.push(<Gene key={++i}
+                            name={"Gene"+i}
+                            // inheritance={def.freq_cutoffs.AD}
+                            inheritance="AD"
+                            frequencyHiExternal={def.freq_cutoffs.AD.external.hi_freq_cutoff}
+                            frequencyHiInternal={def.freq_cutoffs.AD.internal.hi_freq_cutoff}
+                            frequencyLowExternal={def.freq_cutoffs.AD.external.lo_freq_cutoff}
+                            frequencyLowInternal={def.freq_cutoffs.AD.internal.lo_freq_cutoff}
+                            diseaseMode={def.disease_mode}
+        />
+        );
+
+        /* change a gene based on dropdown */
+        var gene = this.setGroupGene();
+
+        allGenes.push(gene);
+
+
 
 
         return (
             <div>
+                <select value={this.state.group} onChange={this.handleChange}>
+                    <option value="default">Default</option>
+                    <option value="low_freq">Low Freq</option>
+                </select>
                 <table>
                     <tr>
                         {headings}
                     </tr>
                     {allGenes}
+                    {this.state.group}
                 </table>
 
             </div>

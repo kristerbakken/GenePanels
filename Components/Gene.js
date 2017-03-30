@@ -1,6 +1,9 @@
 import React from 'react';
 import API from "../api"
 
+/*
+Should specify more, i.e. adding proptypes
+ */
 export default class Gene extends React.Component {
 
     /*
