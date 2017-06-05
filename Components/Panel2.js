@@ -5,10 +5,8 @@ import API from "../api";
 export default class Panel extends React.Component {
 
     constructor(props) {
-        super();
+        super(props);
         this.state = {
-            panelConfig: API.getGenePanelConfig(),
-            globalDefault: API.getGlobalDefault(),
             currentGenePanel: [],
 
         };
@@ -30,7 +28,8 @@ export default class Panel extends React.Component {
             "Frequency HI internal",
             "Frequency LOW external",
             "Frequency LOW internal",
-            "Disease mode"
+            "Disease mode",
+            "Last exon important"
         ];
 
         /*Creates a heading for each entry in "values" */
@@ -45,24 +44,35 @@ export default class Panel extends React.Component {
 
     createGenes() {
         /*Create the genes based on the list of genes */
-        var geneList = API.getGeneList();
-        for (const i in geneList)
+        const list = this.props.geneList;
+        for (const i in list)
         {
-            this.state.currentGenePanel[geneList[i]] =
-                this.createGene(geneList[i], geneList[i]);
+            this.state.currentGenePanel[list[i]] =
+                this.createGene(list[i], list[i]);
         }
     }
 
     adaptToConfig() {
-        const config = this.state.panelConfig.config;
-        console.log(config.data.groups.default.config);
-        const exclude = config.data.groups.default.config.exclude_genes;
-        console.log(exclude);
+        /*
+        Skal alle gener ha verdier fra freq_cutoffs (untatt exclude), eller kun de nevnt i genes ?
+         */
+
+        const config = this.props.panelConfig.config;
+        // console.log(config.data.groups.default.config);
+        // const exclude = config.data.groups.default.config.exclude_genes;
+        // console.log(exclude);
 
         var genes = config.data.groups.default.config.genes;
-        console.log(genes);
-        for(const i in genes) {
-            console.log(genes[i]);
+        var cutoffs = config.data.groups.default.config.freq_cutoffs.AD;
+        var lei = config.data.groups.default.config.last_exon_important;
+        // console.log(genes);
+        for(const x in genes) {
+            for (const y in genes[x]){
+                this.state.currentGenePanel[x][y] = genes[x][y];
+            }
+            this.state.currentGenePanel[x].internal = cutoffs.internal;
+            this.state.currentGenePanel[x].external = cutoffs.external;
+            this.state.currentGenePanel[x].last_exon_important = lei;
         }
     }
 
@@ -135,21 +145,25 @@ export default class Panel extends React.Component {
 
     createGene(name, id) {
         var inheritance = "AD";
-        var frequencyHiExternal = this.state.globalDefault.freq_cutoffs.AD.external.hi_freq_cutoff + 1;
-        var frequencyHiInternal = this.state.globalDefault.freq_cutoffs.AD.internal.hi_freq_cutoff + 1;
-        var frequencyLowExternal = this.state.globalDefault.freq_cutoffs.AD.external.lo_freq_cutoff;
-        var frequencyLowInternal = this.state.globalDefault.freq_cutoffs.AD.internal.lo_freq_cutoff;
-        var diseaseMode = this.state.globalDefault.disease_mode;
+        var external = this.props.globalDefault.freq_cutoffs.AD.external;
+        var internal = this.props.globalDefault.freq_cutoffs.AD.internal;
+        // var frequencyLowExternal = this.props.globalDefault.freq_cutoffs.AD.external.lo_freq_cutoff;
+        // var frequencyLowInternal = this.props.globalDefault.freq_cutoffs.AD.internal.lo_freq_cutoff;
+        var disease_mode = this.props.globalDefault.disease_mode;
+        var last_exon_important = this.props.globalDefault.last_exon_important;
 
         return {
             "key": id,
             "name": name,
             "inheritance": inheritance,
-            "frequencyHiExternal": frequencyHiExternal,
-            "frequencyHiInternal": frequencyHiInternal,
-            "frequencyLowExternal": frequencyLowExternal,
-            "frequencyLowInternal": frequencyLowInternal,
-            "diseaseMode": diseaseMode
+            // "frequencyHiExternal": external.hi_freq_cutoff,
+            // "frequencyHiInternal": internal.hi_freq_cutoff,
+            // "frequencyLowExternal": external.lo_freq_cutoff,
+            // "frequencyLowInternal": internal.lo_freq_cutoff
+            "external": external,
+            "internal": internal,
+            "disease_mode": disease_mode,
+            "last_exon_important": last_exon_important
         }
     }
 

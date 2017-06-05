@@ -13,21 +13,38 @@ export default class Gene extends React.Component {
         Last exon important: true/false
         Free text: string(s)
          */
+    constructor(props) {
+        super(props);
+    }
+
+    componentDidMount() {
+
+        // console.log(this.props);
+    }
 
     render() {
 
         // console.log(this.props);
 
-        var values = [];
-        for (var i in this.props) {
-            values.push(
-                <td>{this.props[i]}</td>
-            );
-        }
+        // var values = [];
+        // for (var i in this.props.values) {
+        //     values.push(
+        //         <td>{this.props.values[i]}</td>
+        //     );
+        // }
+        const gene = this.props.values;
 
         return (
             <tr>
-                {values}
+                <td>{gene.name}</td>
+                <td>{gene.key}</td>
+                <td>{gene.inheritance}</td>
+                <td>{gene.external.hi_freq_cutoff}</td>
+                <td>{gene.internal.hi_freq_cutoff}</td>
+                <td>{gene.external.lo_freq_cutoff}</td>
+                <td>{gene.internal.lo_freq_cutoff}</td>
+                <td>{gene.disease_mode}</td>
+                <td>{gene.last_exon_important}</td>
             </tr>
         )
     };

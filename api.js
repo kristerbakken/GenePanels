@@ -46,8 +46,36 @@ export default class API {
         }
     }
 
-    getGenePanel() {
-
+    static getGeneList() {
+        return [
+            "APC",
+            "BMPR1A",
+            "BRCA1",
+            "BRCA2",
+            "CDH1",
+            "CDK4",
+            "CDKN2A",
+            "EXT1",
+            "EXT2",
+            "FLCN",
+            "HOXB13",
+            "MLH1",
+            "MSH2",
+            "MSH6",
+            "MUTYH",
+            "PALB2",
+            "PMS2",
+            "POLD1",
+            "POLE",
+            "PTEN",
+            "RB1",
+            "SDHB",
+            "SDHD",
+            "SMAD4",
+            "STK11",
+            "TP53",
+            "VHL"
+        ]
     }
 
     static getGenes() {
@@ -242,13 +270,25 @@ export default class API {
                                     "PLOD1"
                                 ],
                                 "freq_cutoffs": {
-                                    "external": {
-                                        "hi_freq_cutoff": 0.008,
-                                        "lo_freq_cutoff": 0.0005
+                                    "AD": {
+                                        "external": {
+                                            "hi_freq_cutoff": 0.008,
+                                            "lo_freq_cutoff": 0.0005
+                                        },
+                                        "internal": {
+                                            "hi_freq_cutoff": 0.018,
+                                            "lo_freq_cutoff": 0.085
+                                        }
                                     },
-                                    "internal": {
-                                        "hi_freq_cutoff": 0.018,
-                                        "lo_freq_cutoff": 0.085
+                                    "default": {
+                                        "external": {
+                                            "hi_freq_cutoff": 0.01,
+                                            "lo_freq_cutoff": 1
+                                        },
+                                        "internal": {
+                                            "hi_freq_cutoff": 0.05,
+                                            "lo_freq_cutoff": 1
+                                        }
                                     }
                                 },
                                 "last_exon_important": "LENI",
@@ -272,13 +312,25 @@ export default class API {
                                     "PLOD1"
                                 ],
                                 "freq_cutoffs": {
-                                    "exac": {
-                                        "hi_freq_cutoff": 0.000008,
-                                        "lo_freq_cutoff": 0.000005
+                                    "AD": {
+                                        "external": {
+                                            "hi_freq_cutoff": 0.000006,
+                                            "lo_freq_cutoff": 0.000006
+                                        },
+                                        "internal": {
+                                            "hi_freq_cutoff": 0.000001,
+                                            "lo_freq_cutoff": 0.000001
+                                        }
                                     },
-                                    "internal": {
-                                        "hi_freq_cutoff": 0.000001,
-                                        "lo_freq_cutoff": 0.000001
+                                    "default": {
+                                        "external": {
+                                            "hi_freq_cutoff": 0.0006,
+                                            "lo_freq_cutoff": 0.0004
+                                        },
+                                        "internal": {
+                                            "hi_freq_cutoff": 0.0002,
+                                            "lo_freq_cutoff": 0.0001
+                                        }
                                     }
                                 },
                                 "freq_groups": {
@@ -302,7 +354,17 @@ export default class API {
                                     },
                                     "BRCA2": {
                                         "disease_mode": "MISS",
-                                        "last_exon_important": "LEI"
+                                        "last_exon_important": "LEI",
+                                        "freq_cutoffs": {
+                                            "external": {
+                                                "hi_freq_cutoff": 0.00063,
+                                                "lo_freq_cutoff": 0.00043
+                                            },
+                                            "internal": {
+                                                "hi_freq_cutoff": 0.00023,
+                                                "lo_freq_cutoff": 0.00013
+                                            }
+                                        }
                                     }
                                 }
                             }
