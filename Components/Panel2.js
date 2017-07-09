@@ -8,6 +8,7 @@ export default class Panel extends React.Component {
         super(props);
         this.state = {
             currentGenePanel: [],
+            group: "default",
 
         };
 
@@ -15,8 +16,13 @@ export default class Panel extends React.Component {
     }
 
     handleChange(event) {
-        this.setState({group: event.target.value});
-        this.forceUpdate();
+        this.setState({group: event.target.value},
+            function() {
+                console.log(this.state);
+                this.adaptToConfig();
+                console.log(this.state);
+                this.forceUpdate();
+            });
     }
 
     createHeadings() {
@@ -45,11 +51,18 @@ export default class Panel extends React.Component {
     createGenes() {
         /*Create the genes based on the list of genes */
         const list = this.props.geneList;
+        var genes = [];
         for (const i in list)
         {
-            this.state.currentGenePanel[list[i]] =
-                this.createGene(list[i], list[i]);
+            // this.state.currentGenePanel[list[i]] =
+            //     this.createGene(list[i], list[i]);
+            genes[list[i]] = this.createGene(list[i], list[i]);
         }
+        this.setState({
+            currentGenePanel: genes
+        }, function() {
+            this.adaptToConfig();
+        });
     }
 
     adaptToConfig() {
@@ -62,18 +75,29 @@ export default class Panel extends React.Component {
         // const exclude = config.data.groups.default.config.exclude_genes;
         // console.log(exclude);
 
-        var genes = config.data.groups.default.config.genes;
-        var cutoffs = config.data.groups.default.config.freq_cutoffs.AD;
-        var lei = config.data.groups.default.config.last_exon_important;
+
+        var genes = config.data.groups[this.state.group].config.genes;
+        var cutoffs = config.data.groups[this.state.group].config.freq_cutoffs.AD;
+        var lei = config.data.groups[this.state.group].config.last_exon_important;
         // console.log(genes);
+        var panel = this.state.currentGenePanel;
         for(const x in genes) {
             for (const y in genes[x]){
                 this.state.currentGenePanel[x][y] = genes[x][y];
+                panel[x][y] = genes[x][y];
             }
-            this.state.currentGenePanel[x].internal = cutoffs.internal;
-            this.state.currentGenePanel[x].external = cutoffs.external;
-            this.state.currentGenePanel[x].last_exon_important = lei;
+            panel[x].internal = cutoffs.internal;
+            panel[x].external = cutoffs.external;
+            panel[x].last_exon_important = lei;
+            // this.state.currentGenePanel[x].internal = cutoffs.internal;
+            // this.state.currentGenePanel[x].external = cutoffs.external;
+            // this.state.currentGenePanel[x].last_exon_important = lei;
         }
+        this.setState({
+            currentGenePanel: panel
+        }, function() {
+            this.createGeneComponents();
+        });
     }
 
     createGeneComponents() {
@@ -89,66 +113,43 @@ export default class Panel extends React.Component {
         }, function() {
             console.log("AllGenes");
             console.log(this.state);
+            // console.log(this.props.panelConfig.config.data.groups);
             // console.log(this.props);
         });
+    }
+
+    createGroups() {
+
+        var groups = [];
+        for (var a in this.props.panelConfig.config.data.groups) {
+            // console.log(a);
+            groups.push(<option value={a}>{this.props.panelConfig.config.data.groups[a].display}</option>);
+        }
+
+        this.setState({
+            groups: groups
+        });
+
+
     }
 
 
     componentDidMount() {
         this.createHeadings();
+        this.createGroups();
         this.createGenes();
 
-        this.createGeneComponents();
-        this.adaptToConfig();
-
-
-        // /* Groupings */
-        // var groups = API.getGenePanelConfig();
-        // // console.log(groups);
-        // // console.log(this.state.globalDefault);
-        // // console.log(API.getGeneList());
-        // /* change a gene based on dropdown */
-        // var gene = this.setGroupGene();
-
-
-
-
-
-
-
-        console.log("Current");
-        console.log(this.state.currentGenePanel);
+         console.log("Current");
+        console.log(this.props);
 
     }
 
-    setGroupGene() {
-        var gene = {};
-        if (this.state.group = "default") {
-            console.log("DEFAULT");
-            gene = <Gene key={"group"}
-                         name={"Group"}
-                // inheritance={def.freq_cutoffs.AD}
-                         inheritance="AD1"
 
-            />;
-        } else {
-            console.log("NOT DEFAULT");
-            gene = <Gene key={"group"}
-                         name={"Group"}
-                // inheritance={def.freq_cutoffs.AD}
-                         inheritance="ADD"
-
-            />;
-        }
-        return gene;
-    }
 
     createGene(name, id) {
         var inheritance = "AD";
         var external = this.props.globalDefault.freq_cutoffs.AD.external;
         var internal = this.props.globalDefault.freq_cutoffs.AD.internal;
-        // var frequencyLowExternal = this.props.globalDefault.freq_cutoffs.AD.external.lo_freq_cutoff;
-        // var frequencyLowInternal = this.props.globalDefault.freq_cutoffs.AD.internal.lo_freq_cutoff;
         var disease_mode = this.props.globalDefault.disease_mode;
         var last_exon_important = this.props.globalDefault.last_exon_important;
 
@@ -156,10 +157,6 @@ export default class Panel extends React.Component {
             "key": id,
             "name": name,
             "inheritance": inheritance,
-            // "frequencyHiExternal": external.hi_freq_cutoff,
-            // "frequencyHiInternal": internal.hi_freq_cutoff,
-            // "frequencyLowExternal": external.lo_freq_cutoff,
-            // "frequencyLowInternal": internal.lo_freq_cutoff
             "external": external,
             "internal": internal,
             "disease_mode": disease_mode,
@@ -169,28 +166,24 @@ export default class Panel extends React.Component {
 
     render() {
 
-        const test = [];
+        const genes = [];
         var gene;
         for (const i in this.state.allGenes) {
             gene = this.state.allGenes[i];
-            test.push(gene);
+            genes.push(gene);
         }
 
-        // console.log(test);
 
         return (
             <div>
                 <select value={this.state.group} onChange={this.handleChange}>
-                    <option value="default">Default</option>
-                    <option value="low_freq">Low Freq</option>
+                    {this.state.groups}
                 </select>
                 <table>
                     <tr>
                         {this.state.headings}
                     </tr>
-                    {/*{this.state.allGenes}*/}
-                    {/*{this.state.currentGenePanel}*/}
-                    {test}
+                    {genes}
                 </table>
 
 

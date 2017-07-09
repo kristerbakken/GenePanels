@@ -17,10 +17,15 @@ export default class Gene extends React.Component {
         super(props);
     }
 
-    componentDidMount() {
+    // componentDidMount() {
+    //
+    //     console.log(this.props);
+    // }
 
-        // console.log(this.props);
-    }
+    // componentWillReceiveProps(nextProps) {
+    //     console.log("nye");
+    //     console.log(nextProps);
+    // }
 
     render() {
 
