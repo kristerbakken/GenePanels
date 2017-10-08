@@ -1,8 +1,10 @@
 import React from 'react';
 import API from "./api";
+import './sass/style.scss';
 
 
 import Panel2 from "./Components/Panel2";
+import SelectionPanel from "./Components/SelectionPanel";
 
 export default class App extends React.Component {
 
@@ -10,6 +12,7 @@ export default class App extends React.Component {
     render() {
         return (
             <div>
+
                <Panel2
                    panelConfig={API.getGenePanelConfig()}
                    globalDefault={API.getGlobalDefault()}

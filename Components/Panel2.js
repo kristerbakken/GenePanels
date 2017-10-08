@@ -1,5 +1,6 @@
 import React from 'react';
 import Gene from "./Gene";
+import SelectionPanel from "./SelectionPanel";
 import API from "../api";
 
 export default class Panel extends React.Component {
@@ -9,10 +10,14 @@ export default class Panel extends React.Component {
         this.state = {
             currentGenePanel: [],
             group: "default",
+            geneList: this.props.geneList,
+            globalDefault: JSON.parse(JSON.stringify(this.props.globalDefault))
 
         };
 
         this.handleChange = this.handleChange.bind(this);
+        this.testClick = this.testClick.bind(this);
+        // this.changeGeneValue = this.changeGeneValue.bind(this);
     }
 
     handleChange(event) {
@@ -23,6 +28,31 @@ export default class Panel extends React.Component {
                 console.log(this.state);
                 this.forceUpdate();
             });
+    }
+
+    changeGeneValue(event) {
+        const info = event.target.id.split(";");
+        const exIn = info[0];
+        const hiLo = info[1];
+        const geneId = info[2];
+        const value = event.target.value;
+        const genes = this.state.currentGenePanel;
+
+        if (exIn === "ex" && hiLo === "Hi") {
+            genes[geneId].external.hi_freq_cutoff = value;
+        } else if (exIn === "ex" && hiLo === "Lo") {
+            genes[geneId].external.lo_freq_cutoff = value;
+        } else if (exIn === "in" && hiLo === "Hi") {
+            genes[geneId].internal.hi_freq_cutoff = value;
+        } else if (exIn === "in" && hiLo === "Lo") {
+            genes[geneId].internal.lo_freq_cutoff = value;
+        }
+
+        this.setState({
+            currentGenePanel: genes
+        }, function() {
+            this.createGeneComponents();
+        });
     }
 
     createHeadings() {
@@ -48,15 +78,25 @@ export default class Panel extends React.Component {
         });
     }
 
+    createGeneList() {
+        var list = [];
+        const geneList = this.props.geneList;
+        for (const i in geneList) {
+            list[geneList[i]] = [geneList[i], true];
+        }
+
+        this.setState({
+            geneList: list
+        })
+    }
+
     createGenes() {
         /*Create the genes based on the list of genes */
+        //should change it so it takes the ID of the gene and assigns it instead
         const list = this.props.geneList;
         var genes = [];
-        for (const i in list)
-        {
-            // this.state.currentGenePanel[list[i]] =
-            //     this.createGene(list[i], list[i]);
-            genes[list[i]] = this.createGene(list[i], list[i]);
+        for (const i in list){
+            genes[i] = this.createGene(i, i);
         }
         this.setState({
             currentGenePanel: genes
@@ -76,11 +116,11 @@ export default class Panel extends React.Component {
         // console.log(exclude);
 
 
-        var genes = config.data.groups[this.state.group].config.genes;
-        var cutoffs = config.data.groups[this.state.group].config.freq_cutoffs.AD;
-        var lei = config.data.groups[this.state.group].config.last_exon_important;
+        const genes = config.data.groups[this.state.group].config.genes;
+        const cutoffs = config.data.groups[this.state.group].config.freq_cutoffs.AD;
+        const lei = config.data.groups[this.state.group].config.last_exon_important;
         // console.log(genes);
-        var panel = this.state.currentGenePanel;
+        const panel = this.state.currentGenePanel;
         for(const x in genes) {
             for (const y in genes[x]){
                 this.state.currentGenePanel[x][y] = genes[x][y];
@@ -104,9 +144,25 @@ export default class Panel extends React.Component {
         /*Create the gene components */
         const allGenes = [];
         var gene;
+        var color = "white";
         for (const i in this.state.currentGenePanel) {
+            // console.log("HER");
+            // console.log(this.state.geneList[i][1]);
+
+            if (this.state.geneList[i][1]) {
             gene = this.state.currentGenePanel[i];
-            allGenes[gene.key] = <Gene key={gene.key} values={gene}/>;
+
+            // console.log(gene);
+            if (gene.external !== this.props.globalDefault.freq_cutoffs.AD.external) {
+                color = "red";
+            } else {
+                color = "white";
+            }
+
+            const defaultValues = this.props.globalDefault;
+
+            allGenes[gene.key] = <Gene key={gene.key} values={gene} defaultValues={defaultValues} changeValue={this.changeGeneValue.bind(this)}/>;
+            }
         }
         this.setState({
             allGenes: allGenes
@@ -135,6 +191,7 @@ export default class Panel extends React.Component {
 
 
     componentDidMount() {
+        // this.createGeneList();
         this.createHeadings();
         this.createGroups();
         this.createGenes();
@@ -147,11 +204,14 @@ export default class Panel extends React.Component {
 
 
     createGene(name, id) {
+        const gene = JSON.parse(JSON.stringify(this.props.globalDefault));
+
         var inheritance = "AD";
-        var external = this.props.globalDefault.freq_cutoffs.AD.external;
-        var internal = this.props.globalDefault.freq_cutoffs.AD.internal;
-        var disease_mode = this.props.globalDefault.disease_mode;
-        var last_exon_important = this.props.globalDefault.last_exon_important;
+        // var external = this.state.globalDefault.freq_cutoffs.AD.external;
+        var external = gene.freq_cutoffs.AD.external;
+        var internal = this.state.globalDefault.freq_cutoffs.AD.internal;
+        var disease_mode = this.state.globalDefault.disease_mode;
+        var last_exon_important = this.state.globalDefault.last_exon_important;
 
         return {
             "key": id,
@@ -164,10 +224,55 @@ export default class Panel extends React.Component {
         }
     }
 
+    toggleGene(event) {
+        var value = event.target.value;
+        value = value.split(",");
+        var geneName = value[0];
+        var list = this.state.geneList;
+
+        if (list[geneName][1]) {
+            list[geneName][1] = false;
+        } else {
+            list[geneName][1] = true;
+        }
+
+        this.setState({
+            geneList: list
+        }, function () {
+            this.createGeneComponents();
+        });
+    }
+
+    testClick() {
+        console.log(this.state.currentGenePanel);
+
+
+        // const panel = {};
+        // for (var gene in this.state.currentGenePanel) {
+        //     console.log(gene + " " + this.state.currentGenePanel[gene].external.hi_freq_cutoff);
+        //     panel[gene] = this.state.currentGenePanel[gene];
+        //     console.log(gene + " " + panel[gene].external.hi_freq_cutoff);
+        //
+        // }
+        // // const genes = this.state.currentGenePanel["PMS2"];
+        // // console.log(genes);
+        // // genes.external.hi_freq_cutoff = 0.15;
+        // panel["PMS2"].external.hi_freq_cutoff = 0.15;
+        // for (var gene in this.state.currentGenePanel) {
+        //     console.log(gene + " " + this.state.currentGenePanel[gene].external.hi_freq_cutoff);
+        //     console.log(gene + " " + panel[gene].external.hi_freq_cutoff);
+        // }
+        // console.log(this.state);
+        // console.log(this.props);
+
+
+    }
+
     render() {
 
         const genes = [];
         var gene;
+        console.log(this.state.geneList);
         for (const i in this.state.allGenes) {
             gene = this.state.allGenes[i];
             genes.push(gene);
@@ -175,17 +280,20 @@ export default class Panel extends React.Component {
 
 
         return (
-            <div>
+            <div id='main_panel'>
                 <select value={this.state.group} onChange={this.handleChange}>
                     {this.state.groups}
                 </select>
-                <table>
-                    <tr>
-                        {this.state.headings}
-                    </tr>
-                    {genes}
-                </table>
-
+                <SelectionPanel geneList={this.state.geneList} onChange={this.toggleGene.bind(this)}/>
+                <div id='genes'>
+                    <table>
+                        <tr>
+                            {this.state.headings}
+                        </tr>
+                        {genes}
+                    </table>
+                </div>
+                <button onClick={this.testClick}>test</button>
 
             </div>
 

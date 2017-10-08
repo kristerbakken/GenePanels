@@ -47,7 +47,7 @@ export default class API {
     }
 
     static getGeneList() {
-        return [
+        var genes = [
             "APC",
             "BMPR1A",
             "BRCA1",
@@ -75,7 +75,15 @@ export default class API {
             "STK11",
             "TP53",
             "VHL"
-        ]
+        ];
+        var geneList = [];
+        for (const i in genes) {
+            geneList[genes[i]] = [genes[i], true];
+        }
+        console.log(geneList);
+
+
+        return geneList;
     }
 
     static getGenes() {
