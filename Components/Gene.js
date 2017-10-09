@@ -44,80 +44,83 @@ export default class Gene extends React.Component {
     render() {
 
         const gene = this.props.values;
+            // console.log(gene);
+            // console.log(this.props.defaultValues);
+            // console.log(this.props.values);
+        console.log(typeof(this.props.defaultValues.freq_cutoffs.AD.external.hi_freq_cutoff) + " " + typeof(this.props.values.external.hi_freq_cutoff));
 
-        // var color = "white";
-        // if(gene.external.hi_freq_cutoff !==this.props.defaultValues.external.hi_freq_cutoff) {
-        //     color = "red";
-        //     console.log(gene);
-        // }
-
-        const exHi = gene.external.hi_freq_cutoff;
-        const inHi = gene.internal.hi_freq_cutoff;
-        const exLo = gene.external.lo_freq_cutoff;
-        const inLo = gene.internal.lo_freq_cutoff;
-
-        const currentValues = [
-            exHi,
-            inHi,
-            exLo,
-            inLo,
-            gene.disease_mode,
-            gene.last_exon_important
-        ];
-        const globalDefaults = [
-            this.props.defaultValues.freq_cutoffs.AD.external.hi_freq_cutoff,
-            this.props.defaultValues.freq_cutoffs.AD.internal.hi_freq_cutoff,
-            this.props.defaultValues.freq_cutoffs.AD.external.lo_freq_cutoff,
-            this.props.defaultValues.freq_cutoffs.AD.internal.lo_freq_cutoff,
-            this.props.defaultValues.disease_mode,
-            this.props.defaultValues.last_exon_important,
-        ];
-        const ids = ["ex;Hi;", "in;Hi", "ex;Lo;", "in;Lo;"];
-
-        const freqs = [];
         var color = "white";
-
-        for (var i = 0; i < ids.length; i++) {
-
-            if (currentValues[i] !== globalDefaults[i]) {
-                color = "red";
-            } else {
-                color = "white";
-            }
-
-            freqs.push(
-                <td className={"color_" + color}><input id={ids[i] + gene.key} type="number" value={currentValues[i]} onChange={this.props.changeValue}/></td>
-            );
-        }
-
-        if (currentValues[4] !== globalDefaults[4]) {
+        if(gene.external.hi_freq_cutoff !== this.props.defaultValues.freq_cutoffs.AD.external.hi_freq_cutoff) {
             color = "red";
-        } else {
-            color = "white";
         }
 
-        freqs.push(
-            <td className={"color_" + color}><select>
-                <option value={gene.disease_mode}>{gene.disease_mode}</option>
-                <option value="ANY">ANY</option>
-                <option value="LOF">LOF</option>
-                <option value="MISS">MISS</option>
-            </select></td>
-        );
-
-        if (currentValues[5] !== globalDefaults[5]) {
-            color = "red";
-        } else {
-            color = "white";
-        }
-
-        freqs.push(
-            <td className={"color_" + color}><select>
-                <option value={gene.last_exon_important}>{gene.last_exon_important}</option>
-                <option value="LENI">LENI</option>
-                <option value="LEI">LEI</option>
-            </select></td>
-        );
+        // const exHi = gene.external.hi_freq_cutoff;
+        // const inHi = gene.internal.hi_freq_cutoff;
+        // const exLo = gene.external.lo_freq_cutoff;
+        // const inLo = gene.internal.lo_freq_cutoff;
+        //
+        // const currentValues = [
+        //     exHi,
+        //     inHi,
+        //     exLo,
+        //     inLo,
+        //     gene.disease_mode,
+        //     gene.last_exon_important
+        // ];
+        // const globalDefaults = [
+        //     this.props.defaultValues.freq_cutoffs.AD.external.hi_freq_cutoff,
+        //     this.props.defaultValues.freq_cutoffs.AD.internal.hi_freq_cutoff,
+        //     this.props.defaultValues.freq_cutoffs.AD.external.lo_freq_cutoff,
+        //     this.props.defaultValues.freq_cutoffs.AD.internal.lo_freq_cutoff,
+        //     this.props.defaultValues.disease_mode,
+        //     this.props.defaultValues.last_exon_important,
+        // ];
+        // const ids = ["ex;Hi;", "in;Hi", "ex;Lo;", "in;Lo;"];
+        //
+        // const freqs = [];
+        // var color = "white";
+        //
+        // for (var i = 0; i < ids.length; i++) {
+        //
+        //     if (currentValues[i] !== globalDefaults[i]) {
+        //         color = "red";
+        //     } else {
+        //         color = "white";
+        //     }
+        //
+        //     freqs.push(
+        //         <td className={"color_" + color}><input id={ids[i] + gene.key} type="number" value={currentValues[i]} onChange={this.props.changeValue}/></td>
+        //     );
+        // }
+        //
+        // if (currentValues[4] !== globalDefaults[4]) {
+        //     color = "red";
+        // } else {
+        //     color = "white";
+        // }
+        //
+        // freqs.push(
+        //     <td className={"color_" + color}><select>
+        //         <option value={gene.disease_mode}>{gene.disease_mode}</option>
+        //         <option value="ANY">ANY</option>
+        //         <option value="LOF">LOF</option>
+        //         <option value="MISS">MISS</option>
+        //     </select></td>
+        // );
+        //
+        // if (currentValues[5] !== globalDefaults[5]) {
+        //     color = "red";
+        // } else {
+        //     color = "white";
+        // }
+        //
+        // freqs.push(
+        //     <td className={"color_" + color}><select>
+        //         <option value={gene.last_exon_important}>{gene.last_exon_important}</option>
+        //         <option value="LENI">LENI</option>
+        //         <option value="LEI">LEI</option>
+        //     </select></td>
+        // );
 
 
 
@@ -126,7 +129,22 @@ export default class Gene extends React.Component {
                 <td>{gene.name}</td>
                 <td>{gene.key}</td>
                 <td>{gene.inheritance}</td>
-                {freqs}
+                {/*{freqs}*/}
+                <td className={"color_" + color}><input id={"ex;Hi;" + gene.key} type="number" value={this.props.values.external.hi_freq_cutoff} onChange={this.props.changeValue}/></td>
+                <td className={"color_" + color}><input id={"in;Hi;" + gene.key} type="number" value={this.props.values.internal.hi_freq_cutoff} onChange={this.props.changeValue}/></td>
+                <td className={"color_" + color}><input id={"ex;Lo;" + gene.key} type="number" value={this.props.values.external.lo_freq_cutoff} onChange={this.props.changeValue}/></td>
+                <td className={"color_" + color}><input id={"in;Lo;" + gene.key} type="number" value={this.props.values.internal.lo_freq_cutoff} onChange={this.props.changeValue}/></td>
+                <td className={"color_" + color}><select>
+                     <option value={gene.disease_mode}>{gene.disease_mode}</option>
+                     <option value="ANY">ANY</option>
+                     <option value="LOF">LOF</option>
+                     <option value="MISS">MISS</option>
+                 </select></td>
+                <td className={"color_" + color}><select>
+                    <option value={gene.last_exon_important}>{gene.last_exon_important}</option>
+                    <option value="LENI">LENI</option>
+                    <option value="LEI">LEI</option>
+                </select></td>
             </tr>
 
         )

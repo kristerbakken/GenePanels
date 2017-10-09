@@ -35,7 +35,7 @@ export default class Panel extends React.Component {
         const exIn = info[0];
         const hiLo = info[1];
         const geneId = info[2];
-        const value = event.target.value;
+        const value = Number(event.target.value);
         const genes = this.state.currentGenePanel;
 
         if (exIn === "ex" && hiLo === "Hi") {
@@ -189,7 +189,6 @@ export default class Panel extends React.Component {
 
     }
 
-
     componentDidMount() {
         // this.createGeneList();
         this.createHeadings();
@@ -200,8 +199,6 @@ export default class Panel extends React.Component {
         console.log(this.props);
 
     }
-
-
 
     createGene(name, id) {
         const gene = JSON.parse(JSON.stringify(this.props.globalDefault));
