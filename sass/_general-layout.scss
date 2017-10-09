@@ -84,6 +84,10 @@ p { font-family: $full; font-weight: 300; font-size: 1.4rem; letter-spacing: -0.
   background-color: transparent !important;
 }
 
+.color_yellow {
+  background-color: $yellow !important;
+}
+
 #genes th {
 
   //text-overflow: ellipsis;

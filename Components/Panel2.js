@@ -78,18 +78,6 @@ export default class Panel extends React.Component {
         });
     }
 
-    createGeneList() {
-        var list = [];
-        const geneList = this.props.geneList;
-        for (const i in geneList) {
-            list[geneList[i]] = [geneList[i], true];
-        }
-
-        this.setState({
-            geneList: list
-        })
-    }
-
     createGenes() {
         /*Create the genes based on the list of genes */
         //should change it so it takes the ID of the gene and assigns it instead
@@ -108,20 +96,28 @@ export default class Panel extends React.Component {
     adaptToConfig() {
         /*
         Skal alle gener ha verdier fra freq_cutoffs (untatt exclude), eller kun de nevnt i genes ?
+        LEI må bli bedre! henter "feil" på BRCA2
          */
 
-        const config = this.props.panelConfig.config;
         // console.log(config.data.groups.default.config);
         // const exclude = config.data.groups.default.config.exclude_genes;
-        // console.log(exclude);
+        console.log(this.props);
 
 
-        const genes = config.data.groups[this.state.group].config.genes;
-        const cutoffs = config.data.groups[this.state.group].config.freq_cutoffs.AD;
-        const lei = config.data.groups[this.state.group].config.last_exon_important;
+        const genes = this.props.panelConfig.config.data.groups[this.state.group].config.genes;
         // console.log(genes);
         const panel = this.state.currentGenePanel;
         for(const x in genes) {
+            const config = JSON.parse(JSON.stringify(this.props.panelConfig.config.data));
+            const cutoffs = config.groups[this.state.group].config.freq_cutoffs.AD;
+            const lei = config.groups[this.state.group].config.last_exon_important;
+
+            console.log("HER");
+            console.log(config);
+            console.log(genes);
+            console.log(cutoffs);
+            console.log(lei);
+
             for (const y in genes[x]){
                 this.state.currentGenePanel[x][y] = genes[x][y];
                 panel[x][y] = genes[x][y];
@@ -144,24 +140,15 @@ export default class Panel extends React.Component {
         /*Create the gene components */
         const allGenes = [];
         var gene;
-        var color = "white";
+
         for (const i in this.state.currentGenePanel) {
-            // console.log("HER");
-            // console.log(this.state.geneList[i][1]);
 
             if (this.state.geneList[i][1]) {
-            gene = this.state.currentGenePanel[i];
+                gene = this.state.currentGenePanel[i];
 
-            // console.log(gene);
-            if (gene.external !== this.props.globalDefault.freq_cutoffs.AD.external) {
-                color = "red";
-            } else {
-                color = "white";
-            }
-
-            const defaultValues = this.props.globalDefault;
-
-            allGenes[gene.key] = <Gene key={gene.key} values={gene} defaultValues={defaultValues} changeValue={this.changeGeneValue.bind(this)}/>;
+                const defaultValues = this.props.globalDefault;
+                const groupValues = this.props.panelConfig.config.data.groups[this.state.group];
+                allGenes[gene.key] = <Gene key={gene.key} values={gene} defaultValues={defaultValues} groupValues={groupValues} changeValue={this.changeGeneValue.bind(this)}/>;
             }
         }
         this.setState({
@@ -206,7 +193,7 @@ export default class Panel extends React.Component {
         var inheritance = "AD";
         // var external = this.state.globalDefault.freq_cutoffs.AD.external;
         var external = gene.freq_cutoffs.AD.external;
-        var internal = this.state.globalDefault.freq_cutoffs.AD.internal;
+        var internal = gene.freq_cutoffs.AD.internal;
         var disease_mode = this.state.globalDefault.disease_mode;
         var last_exon_important = this.state.globalDefault.last_exon_important;
 
