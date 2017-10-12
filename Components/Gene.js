@@ -91,14 +91,15 @@ export default class Gene extends React.Component {
             }
 
             freqs.push(
-                <td className={"color_" + color}><input id={ids[i] + gene.key} type="number" value={currentValues[i]} onChange={this.props.changeValue}/></td>
+                <td className={"color_" + color}><input id={ids[i] + gene.name} type="number" value={currentValues[i]} onChange={this.props.changeValue}/></td>
             );
         }
 
-        if (currentValues[4] === groupDefaults[4]) {
-            color = "red";
-        } else if (currentValues[4] === globalDefaults[4]){
+        // console.log(currentValues[4] + " " + groupDefaults[4] + " " + (currentValues[4] === groupDefaults[4]));
+        if (currentValues[4] === globalDefaults[4]){
             color = "white";
+        } else if (currentValues[4] === groupDefaults[4]) {
+            color = "red";
         } else {
             color = "yellow"
         }
@@ -112,10 +113,12 @@ export default class Gene extends React.Component {
             </select></td>
         );
 
-        if (currentValues[5] === groupDefaults[5]) {
-            color = "red";
-        } else if (currentValues[5] === globalDefaults[5]){
+        // console.log(currentValues[5] + " " + groupDefaults[5] + " " + (currentValues[5] === groupDefaults[5]));
+        // console.log(this.props);
+        if (currentValues[5] === globalDefaults[5]){
             color = "white";
+        } else if (currentValues[5] !== groupDefaults[5]) {
+            color = "red";
         } else {
             color = "yellow"
         }
@@ -133,7 +136,7 @@ export default class Gene extends React.Component {
         return (
             <tr>
                 <td>{gene.name}</td>
-                <td>{gene.key}</td>
+                <td><a href={"https://www.genenames.org/cgi-bin/gene_symbol_report?hgnc_id=HGNC:" + gene.key}>{gene.key}</a></td>
                 <td>{gene.inheritance}</td>
                 {freqs}
             </tr>

@@ -1,6 +1,7 @@
 import React from 'react';
 import Gene from "./Gene";
 import SelectionPanel from "./SelectionPanel";
+import SearchBar from "./SearchBar";
 import API from "../api";
 
 export default class Panel extends React.Component {
@@ -11,7 +12,8 @@ export default class Panel extends React.Component {
             currentGenePanel: [],
             group: "default",
             geneList: this.props.geneList,
-            globalDefault: JSON.parse(JSON.stringify(this.props.globalDefault))
+            globalDefault: JSON.parse(JSON.stringify(this.props.globalDefault)),
+            searchValue: ""
 
         };
 
@@ -23,9 +25,9 @@ export default class Panel extends React.Component {
     handleChange(event) {
         this.setState({group: event.target.value},
             function() {
-                console.log(this.state);
+                // console.log(this.state);
                 this.adaptToConfig();
-                console.log(this.state);
+                // console.log(this.state);
                 this.forceUpdate();
             });
     }
@@ -37,6 +39,9 @@ export default class Panel extends React.Component {
         const geneId = info[2];
         const value = Number(event.target.value);
         const genes = this.state.currentGenePanel;
+
+        // console.log(info);
+        // console.log(genes);
 
         if (exIn === "ex" && hiLo === "Hi") {
             genes[geneId].external.hi_freq_cutoff = value;
@@ -53,6 +58,13 @@ export default class Panel extends React.Component {
         }, function() {
             this.createGeneComponents();
         });
+    }
+
+    changeSearch(event) {
+        // console.log(event.target.value);
+        this.setState({
+            searchValue: event.target.value.toUpperCase()
+        })
     }
 
     createHeadings() {
@@ -81,14 +93,19 @@ export default class Panel extends React.Component {
     createGenes() {
         /*Create the genes based on the list of genes */
         //should change it so it takes the ID of the gene and assigns it instead
+        // console.log(this.props.geneList);
         const list = this.props.geneList;
         var genes = [];
         for (const i in list){
-            genes[i] = this.createGene(i, i);
+            // console.log(i);
+            // console.log(list[i]);
+            // console.log(list[i][1]);
+            genes[i] = this.createGene(i, list[i][1]);
         }
         this.setState({
             currentGenePanel: genes
         }, function() {
+            // console.log(this.state);
             this.adaptToConfig();
         });
     }
@@ -101,7 +118,7 @@ export default class Panel extends React.Component {
 
         // console.log(config.data.groups.default.config);
         // const exclude = config.data.groups.default.config.exclude_genes;
-        console.log(this.props);
+        console.log(this.state);
 
 
         const genes = this.props.panelConfig.config.data.groups[this.state.group].config.genes;
@@ -112,11 +129,11 @@ export default class Panel extends React.Component {
             const cutoffs = config.groups[this.state.group].config.freq_cutoffs.AD;
             const lei = config.groups[this.state.group].config.last_exon_important;
 
-            console.log("HER");
-            console.log(config);
-            console.log(genes);
-            console.log(cutoffs);
-            console.log(lei);
+            // console.log("HER");
+            // console.log(config);
+            // console.log(genes);
+            // console.log(cutoffs);
+            // console.log(lei);
 
             for (const y in genes[x]){
                 this.state.currentGenePanel[x][y] = genes[x][y];
@@ -154,8 +171,8 @@ export default class Panel extends React.Component {
         this.setState({
             allGenes: allGenes
         }, function() {
-            console.log("AllGenes");
-            console.log(this.state);
+            // console.log("AllGenes");
+            // console.log(this.state);
             // console.log(this.props.panelConfig.config.data.groups);
             // console.log(this.props);
         });
@@ -182,8 +199,8 @@ export default class Panel extends React.Component {
         this.createGroups();
         this.createGenes();
 
-         console.log("Current");
-        console.log(this.props);
+        //  console.log("Current");
+        // console.log(this.props);
 
     }
 
@@ -256,7 +273,7 @@ export default class Panel extends React.Component {
 
         const genes = [];
         var gene;
-        console.log(this.state.geneList);
+        // console.log(this.state.geneList);
         for (const i in this.state.allGenes) {
             gene = this.state.allGenes[i];
             genes.push(gene);
@@ -264,12 +281,13 @@ export default class Panel extends React.Component {
 
 
         return (
-            <div id='main_panel'>
+            <div id='main_panel' className="main_panel">
                 <select value={this.state.group} onChange={this.handleChange}>
                     {this.state.groups}
                 </select>
-                <SelectionPanel geneList={this.state.geneList} onChange={this.toggleGene.bind(this)}/>
-                <div id='genes'>
+                <SearchBar value={this.state.searchValue} onChange={this.changeSearch.bind(this)}/>
+                <SelectionPanel geneList={this.state.geneList} searchValue={this.state.searchValue} onChange={this.toggleGene.bind(this)}/>
+                <div id='genes' className="genes">
                     <table>
                         <tr>
                             {this.state.headings}

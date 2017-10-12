@@ -47,42 +47,39 @@ export default class API {
     }
 
     static getGeneList() {
-        var genes = [
-            "APC",
-            "BMPR1A",
-            "BRCA1",
-            "BRCA2",
-            "CDH1",
-            "CDK4",
-            "CDKN2A",
-            "EXT1",
-            "EXT2",
-            "FLCN",
-            "HOXB13",
-            "MLH1",
-            "MSH2",
-            "MSH6",
-            "MUTYH",
-            "PALB2",
-            "PMS2",
-            "POLD1",
-            "POLE",
-            "PTEN",
-            "RB1",
-            "SDHB",
-            "SDHD",
-            "SMAD4",
-            "STK11",
-            "TP53",
-            "VHL"
-        ];
+        var genes = {
+            "APC": 583,
+            "BMPR1A": 1076,
+            "BRCA1": 1100,
+            "BRCA2": 1101,
+            "CDH1": 1748,
+            "CDK4": 1773,
+            "CDKN2A": 1787,
+            "EXT1": 3512,
+            "EXT2": 3513,
+            "FLCN": 27310,
+            "HOXB13": 5112,
+            "MLH1": 7127,
+            "MSH2": 7325,
+            "MSH6": 7329,
+            "MUTYH": 7527,
+            "PALB2": 26144,
+            "PMS2": 9122,
+            "POLD1": 9175,
+            "POLE": 9177,
+            "PTEN": 9588,
+            "RB1": 9884,
+            "SDHB": 10681,
+            "SDHD": 10683,
+            "SMAD4": 6770,
+            "STK11": 11389,
+            "TP53": 11998,
+            "VHL": 12687
+        };
         var geneList = [];
         for (const i in genes) {
-            geneList[genes[i]] = [genes[i], true];
+            geneList[i] = [i, genes[i], true];
         }
-        console.log(geneList);
-
-
         return geneList;
     }
 

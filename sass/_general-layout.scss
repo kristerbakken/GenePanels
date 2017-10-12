@@ -24,52 +24,57 @@ p { font-family: $full; font-weight: 300; font-size: 1.4rem; letter-spacing: -0.
 .ok {color: $green !important; }
 
 
-#main_panel, #selection_panel, #genes{
+.main_panel, .selection_panel, .genes {
   float: left;
 
 }
 
-#main_panel {
+.main_panel {
   width: 75%;
   background-color: $white;
 }
 
-#selection_panel {
+.selection_panel {
   width: 25%;
   background-color: $blue-50;
 }
 
-#toggle label {
+.search_bar {
+  width:75%;
+  background-color: $green-50;
+}
+
+.toggle label {
   float: left;
   width: 100%;
   overflow:auto;
 }
 
-#toggle label span {
+.toggle label span {
   height: 2.6rem;
   line-height: 2.6rem;
   text-align:center;
   display:block;
 }
 
-#toggle label input {
+.toggle label input {
   display: none;
 }
 
-#toggle input:checked + span {
+.toggle input:checked + span {
   background-color: $blue-25;
 }
 
-#genes {
+.genes {
   width: 75%;
   background-color: $white-05;
 }
 
-#genes tr:nth-child(even) {
+.genes tr:nth-child(even) {
   background-color: $gray-25;
 }
 
-#genes td {
+.genes td {
   display: table-cell;
   text-align: center;
   padding: 0.3rem;
@@ -88,22 +93,22 @@ p { font-family: $full; font-weight: 300; font-size: 1.4rem; letter-spacing: -0.
   background-color: $yellow !important;
 }
 
-#genes th {
+.genes th {
 
   //text-overflow: ellipsis;
   width: auto;
   background-color: $green-25;
 }
 
-#genes table {
+.genes table {
   border-spacing: 0;
 }
 
-#genes select {
+.genes select {
   padding: 0;
 }
 
-#genes input {
+.genes input {
   text-align: center;
 }
 
@@ -116,7 +121,7 @@ button, select, .bttn { font-family: $full; font-size: 1.2rem; font-weight: 500;
   &:focus { outline: none; box-shadow: 0 0.3rem 0 $blue-50; transition: all 0.3s; }
   &:hover:not([disabled]) { cursor: pointer; }
 }
-#genes input { font-family: $slim; border: none; background-color: transparent; padding: 0.3rem; height: 2.6rem; font-weight: 400; text-overflow: ellipsis;
+.genes input { font-family: $slim; border: none; background-color: transparent; padding: 0.3rem; height: 2.6rem; font-weight: 400; text-overflow: ellipsis;
   &:focus { border-bottom: 1px solid Transparent; box-shadow: 0px 0.3rem 0px $blue-50; outline: none; transition: all 0.3s ease-in-out; }
   &::placeholder { font-family: $full; letter-spacing: 0.1rem; word-spacing: 0.2rem; font-weight: 500; }
   &.white { color: white; border-bottom: 1px solid rgba(255,255,0,0.5);
