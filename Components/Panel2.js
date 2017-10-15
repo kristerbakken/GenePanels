@@ -13,12 +13,14 @@ export default class Panel extends React.Component {
             group: "default",
             geneList: this.props.geneList,
             globalDefault: JSON.parse(JSON.stringify(this.props.globalDefault)),
-            searchValue: ""
+            searchValue: "",
+            sortColumn: [0, true]
 
         };
 
         this.handleChange = this.handleChange.bind(this);
         this.testClick = this.testClick.bind(this);
+        // this.sortTable = this.sortTable.bind(this);
         // this.changeGeneValue = this.changeGeneValue.bind(this);
     }
 
@@ -83,11 +85,45 @@ export default class Panel extends React.Component {
         /*Creates a heading for each entry in "values" */
         const headings = [];
         for (const i in values) {
-            headings.push(<th>{values[i]}</th>);
+            headings.push(<th onClick={this.sortTable.bind(this, Number(i))}>{values[i]}</th>);
         }
         this.setState({
             headings: headings
         });
+    }
+
+    sortTable(column) {
+
+        console.log(column);
+        console.log(this.state.sortColumn);
+
+        var order = true;
+        if (this.state.sortColumn[1]) {
+            order = false;
+        }
+
+        this.setState({
+            sortColumn: [column, order]
+        });
+
+    }
+
+    sortByColumn(genes) {
+        const column = this.state.sortColumn[0];
+
+        if (column === 0) {
+            return genes.sort(function(a, b) {
+                return a.props.values.name.localeCompare(b.props.values.name);
+            });
+        } else if (this.state.sortColumn[0] === 1) {
+            return genes.sort(function(a, b) {
+                return a.props.values.key - b.props.values.key;
+            });
+        } else {
+            return genes;
+        }
+
+
     }
 
     createGenes() {
@@ -271,14 +307,23 @@ export default class Panel extends React.Component {
 
     render() {
 
-        const genes = [];
+        var genes = [];
         var gene;
         // console.log(this.state.geneList);
         for (const i in this.state.allGenes) {
             gene = this.state.allGenes[i];
             genes.push(gene);
         }
+        // console.log("genes");
+        // console.log(genes);
 
+        genes = this.sortByColumn(genes);
+        console.log(genes);
+        if (!this.state.sortColumn[1]) {
+            genes.reverse();
+        }
+
+        // console.log(genes);
 
         return (
             <div id='main_panel' className="main_panel">
