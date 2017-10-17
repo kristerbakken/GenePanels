@@ -301,7 +301,8 @@ export default class API {
                                 "comment": "a comment from the genepanel config",
                                 "genes": {
                                     "BRCA1": {
-                                        "disease_mode": "LOF"
+                                        "disease_mode": "LOF",
+                                        "comment": "test"
                                     },
                                     "BRCA2": {
                                         "disease_mode": "MISS",

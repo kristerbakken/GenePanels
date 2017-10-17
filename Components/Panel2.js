@@ -14,7 +14,7 @@ export default class Panel extends React.Component {
             geneList: this.props.geneList,
             globalDefault: JSON.parse(JSON.stringify(this.props.globalDefault)),
             searchValue: "",
-            sortColumn: [0, true]
+            sortColumn: ["name", true]
 
         };
 
@@ -70,22 +70,23 @@ export default class Panel extends React.Component {
     }
 
     createHeadings() {
-        const values = [
-            "Gene name",
-            "Gene key",
-            "Inheritance",
-            "Frequency HI external",
-            "Frequency HI internal",
-            "Frequency LOW external",
-            "Frequency LOW internal",
-            "Disease mode",
-            "Last exon important"
-        ];
+        const values = {
+            "name": "Gene name",
+            "key": "Gene key",
+            "inheritance": "Inheritance",
+            "frequency_hi_external": "Frequency HI external",
+            "frequency_hi_internal": "Frequency HI internal",
+            "frequency_low_external": "Frequency LOW external",
+            "frequency_low_internal": "Frequency LOW internal",
+            "disease_mode": "Disease mode",
+            "last_exon_important": "Last exon important",
+            "comment": "Comment"
+        };
 
         /*Creates a heading for each entry in "values" */
         const headings = [];
         for (const i in values) {
-            headings.push(<th onClick={this.sortTable.bind(this, Number(i))}>{values[i]}</th>);
+            headings.push(<th onClick={this.sortTable.bind(this, i)}>{values[i]}</th>);
         }
         this.setState({
             headings: headings
@@ -93,37 +94,45 @@ export default class Panel extends React.Component {
     }
 
     sortTable(column) {
-
-        console.log(column);
-        console.log(this.state.sortColumn);
-
         var order = true;
-        if (this.state.sortColumn[1]) {
+        if (this.state.sortColumn[0] === column && this.state.sortColumn[1]) {
             order = false;
         }
-
         this.setState({
             sortColumn: [column, order]
         });
-
     }
 
     sortByColumn(genes) {
         const column = this.state.sortColumn[0];
 
-        if (column === 0) {
-            return genes.sort(function(a, b) {
-                return a.props.values.name.localeCompare(b.props.values.name);
-            });
-        } else if (this.state.sortColumn[0] === 1) {
-            return genes.sort(function(a, b) {
-                return a.props.values.key - b.props.values.key;
-            });
+        if (genes[0] != undefined) {
+            if (/freq|key/.test(column)){
+                if (/key/.test(column)) {
+                    return genes.sort(function(a, b) {
+                        return a.props.values[column] - b.props.values[column];
+                    });
+                }else {
+                    var inEx = "internal";
+                    var hiLo = "lo";
+                    if (/ex/.test(column)) {
+                        inEx = "external";
+                    }
+                    if (/hi/.test(column)) {
+                        hiLo = "hi";
+                    }
+                    return genes.sort(function(a, b) {
+                        return a.props.values[inEx][hiLo + "_freq_cutoff"] - b.props.values[inEx][hiLo + "_freq_cutoff"];
+                    });
+                }
+            } else {
+                return genes.sort(function(a, b) {
+                    return a.props.values[column].localeCompare(b.props.values[column]);
+                });
+            }
         } else {
             return genes;
         }
-
-
     }
 
     createGenes() {
@@ -172,6 +181,7 @@ export default class Panel extends React.Component {
             // console.log(lei);
 
             for (const y in genes[x]){
+                console.log(y);
                 this.state.currentGenePanel[x][y] = genes[x][y];
                 panel[x][y] = genes[x][y];
             }
@@ -318,7 +328,6 @@ export default class Panel extends React.Component {
         // console.log(genes);
 
         genes = this.sortByColumn(genes);
-        console.log(genes);
         if (!this.state.sortColumn[1]) {
             genes.reverse();
         }

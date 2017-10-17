@@ -131,6 +131,12 @@ export default class Gene extends React.Component {
             </select></td>
         );
 
+        freqs.push(
+            <td>
+                <p>{gene.comment}</p>
+            </td>
+
+        );
 
 
         return (
