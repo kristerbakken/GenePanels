@@ -58,6 +58,8 @@ export default class Gene extends React.Component {
             gene.disease_mode,
             gene.last_exon_important
         ];
+
+        // de to under må byttes fra AD til whatever er riktig
         const globalDefaults = [
             this.props.defaultValues.freq_cutoffs.AD.external.hi_freq_cutoff,
             this.props.defaultValues.freq_cutoffs.AD.internal.hi_freq_cutoff,

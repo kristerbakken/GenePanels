@@ -24,7 +24,7 @@ p { font-family: $full; font-weight: 300; font-size: 1.4rem; letter-spacing: -0.
 .ok {color: $green !important; }
 
 
-.main_panel, .selection_panel, .genes {
+.main_panel, .selection_panel, .tools_panel, .genes {
   float: left;
 
 }
@@ -35,6 +35,11 @@ p { font-family: $full; font-weight: 300; font-size: 1.4rem; letter-spacing: -0.
 }
 
 .selection_panel {
+  width: 25%;
+  background-color: $blue-50;
+}
+
+.tools_panel {
   width: 25%;
   background-color: $blue-50;
 }

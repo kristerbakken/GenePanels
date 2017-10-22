@@ -3,6 +3,7 @@ import Gene from "./Gene";
 import SelectionPanel from "./SelectionPanel";
 import SearchBar from "./SearchBar";
 import API from "../api";
+import ToolsPanel from "./ToolsPanel";
 
 export default class Panel extends React.Component {
 
@@ -14,7 +15,8 @@ export default class Panel extends React.Component {
             geneList: this.props.geneList,
             globalDefault: JSON.parse(JSON.stringify(this.props.globalDefault)),
             searchValue: "",
-            sortColumn: ["name", true]
+            sortColumn: ["name", true],
+            showModified: true
 
         };
 
@@ -156,41 +158,29 @@ export default class Panel extends React.Component {
     }
 
     adaptToConfig() {
-        /*
-        Skal alle gener ha verdier fra freq_cutoffs (untatt exclude), eller kun de nevnt i genes ?
-        LEI må bli bedre! henter "feil" på BRCA2
-         */
-
-        // console.log(config.data.groups.default.config);
-        // const exclude = config.data.groups.default.config.exclude_genes;
         console.log(this.state);
 
-
-        const genes = this.props.panelConfig.config.data.groups[this.state.group].config.genes;
-        // console.log(genes);
+        const genes = this.props.panelConfig.config.data.groups.default.config.genes;
         const panel = this.state.currentGenePanel;
-        for(const x in genes) {
-            const config = JSON.parse(JSON.stringify(this.props.panelConfig.config.data));
-            const cutoffs = config.groups[this.state.group].config.freq_cutoffs.AD;
-            const lei = config.groups[this.state.group].config.last_exon_important;
 
-            // console.log("HER");
-            // console.log(config);
-            // console.log(genes);
-            // console.log(cutoffs);
-            // console.log(lei);
+        for (const x in genes) {
+            const config = JSON.parse(JSON.stringify(this.props.panelConfig.config.data));
+            const inheritance = (panel[x].inheritance === "AD") ? "AD" : "default";
+            const cutoffs = config.groups.default.config.freq_cutoffs[inheritance]; // se under // DENNE MÅ BYTTES HVIS GENENE ER NOE ANNET ENN BARE AD
+
+            // if (panel[x].inheritance === "AD") {
+            //     cutoffs = config.groups.default.config.freq_cutoffs.AD;
+            // }
+
+            panel[x].internal = cutoffs.internal;
+            panel[x].external = cutoffs.external;
+            panel[x].disease_mode = config.groups.default.config.disease_mode;
+            panel[x].last_exon_important = config.groups.default.config.last_exon_important;
 
             for (const y in genes[x]){
-                console.log(y);
                 this.state.currentGenePanel[x][y] = genes[x][y];
                 panel[x][y] = genes[x][y];
             }
-            panel[x].internal = cutoffs.internal;
-            panel[x].external = cutoffs.external;
-            panel[x].last_exon_important = lei;
-            // this.state.currentGenePanel[x].internal = cutoffs.internal;
-            // this.state.currentGenePanel[x].external = cutoffs.external;
-            // this.state.currentGenePanel[x].last_exon_important = lei;
         }
         this.setState({
             currentGenePanel: panel
@@ -253,8 +243,8 @@ export default class Panel extends React.Component {
     createGene(name, id) {
         const gene = JSON.parse(JSON.stringify(this.props.globalDefault));
 
+        // DENNE MÅ BYTTES: Inheritance
         var inheritance = "AD";
-        // var external = this.state.globalDefault.freq_cutoffs.AD.external;
         var external = gene.freq_cutoffs.AD.external;
         var internal = gene.freq_cutoffs.AD.internal;
         var disease_mode = this.state.globalDefault.disease_mode;
@@ -277,11 +267,7 @@ export default class Panel extends React.Component {
         var geneName = value[0];
         var list = this.state.geneList;
 
-        if (list[geneName][1]) {
-            list[geneName][1] = false;
-        } else {
-            list[geneName][1] = true;
-        }
+        list[geneName][1] = !list[geneName][1];
 
         this.setState({
             geneList: list
@@ -315,32 +301,106 @@ export default class Panel extends React.Component {
 
     }
 
+    toggleModified() {
+        this.setState({
+            showModified: (!this.state.showModified)
+        })
+    }
+
+    isModified(gene) {
+        const inheritance = gene.props.values.inheritance;
+        const currentValues = [
+            gene.props.values.external.hi_freq_cutoff,
+            gene.props.values.internal.hi_freq_cutoff,
+            gene.props.values.external.lo_freq_cutoff,
+            gene.props.values.internal.lo_freq_cutoff,
+            gene.props.values.disease_mode,
+            gene.props.values.last_exon_important
+        ];
+        const globalDefaults = [
+            this.props.globalDefault.freq_cutoffs[inheritance].external.hi_freq_cutoff,
+            this.props.globalDefault.freq_cutoffs[inheritance].internal.hi_freq_cutoff,
+            this.props.globalDefault.freq_cutoffs[inheritance].external.lo_freq_cutoff,
+            this.props.globalDefault.freq_cutoffs[inheritance].internal.lo_freq_cutoff,
+            this.props.globalDefault.disease_mode,
+            this.props.globalDefault.last_exon_important,
+        ];
+        const groupDefaults = [
+            this.props.panelConfig.config.data.groups.default.config.freq_cutoffs[inheritance].external.hi_freq_cutoff,
+            this.props.panelConfig.config.data.groups.default.config.freq_cutoffs[inheritance].internal.hi_freq_cutoff,
+            this.props.panelConfig.config.data.groups.default.config.freq_cutoffs[inheritance].external.lo_freq_cutoff,
+            this.props.panelConfig.config.data.groups.default.config.freq_cutoffs[inheritance].internal.lo_freq_cutoff,
+            this.props.panelConfig.config.data.groups.default.config.disease_mode,
+            this.props.panelConfig.config.data.groups.default.config.last_exon_important,
+        ];
+
+        var modified = false;
+
+        for (const i in currentValues) {
+            // console.log(currentValues[i] + " " + globalDefaults[i] + " " + groupDefaults[i]);
+            if (currentValues[i] !== globalDefaults[i] && currentValues[i] !== groupDefaults[i]) {
+                modified = true;
+            }
+        }
+
+        return modified;
+    }
+
+    isSearched(gene) {
+        const currentValues = [
+            gene.props.values.name,
+            gene.key,
+            gene.props.values.external.hi_freq_cutoff,
+            gene.props.values.internal.hi_freq_cutoff,
+            gene.props.values.external.lo_freq_cutoff,
+            gene.props.values.internal.lo_freq_cutoff,
+            gene.props.values.disease_mode,
+            gene.props.values.last_exon_important
+        ];
+
+        var searched = false;
+
+        for (const i in currentValues) {
+            if ((""+ currentValues[i]).includes(this.state.searchValue)) {
+                searched = true;
+            }
+        }
+
+        return searched;
+    }
+
+
     render() {
 
         var genes = [];
         var gene;
-        // console.log(this.state.geneList);
+
         for (const i in this.state.allGenes) {
             gene = this.state.allGenes[i];
-            genes.push(gene);
+
+            if (this.isModified(gene) || this.state.showModified === false) {
+                if (this.isSearched(gene)) {
+                    genes.push(gene);
+                }
+            }
         }
-        // console.log("genes");
-        // console.log(genes);
 
         genes = this.sortByColumn(genes);
         if (!this.state.sortColumn[1]) {
             genes.reverse();
         }
 
-        // console.log(genes);
-
         return (
             <div id='main_panel' className="main_panel">
-                <select value={this.state.group} onChange={this.handleChange}>
-                    {this.state.groups}
-                </select>
-                <SearchBar value={this.state.searchValue} onChange={this.changeSearch.bind(this)}/>
-                <SelectionPanel geneList={this.state.geneList} searchValue={this.state.searchValue} onChange={this.toggleGene.bind(this)}/>
+                {/*<select value={this.state.group} onChange={this.handleChange}>*/}
+                    {/*{this.state.groups}*/}
+                {/*</select>*/}
+                {/*<SearchBar value={this.state.searchValue} onChange={this.changeSearch.bind(this)}/>*/}
+                {/*<SelectionPanel geneList={this.state.geneList} searchValue={this.state.searchValue} onChange={this.toggleGene.bind(this)}/>*/}
+                <ToolsPanel toggleModified={this.toggleModified.bind(this)}
+                            changeSearch={this.changeSearch.bind(this)}
+                            searchValue={this.state.searchValue}
+                />
                 <div id='genes' className="genes">
                     <table>
                         <tr>
