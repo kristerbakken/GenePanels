@@ -380,4 +380,55 @@ export default class API {
             }
         }
     }
+
+    static getConfig() {
+        return {
+            "config": {
+                "meta": {
+                    "source": "EKGSanger_v02.config.json",
+                    "version": "1.0",
+                    "updatedBy": "Erik Severinsen",
+                    "updatedAt": "2017-08-04T13:23:00+01:00"
+                },
+                "data": {
+                    "APC" :   {
+                        "comment": "Se genspesifikk prosedyre i e-Håndbok",
+                        "freq_cutoffs": {
+                            "internal": {
+                                "hi_freq_cutoff": 0.05,
+                                "lo_freq_cutoff": 1.0},
+                            "external": {
+                                "hi_freq_cutoff": 0.005,
+                                "lo_freq_cutoff": 0.000125
+                            }}},
+                    "BMPR1A": {"comment": "Se genspesifikk prosedyre i e-Håndbok", "freq_cutoffs": {"internal": { "hi_freq_cutoff": 0.05,  "lo_freq_cutoff": 1.0},                                                                                                    "external": { "hi_freq_cutoff": 0.005, "lo_freq_cutoff": 0.0000625}}},
+                    "BRCA1":  {"comment": "Se genspesifikk prosedyre i e-Håndbok", "freq_cutoffs": {"internal": { "hi_freq_cutoff": 0.05,  "lo_freq_cutoff": 1.0},                                                                                                    "external": { "hi_freq_cutoff": 0.005, "lo_freq_cutoff": 0.0025}}},
+                    "BRCA2":  {"comment": "Se genspesifikk prosedyre i e-Håndbok", "freq_cutoffs": {"internal": { "hi_freq_cutoff": 0.05,  "lo_freq_cutoff": 1.0},                                                                                                    "external": { "hi_freq_cutoff": 0.005, "lo_freq_cutoff": 0.0025}}},
+                    "CDH1":   {"comment": "Se genspesifikk prosedyre i e-Håndbok", "freq_cutoffs": {"internal": { "hi_freq_cutoff": 0.05,  "lo_freq_cutoff": 1.0},                                                                                                    "external": { "hi_freq_cutoff": 0.005, "lo_freq_cutoff": 0.00005}}},
+                    "CDK4":   {"comment": "Se genspesifikk prosedyre i e-Håndbok"},
+                    "CDKN2A": {"comment": "Se genspesifikk prosedyre i e-Håndbok", "freq_cutoffs": {"internal": { "hi_freq_cutoff": 0.05,  "lo_freq_cutoff": 1.0},                                                                                                    "external": { "hi_freq_cutoff": 0.005, "lo_freq_cutoff": 0.000015}}},
+                    "EXT1":   {"comment": "Se genspesifikk prosedyre i e-Håndbok", "freq_cutoffs": {"internal": { "hi_freq_cutoff": 0.05,  "lo_freq_cutoff": 1.0},                                                                                                    "external": { "hi_freq_cutoff": 0.005, "lo_freq_cutoff": 0.01}}},
+                    "EXT2":   {"comment": "Se genspesifikk prosedyre i e-Håndbok", "freq_cutoffs": {"internal": { "hi_freq_cutoff": 0.05,  "lo_freq_cutoff": 1.0},                                                                                                    "external": { "hi_freq_cutoff": 0.005, "lo_freq_cutoff": 0.01}}},
+                    "FLCN":   {"comment": "Se genspesifikk prosedyre i e-Håndbok"},
+                    "HOXB13": {"comment": "Se genspesifikk prosedyre i e-Håndbok"},
+                    "MLH1":   {"comment": "Se genspesifikk prosedyre i e-Håndbok", "freq_cutoffs": {"internal": { "hi_freq_cutoff": 0.05,  "lo_freq_cutoff": 1.0},                                                                                                    "external": { "hi_freq_cutoff": 0.005, "lo_freq_cutoff": 0.0023}}},
+                    "MSH2":   {"comment": "Se genspesifikk prosedyre i e-Håndbok", "freq_cutoffs": {"internal": { "hi_freq_cutoff": 0.05,  "lo_freq_cutoff": 1.0},                                                                                                    "external": { "hi_freq_cutoff": 0.005, "lo_freq_cutoff": 0.0023}}},
+                    "MSH6":   {"comment": "Se genspesifikk prosedyre i e-Håndbok", "freq_cutoffs": {"internal": { "hi_freq_cutoff": 0.05,  "lo_freq_cutoff": 1.0},                                                                                                    "external": { "hi_freq_cutoff": 0.005, "lo_freq_cutoff": 0.0023}}},
+                    "MUTYH":  {"comment": "Se genspesifikk prosedyre i e-Håndbok"},
+                    "PALB2":  {"comment": "Se genspesifikk prosedyre i e-Håndbok", "freq_cutoffs": {"internal": { "hi_freq_cutoff": 0.05,  "lo_freq_cutoff": 1.0},                                                                                                    "external": { "hi_freq_cutoff": 0.005, "lo_freq_cutoff": 0.0025}}},
+                    "PMS2":   {"comment": "Se genspesifikk prosedyre i e-Håndbok", "freq_cutoffs": {"internal": { "hi_freq_cutoff": 0.05,  "lo_freq_cutoff": 1.0},                                                                                                    "external": { "hi_freq_cutoff": 0.005, "lo_freq_cutoff": 0.0023}}},
+                    "POLD1":  {"comment": "Se genspesifikk prosedyre i e-Håndbok når den blir tigjengelig"},
+                    "POLE":   {"comment": "Se genspesifikk prosedyre i e-Håndbok når den blir tigjengelig"},
+                    "PTEN":   {"comment": "Se genspesifikk prosedyre i e-Håndbok", "freq_cutoffs": {"internal": { "hi_freq_cutoff": 0.05,  "lo_freq_cutoff": 1.0},                                                                                                    "external": { "hi_freq_cutoff": 0.005, "lo_freq_cutoff": 0.000005}}},
+                    "RB1":    {"comment": "Se genspesifikk prosedyre i e-Håndbok", "freq_cutoffs": {"internal": { "hi_freq_cutoff": 0.05,  "lo_freq_cutoff": 1.0},                                                                                                    "external": { "hi_freq_cutoff": 0.005, "lo_freq_cutoff": 0.000071}}},
+                    "SDHB":   {"comment": "Se genspesifikk prosedyre i e-Håndbok", "freq_cutoffs": {"internal": { "hi_freq_cutoff": 0.05,  "lo_freq_cutoff": 1.0},                                                                                                    "external": { "hi_freq_cutoff": 0.005, "lo_freq_cutoff": 0.0000033}}},
+                    "SDHD":   {"comment": "Se genspesifikk prosedyre i e-Håndbok", "freq_cutoffs": {"internal": { "hi_freq_cutoff": 0.05,  "lo_freq_cutoff": 1.0},                                                                                                    "external": { "hi_freq_cutoff": 0.005, "lo_freq_cutoff": 0.0000033}}},
+                    "SMAD4":  {"comment": "Se genspesifikk prosedyre i e-Håndbok", "freq_cutoffs": {"internal": { "hi_freq_cutoff": 0.05,  "lo_freq_cutoff": 1.0},                                                                                                    "external": { "hi_freq_cutoff": 0.005, "lo_freq_cutoff": 0.0000625}}},
+                    "STK11":  {"comment": "Se genspesifikk prosedyre i e-Håndbok", "freq_cutoffs": {"internal": { "hi_freq_cutoff": 0.05,  "lo_freq_cutoff": 1.0},                                                                                                    "external": { "hi_freq_cutoff": 0.005, "lo_freq_cutoff": 0.00004}}},
+                    "TP53":   {"comment": "Se genspesifikk prosedyre i e-Håndbok", "freq_cutoffs": {"internal": { "hi_freq_cutoff": 0.05,  "lo_freq_cutoff": 1.0},                                                                                                    "external": { "hi_freq_cutoff": 0.005, "lo_freq_cutoff": 0.0002}}},
+                    "VHL":    {"comment": "Se genspesifikk prosedyre i e-Håndbok", "freq_cutoffs": {"internal": { "hi_freq_cutoff": 0.05,  "lo_freq_cutoff": 1.0},                                                                                                    "external": { "hi_freq_cutoff": 0.005, "lo_freq_cutoff": 0.000028}}}
+                }
+            }
+        }
+    }
 }

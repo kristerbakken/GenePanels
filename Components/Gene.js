@@ -140,7 +140,7 @@ export default class Gene extends React.Component {
 
         );
 
-
+// skal det til clipboard isteden?
         return (
             <tr>
                 <td>{gene.name}</td>

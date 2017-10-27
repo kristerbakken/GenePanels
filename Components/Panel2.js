@@ -1,5 +1,6 @@
 import React from 'react';
 import Gene from "./Gene";
+import ExtendedGene from "./ExtendedGene";
 import SelectionPanel from "./SelectionPanel";
 import SearchBar from "./SearchBar";
 import API from "../api";
@@ -243,7 +244,7 @@ export default class Panel extends React.Component {
     createGene(name, id) {
         const gene = JSON.parse(JSON.stringify(this.props.globalDefault));
 
-        // DENNE MÅ BYTTES: Inheritance
+        // DENNE MÅ BYTTES: Inheritance + AD i int ext
         var inheritance = "AD";
         var external = gene.freq_cutoffs.AD.external;
         var internal = gene.freq_cutoffs.AD.internal;
@@ -369,10 +370,102 @@ export default class Panel extends React.Component {
         return searched;
     }
 
+    createGlobalAndPanelGene() {
+
+        const tester = {
+            "globalValues": {
+                "key": 0,
+                "name": "globalDefault",
+                "cutoffs": this.props.globalDefault.freq_cutoffs,
+                "disease_mode": this.props.globalDefault.disease_mode,
+                "last_exon_important": this.props.globalDefault.last_exon_important
+            },
+            "panelConfig": {
+                "key": 1,
+                "name": "panelConfig",
+                "cutoffs": this.props.panelConfig.config.data.groups.default.config.freq_cutoffs,
+                "disease_mode": this.props.panelConfig.config.data.groups.default.config.disease_mode,
+                "last_exon_important": this.props.panelConfig.config.data.groups.default.config.last_exon_important
+            }
+        }
+        // const globalGene = <ExtendedGene key="globalGene" values={globalValues} changeValue={this.changeGeneValue.bind(this)}/>;
+        // const panelGene = <ExtendedGene key="panelGene" values={panelValues} changeValue={this.changeGeneValue.bind(this)}/>;
+
+        const tessst = [];
+        for (const a in tester) {
+
+
+            var freqs1 = [];
+
+            var gene = tester[a];
+            const currentValues = [
+                gene.cutoffs.AD.external.hi_freq_cutoff,
+                gene.cutoffs.AD.internal.hi_freq_cutoff,
+                gene.cutoffs.AD.external.lo_freq_cutoff,
+                gene.cutoffs.AD.internal.lo_freq_cutoff,
+                gene.disease_mode,
+                gene.last_exon_important
+            ];
+
+            const ids = ["ex;Hi;", "in;Hi;", "ex;Lo;", "in;Lo;"];
+            var color = (gene.name === "globalDefault") ? "white" : "red";
+
+            for (var i = 0; i < 4; i++) {
+
+                freqs1.push(
+                    <td className={"color_" + color}><input id={ids[i] + gene.name} type="number"
+                                                            value={currentValues[i]} onChange={this.props.changeValue}/>
+                    </td>
+                );
+            }
+
+            const freqs2 = [];
+
+            const test =
+                <tr className={"glopan"}>
+                    <td rowSpan="2">{gene.name}</td>
+                    <td rowSpan="2">{gene.key}</td>
+                    <td>AD</td>
+                    {freqs1}
+                    <td rowSpan="2" className={"color_" + color}>{gene.disease_mode}</td>
+                    <td rowSpan="2" className={"color_" + color}>{gene.last_exon_important}</td>
+                    <td rowSpan="2">
+                        <p>{gene.comment}</p>
+                    </td>
+                </tr>;
+            const currentValues2 = [
+                gene.cutoffs.default.external.hi_freq_cutoff,
+                gene.cutoffs.default.internal.hi_freq_cutoff,
+                gene.cutoffs.default.external.lo_freq_cutoff,
+                gene.cutoffs.default.internal.lo_freq_cutoff,
+            ];
+
+            for (var i = 0; i < 4; i++) {
+
+                freqs2.push(
+                    <td className={"color_" + color}><input id={ids[i] + gene.name} type="number"
+                                                            value={currentValues2[i]}
+                                                            onChange={this.props.changeValue}/></td>
+                );
+            }
+
+            const test2 =
+                <tr>
+                    <td>default</td>
+                    {freqs2}
+                </tr>;
+
+            tessst.push(test);
+            tessst.push(test2);
+        }
+        // return [globalGene, panelGene]
+        return tessst;
+    }
 
     render() {
 
         var genes = [];
+        var extendedGenes = this.createGlobalAndPanelGene();
         var gene;
 
         for (const i in this.state.allGenes) {
@@ -406,6 +499,7 @@ export default class Panel extends React.Component {
                         <tr>
                             {this.state.headings}
                         </tr>
+                        {extendedGenes}
                         {genes}
                     </table>
                 </div>
