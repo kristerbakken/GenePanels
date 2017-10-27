@@ -40,6 +40,7 @@ p { font-family: $full; font-weight: 300; font-size: 1.4rem; letter-spacing: -0.
 }
 
 .tools_panel {
+  height: 600px;
   width: 25%;
   background-color: $blue-50;
 }
@@ -73,17 +74,30 @@ p { font-family: $full; font-weight: 300; font-size: 1.4rem; letter-spacing: -0.
 .genes {
   width: 75%;
   background-color: $white-05;
+  height: 600px;
+  overflow: auto
+}
+
+.genes table {
+  height: 600px;
+  overflow: auto;
 }
 
 .genes tr:nth-child(even) {
   background-color: $gray-25;
 }
 
+.extended_genes tr:nth-child(even) {
+  background-color: $gray-25;
+}
+
+
 .genes td {
   display: table-cell;
   text-align: center;
   padding: 0.3rem;
   background-color: $pink-05;
+  vertical-align: middle;
 }
 
 .color_red {
@@ -121,13 +135,11 @@ p { font-family: $full; font-weight: 300; font-size: 1.4rem; letter-spacing: -0.
   display: none
 }
 
-.glopan td{
+.glopan {
   border-bottom: 5px solid #ffffff;
+
 }
 
-.glopan input{
-  border-bottom: 0px solid black !important;
-}
 
 .glopan2 td{
   border-bottom: 5px solid black;

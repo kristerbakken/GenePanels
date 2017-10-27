@@ -422,16 +422,13 @@ export default class Panel extends React.Component {
             const freqs2 = [];
 
             const test =
-                <tr className={"glopan"}>
-                    <td rowSpan="2">{gene.name}</td>
-                    <td rowSpan="2">{gene.key}</td>
+                <tr>
+                    <td className={"glopan"} rowSpan="2">{gene.name}</td>
+                    <td className={"glopan"} rowSpan="2">{gene.key}</td>
                     <td>AD</td>
                     {freqs1}
-                    <td rowSpan="2" className={"color_" + color}>{gene.disease_mode}</td>
-                    <td rowSpan="2" className={"color_" + color}>{gene.last_exon_important}</td>
-                    <td rowSpan="2">
-                        <p>{gene.comment}</p>
-                    </td>
+                    <td rowSpan="2" className={"color_" + color + " glopan"}>{gene.disease_mode}</td>
+                    <td rowSpan="2" className={"color_" + color + " glopan"}>{gene.last_exon_important}</td>
                 </tr>;
             const currentValues2 = [
                 gene.cutoffs.default.external.hi_freq_cutoff,
@@ -443,7 +440,7 @@ export default class Panel extends React.Component {
             for (var i = 0; i < 4; i++) {
 
                 freqs2.push(
-                    <td className={"color_" + color}><input id={ids[i] + gene.name} type="number"
+                    <td className={"color_" + color + " glopan"}><input id={ids[i] + gene.name} type="number"
                                                             value={currentValues2[i]}
                                                             onChange={this.props.changeValue}/></td>
                 );
@@ -451,7 +448,7 @@ export default class Panel extends React.Component {
 
             const test2 =
                 <tr>
-                    <td>default</td>
+                    <td className={"glopan"}>default</td>
                     {freqs2}
                 </tr>;
 
@@ -482,11 +479,10 @@ export default class Panel extends React.Component {
         if (!this.state.sortColumn[1]) {
             genes.reverse();
         }
-
         return (
             <div id='main_panel' className="main_panel">
                 {/*<select value={this.state.group} onChange={this.handleChange}>*/}
-                    {/*{this.state.groups}*/}
+                {/*{this.state.groups}*/}
                 {/*</select>*/}
                 {/*<SearchBar value={this.state.searchValue} onChange={this.changeSearch.bind(this)}/>*/}
                 {/*<SelectionPanel geneList={this.state.geneList} searchValue={this.state.searchValue} onChange={this.toggleGene.bind(this)}/>*/}
@@ -494,12 +490,16 @@ export default class Panel extends React.Component {
                             changeSearch={this.changeSearch.bind(this)}
                             searchValue={this.state.searchValue}
                 />
-                <div id='genes' className="genes">
+                <div className="extended_genes">
                     <table>
                         <tr>
                             {this.state.headings}
                         </tr>
                         {extendedGenes}
+                    </table>
+                </div>
+                <div className="genes">
+                    <table>
                         {genes}
                     </table>
                 </div>
@@ -508,5 +508,6 @@ export default class Panel extends React.Component {
             </div>
 
         )
+
     };
 }
