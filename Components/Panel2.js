@@ -194,16 +194,13 @@ export default class Panel extends React.Component {
         /*Create the gene components */
         const allGenes = [];
         var gene;
+        const defaultValues = this.props.globalDefault;
 
         for (const i in this.state.currentGenePanel) {
-
-            if (this.state.geneList[i][1]) {
-                gene = this.state.currentGenePanel[i];
-
-                const defaultValues = this.props.globalDefault;
-                const groupValues = this.props.panelConfig.data.freq_cutoff_groups[this.state.group]; // må bytte til riktig group
-                allGenes[gene.key] = <Gene className="gene" key={gene.key} values={gene} defaultValues={defaultValues} groupValues={groupValues} changeValue={this.changeGeneValue.bind(this)}/>;
-            }
+            gene = this.state.currentGenePanel[i];
+            const inheritance = (gene.inheritance === "AD") ? "AD" : "default";
+            const groupValues = this.props.panelConfig.data.freq_cutoff_groups[inheritance];
+            allGenes[gene.key] = <Gene className="gene" key={gene.key} values={gene} defaultValues={defaultValues} groupValues={groupValues} changeValue={this.changeGeneValue.bind(this)}/>;
         }
         this.setState({
             allGenes: allGenes
@@ -310,7 +307,7 @@ export default class Panel extends React.Component {
     }
 
     isModified(gene) {
-        const inheritance = gene.props.values.inheritance;
+        const inheritance = (gene.props.values.inheritance === "AD") ? "AD" : "default";
         const currentValues = [
             gene.props.values.external.hi_freq_cutoff,
             gene.props.values.internal.hi_freq_cutoff,

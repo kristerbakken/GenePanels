@@ -47,7 +47,6 @@ export default class API {
     }
 
     static getGeneList() {
-        // må leegge til AD/default
         var genes = {
             "APC":  {
                 "id": 583,
@@ -158,10 +157,6 @@ export default class API {
                 "inheritance": "AD"
             }
         };
-        var geneList = [];
-        for (const i in genes) {
-            geneList[i] = [i, genes[i], true];
-        }
         return genes;
     }
 
