@@ -148,7 +148,7 @@ export default class Panel extends React.Component {
             // console.log(i);
             // console.log(list[i]);
             // console.log(list[i][1]);
-            genes[i] = this.createGene(i, list[i][1]);
+            genes[i] = this.createGene(i, list[i]);
         }
         this.setState({
             currentGenePanel: genes
@@ -161,13 +161,13 @@ export default class Panel extends React.Component {
     adaptToConfig() {
         console.log(this.state);
 
-        const genes = this.props.panelConfig.config.data.groups.default.config.genes;
+        const genes = this.props.panelConfig.data.genes;
         const panel = this.state.currentGenePanel;
+        const config = JSON.parse(JSON.stringify(this.props.panelConfig.data));
 
         for (const x in genes) {
-            const config = JSON.parse(JSON.stringify(this.props.panelConfig.config.data));
             const inheritance = (panel[x].inheritance === "AD") ? "AD" : "default";
-            const cutoffs = config.groups.default.config.freq_cutoffs[inheritance]; // se under // DENNE MÅ BYTTES HVIS GENENE ER NOE ANNET ENN BARE AD
+            const cutoffs = config.freq_cutoff_groups[inheritance]; // se under // DENNE MÅ BYTTES HVIS GENENE ER NOE ANNET ENN BARE AD
 
             // if (panel[x].inheritance === "AD") {
             //     cutoffs = config.groups.default.config.freq_cutoffs.AD;
@@ -175,8 +175,8 @@ export default class Panel extends React.Component {
 
             panel[x].internal = cutoffs.internal;
             panel[x].external = cutoffs.external;
-            panel[x].disease_mode = config.groups.default.config.disease_mode;
-            panel[x].last_exon_important = config.groups.default.config.last_exon_important;
+            panel[x].disease_mode = config.disease_mode;
+            panel[x].last_exon_important = config.last_exon_important;
 
             for (const y in genes[x]){
                 this.state.currentGenePanel[x][y] = genes[x][y];
@@ -201,8 +201,8 @@ export default class Panel extends React.Component {
                 gene = this.state.currentGenePanel[i];
 
                 const defaultValues = this.props.globalDefault;
-                const groupValues = this.props.panelConfig.config.data.groups[this.state.group];
-                allGenes[gene.key] = <Gene key={gene.key} values={gene} defaultValues={defaultValues} groupValues={groupValues} changeValue={this.changeGeneValue.bind(this)}/>;
+                const groupValues = this.props.panelConfig.data.freq_cutoff_groups[this.state.group]; // må bytte til riktig group
+                allGenes[gene.key] = <Gene className="gene" key={gene.key} values={gene} defaultValues={defaultValues} groupValues={groupValues} changeValue={this.changeGeneValue.bind(this)}/>;
             }
         }
         this.setState({
@@ -231,9 +231,10 @@ export default class Panel extends React.Component {
     }
 
     componentDidMount() {
+        console.log(this.props);
         // this.createGeneList();
         this.createHeadings();
-        this.createGroups();
+        // this.createGroups();
         this.createGenes();
 
         //  console.log("Current");
@@ -241,18 +242,18 @@ export default class Panel extends React.Component {
 
     }
 
-    createGene(name, id) {
+    createGene(name, geneInfo) {
         const gene = JSON.parse(JSON.stringify(this.props.globalDefault));
 
-        // DENNE MÅ BYTTES: Inheritance + AD i int ext
-        var inheritance = "AD";
-        var external = gene.freq_cutoffs.AD.external;
-        var internal = gene.freq_cutoffs.AD.internal;
+        var tempInheritance = (geneInfo.inheritance === "AD") ? "AD" : "default";
+        var inheritance = geneInfo.inheritance;
+        var external = gene.freq_cutoffs[tempInheritance].external;
+        var internal = gene.freq_cutoffs[tempInheritance].internal;
         var disease_mode = this.state.globalDefault.disease_mode;
         var last_exon_important = this.state.globalDefault.last_exon_important;
 
         return {
-            "key": id,
+            "key": geneInfo.id,
             "name": name,
             "inheritance": inheritance,
             "external": external,
@@ -327,12 +328,12 @@ export default class Panel extends React.Component {
             this.props.globalDefault.last_exon_important,
         ];
         const groupDefaults = [
-            this.props.panelConfig.config.data.groups.default.config.freq_cutoffs[inheritance].external.hi_freq_cutoff,
-            this.props.panelConfig.config.data.groups.default.config.freq_cutoffs[inheritance].internal.hi_freq_cutoff,
-            this.props.panelConfig.config.data.groups.default.config.freq_cutoffs[inheritance].external.lo_freq_cutoff,
-            this.props.panelConfig.config.data.groups.default.config.freq_cutoffs[inheritance].internal.lo_freq_cutoff,
-            this.props.panelConfig.config.data.groups.default.config.disease_mode,
-            this.props.panelConfig.config.data.groups.default.config.last_exon_important,
+            this.props.panelConfig.data.freq_cutoff_groups[inheritance].external.hi_freq_cutoff,
+            this.props.panelConfig.data.freq_cutoff_groups[inheritance].internal.hi_freq_cutoff,
+            this.props.panelConfig.data.freq_cutoff_groups[inheritance].external.lo_freq_cutoff,
+            this.props.panelConfig.data.freq_cutoff_groups[inheritance].internal.lo_freq_cutoff,
+            this.props.panelConfig.data.disease_mode,
+            this.props.panelConfig.data.last_exon_important,
         ];
 
         var modified = false;
@@ -343,7 +344,6 @@ export default class Panel extends React.Component {
                 modified = true;
             }
         }
-
         return modified;
     }
 
@@ -383,9 +383,9 @@ export default class Panel extends React.Component {
             "panelConfig": {
                 "key": 1,
                 "name": "panelConfig",
-                "cutoffs": this.props.panelConfig.config.data.groups.default.config.freq_cutoffs,
-                "disease_mode": this.props.panelConfig.config.data.groups.default.config.disease_mode,
-                "last_exon_important": this.props.panelConfig.config.data.groups.default.config.last_exon_important
+                "cutoffs": this.props.panelConfig.data.freq_cutoff_groups,
+                "disease_mode": this.props.panelConfig.data.disease_mode,
+                "last_exon_important": this.props.panelConfig.data.last_exon_important
             }
         }
         // const globalGene = <ExtendedGene key="globalGene" values={globalValues} changeValue={this.changeGeneValue.bind(this)}/>;
@@ -394,10 +394,10 @@ export default class Panel extends React.Component {
         const tessst = [];
         for (const a in tester) {
 
-
             var freqs1 = [];
 
             var gene = tester[a];
+            console.log(gene);
             const currentValues = [
                 gene.cutoffs.AD.external.hi_freq_cutoff,
                 gene.cutoffs.AD.internal.hi_freq_cutoff,

@@ -24,13 +24,13 @@ p { font-family: $full; font-weight: 300; font-size: 1.4rem; letter-spacing: -0.
 .ok {color: $green !important; }
 
 
-.main_panel, .selection_panel, .tools_panel, .genes {
+.main_panel, .selection_panel, .tools_panel, .genes, .extended_genes {
   float: left;
 
 }
 
 .main_panel {
-  width: 75%;
+  width: 100%;
   background-color: $white;
 }
 
@@ -41,7 +41,7 @@ p { font-family: $full; font-weight: 300; font-size: 1.4rem; letter-spacing: -0.
 
 .tools_panel {
   height: 600px;
-  width: 25%;
+  width: 20%;
   background-color: $blue-50;
 }
 
@@ -72,15 +72,10 @@ p { font-family: $full; font-weight: 300; font-size: 1.4rem; letter-spacing: -0.
 }
 
 .genes {
-  width: 75%;
-  background-color: $white-05;
+  width: 80%;
+  background-color: $white-50;
   height: 600px;
   overflow: auto
-}
-
-.genes table {
-  height: 600px;
-  overflow: auto;
 }
 
 .genes tr:nth-child(even) {
@@ -91,13 +86,60 @@ p { font-family: $full; font-weight: 300; font-size: 1.4rem; letter-spacing: -0.
   background-color: $gray-25;
 }
 
+.extended_genes {
+  width: 78%;
+}
 
-.genes td {
+.genes table {
+  border-spacing: 0;
+}
+
+.extended_genes table{
+  border-spacing: 0;
+}
+
+.extended_genes td{
+  height: 2.6rem;
+  width: 10%;
+}
+
+.genes td{
+  height: 2.6rem;
+  width: 10%;
+}
+
+.genes, .extended_genes td {
+  background-color: $pink-05;
   display: table-cell;
   text-align: center;
-  padding: 0.3rem;
-  background-color: $pink-05;
   vertical-align: middle;
+
+}
+
+.genes th {
+  width: auto;
+  background-color: $green-25;
+}
+
+.genes select {
+  padding: 0;
+}
+
+.genes input select{
+  text-align: center;
+}
+
+.extended_genes input select {
+  text-align: center;
+}
+
+.test {
+  display: none
+}
+
+.glopan {
+  border-bottom: 5px solid #ffffff;
+
 }
 
 .color_red {
@@ -111,41 +153,6 @@ p { font-family: $full; font-weight: 300; font-size: 1.4rem; letter-spacing: -0.
 .color_yellow {
   background-color: $yellow !important;
 }
-
-.genes th {
-
-  //text-overflow: ellipsis;
-  width: auto;
-  background-color: $green-25;
-}
-
-.genes table {
-  border-spacing: 0;
-}
-
-.genes select {
-  padding: 0;
-}
-
-.genes input {
-  text-align: center;
-}
-
-.test {
-  display: none
-}
-
-.glopan {
-  border-bottom: 5px solid #ffffff;
-
-}
-
-
-.glopan2 td{
-  border-bottom: 5px solid black;
-}
-
-
 
 select { border: none; box-shadow: none; background: transparent; height: 100%; width: 100%; outline: none; padding-right: 2.6rem; -moz-appearance: none; &:-moz-focusring { color: transparent; text-shadow: 0 0 0 #000; } -webkit-appearance: none; &:focus { border-color: inherit; } }
 

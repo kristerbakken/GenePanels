@@ -69,12 +69,12 @@ export default class Gene extends React.Component {
             this.props.defaultValues.last_exon_important,
         ];
         const groupDefaults = [
-            this.props.groupValues.config.freq_cutoffs.AD.external.hi_freq_cutoff,
-            this.props.groupValues.config.freq_cutoffs.AD.internal.hi_freq_cutoff,
-            this.props.groupValues.config.freq_cutoffs.AD.external.lo_freq_cutoff,
-            this.props.groupValues.config.freq_cutoffs.AD.internal.lo_freq_cutoff,
-            this.props.groupValues.config.disease_mode,
-            this.props.groupValues.config.last_exon_important,
+            this.props.groupValues.external.hi_freq_cutoff,
+            this.props.groupValues.internal.hi_freq_cutoff,
+            this.props.groupValues.external.lo_freq_cutoff,
+            this.props.groupValues.internal.lo_freq_cutoff,
+            this.props.groupValues.disease_mode,
+            this.props.groupValues.last_exon_important,
         ];
         
         const ids = ["ex;Hi;", "in;Hi;", "ex;Lo;", "in;Lo;"];

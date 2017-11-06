@@ -47,40 +47,122 @@ export default class API {
     }
 
     static getGeneList() {
+        // må leegge til AD/default
         var genes = {
-            "APC": 583,
-            "BMPR1A": 1076,
-            "BRCA1": 1100,
-            "BRCA2": 1101,
-            "CDH1": 1748,
-            "CDK4": 1773,
-            "CDKN2A": 1787,
-            "EXT1": 3512,
-            "EXT2": 3513,
-            "FLCN": 27310,
-            "HOXB13": 5112,
-            "MLH1": 7127,
-            "MSH2": 7325,
-            "MSH6": 7329,
-            "MUTYH": 7527,
-            "PALB2": 26144,
-            "PMS2": 9122,
-            "POLD1": 9175,
-            "POLE": 9177,
-            "PTEN": 9588,
-            "RB1": 9884,
-            "SDHB": 10681,
-            "SDHD": 10683,
-            "SMAD4": 6770,
-            "STK11": 11389,
-            "TP53": 11998,
-            "VHL": 12687
+            "APC":  {
+                "id": 583,
+                "inheritance": "AD"
+            },
+            "BMPR1A": { 
+				 "id": 1076,
+				 "inheritance": "AD"
+			},
+            "BRCA1": {
+				 "id": 1100,
+				 "inheritance": "AD"
+			},
+            "BRCA2": {
+				 "id": 1101,
+				 "inheritance": "AD"
+			},
+            "CDH1": {
+				 "id": 1748,
+				 "inheritance": "AD"
+			},
+            "CDK4": {
+				 "id": 1773,
+				 "inheritance": "AD"
+			},
+            "CDKN2A": {
+				 "id": 1787,
+				 "inheritance": "AD"
+			},
+            "EXT1": {
+				 "id": 3512,
+				 "inheritance": "AD"
+			},
+            "EXT2": {
+				 "id": 3513,
+				 "inheritance": "AD"
+			},
+            "FLCN": {
+				 "id": 27310,
+				 "inheritance": "AD"
+			},
+            "HOXB13": {
+				 "id": 5112,
+				 "inheritance": "AD"
+			},
+            "MLH1": {
+				 "id": 7127,
+				 "inheritance": "AD"
+			},
+            "MSH2": {
+				 "id": 7325,
+				 "inheritance": "AD"
+			},
+            "MSH6": {
+				 "id": 7329,
+				 "inheritance": "AD"
+			},
+            "MUTYH": {
+				 "id": 7527,
+				 "inheritance": "AR"
+			},
+            "PALB2": {
+				 "id": 26144,
+				 "inheritance": "AD"
+			},
+            "PMS2": {
+				 "id": 9122,
+				 "inheritance": "AD"
+			},
+            "POLD1": {
+				 "id": 9175,
+				 "inheritance": "AD"
+			},
+            "POLE": {
+				 "id": 9177,
+				 "inheritance": "AD"
+			},
+            "PTEN": {
+				 "id": 9588,
+				 "inheritance": "AD"
+			},
+            "RB1": {
+				 "id": 9884,
+				 "inheritance": "AD"
+			},
+            "SDHB": {
+				 "id": 10681,
+				 "inheritance": "AD"
+			},
+            "SDHD": {
+				 "id": 10683,
+				 "inheritance": "AD"
+			},
+            "SMAD4": {
+				 "id": 6770,
+				 "inheritance": "AD"
+			},
+            "STK11": {
+				 "id": 11389,
+				 "inheritance": "AD"
+			},
+            "TP53": {
+				 "id": 11998,
+				 "inheritance": "AD"
+			},
+            "VHL": {
+                "id": 12687,
+                "inheritance": "AD"
+            }
         };
         var geneList = [];
         for (const i in genes) {
             geneList[i] = [i, genes[i], true];
         }
-        return geneList;
+        return genes;
     }
 
     static getGenes() {
@@ -374,6 +456,65 @@ export default class API {
                                     }
                                 }
                             }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    static getGenePanelConfig2() {
+        return {
+            "meta": {
+                "source": "fooo",
+                "version": "1.0",
+                "schemaVersion": "2",
+                "updatedBy": "Erik",
+                "updatedAt": "2017-11-01T10:36:00+01:00"
+            },
+            "data": {
+                "last_exon_important": "LENI",
+                "disease_mode": "ANY",
+                "freq_cutoff_groups": {
+                    "AD": {
+                        "external": {
+                            "hi_freq_cutoff": 0.008,
+                            "lo_freq_cutoff": 0.0005
+                        },
+                        "internal": {
+                            "hi_freq_cutoff": 0.018,
+                            "lo_freq_cutoff": 0.085
+                        }
+                    },
+                    "default": {
+                        "external": {
+                            "hi_freq_cutoff": 0.01,
+                            "lo_freq_cutoff": 1
+                        },
+                        "internal": {
+                            "hi_freq_cutoff": 0.05,
+                            "lo_freq_cutoff": 1
+                        }
+                    }
+                },
+                "genes": {
+                    "BRCA1": {
+                        "disease_mode": "LOF",
+                        "external": {
+                            "hi_freq_cutoff": 0.0006,
+                            "lo_freq_cutoff": 0.0004
+                        }
+                    },
+                    "BRCA2": {
+                        "disease_mode": "MISS",
+                        "last_exon_important": "LEI",
+                        "external": {
+                            "hi_freq_cutoff": 0.000006,
+                            "lo_freq_cutoff": 0.000006
+                        },
+                        "internal": {
+                            "hi_freq_cutoff": 0.000001,
+                            "lo_freq_cutoff": 0.000001
                         }
                     }
                 }

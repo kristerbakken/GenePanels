@@ -14,7 +14,7 @@ export default class App extends React.Component {
             <div>
 
                <Panel2
-                   panelConfig={API.getGenePanelConfig()}
+                   panelConfig={API.getGenePanelConfig2()}
                    globalDefault={API.getGlobalDefault()}
                    geneList={API.getGeneList()}
                />
