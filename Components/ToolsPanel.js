@@ -34,6 +34,7 @@ export default class ToolsPanel extends React.Component {
                         <span>show modified</span>
                     </label>
                 </div>
+                <button onClick={this.props.savePanel}>Save panel</button>
             </div>
 
         )

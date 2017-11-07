@@ -567,4 +567,9 @@ export default class API {
             }
         }
     }
+
+    static saveNewPanelConfig(newConfig) {
+        console.log(JSON.stringify(newConfig));
+    }
 }
+

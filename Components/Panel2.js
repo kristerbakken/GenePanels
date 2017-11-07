@@ -161,7 +161,7 @@ export default class Panel extends React.Component {
     adaptToConfig() {
         console.log(this.state);
 
-        const genes = this.props.panelConfig.data.genes;
+        const genes = JSON.parse(JSON.stringify(this.props.panelConfig.data.genes));
         const panel = this.state.currentGenePanel;
         const config = JSON.parse(JSON.stringify(this.props.panelConfig.data));
 
@@ -456,6 +456,77 @@ export default class Panel extends React.Component {
         return tessst;
     }
 
+    savePanel() {
+        console.log(this.state);
+        console.log(this.props);
+
+        const config = JSON.parse(JSON.stringify(this.props.panelConfig));
+        const newConfig = JSON.parse(JSON.stringify(config));
+        const currentPanel = this.state.currentGenePanel;
+
+        for (const i in newConfig.data.genes) {
+            delete newConfig.data.genes[i];
+        }
+
+        for (const i in currentPanel) {
+            if (this.isModified(this.state.allGenes[currentPanel[i].key])) {
+                const inheritance = (currentPanel[i].inheritance === "AD") ? "AD" : "default";
+                const gene = {};
+
+                var cutoffs = config.data.freq_cutoff_groups[inheritance];
+                var globalDefaults = this.props.globalDefault.freq_cutoffs[inheritance];
+
+                var value = currentPanel[i].external.hi_freq_cutoff;
+                if (value !== cutoffs.external.hi_freq_cutoff && value !== globalDefaults.external.frequency_hi_external) {
+                    if (!gene.hasOwnProperty("external")) {
+                        gene.external = {};
+                    }
+                    gene.external.hi_freq_cutoff = currentPanel[i].external.hi_freq_cutoff;
+                }
+
+                value = currentPanel[i].external.lo_freq_cutoff;
+                if (value !== cutoffs.external.lo_freq_cutoff && value !== globalDefaults.external.lo_freq_cutoff) {
+                    if (!gene.hasOwnProperty("external")) {
+                        gene.external = {};
+                    }
+                    gene.external.lo_freq_cutoff = currentPanel[i].external.lo_freq_cutoff;
+                }
+
+                value = currentPanel[i].internal.hi_freq_cutoff;
+                if (value !== cutoffs.internal.hi_freq_cutoff && value !== globalDefaults.internal.hi_freq_cutoff) {
+                    if (!gene.hasOwnProperty("internal")) {
+                        gene.internal = {};
+                    }
+                    gene.internal.hi_freq_cutoff = currentPanel[i].internal.hi_freq_cutoff;
+                }
+
+                value = currentPanel[i].internal.lo_freq_cutoff;
+                if (value !== cutoffs.internal.lo_freq_cutoff && value !== globalDefaults.internal.lo_freq_cutoff) {
+                    if (!gene.hasOwnProperty("internal")) {
+                        gene.internal = {};
+                    }
+                    gene.internal.lo_freq_cutoff = currentPanel[i].internal.lo_freq_cutoff;
+                }
+
+                cutoffs = config.data;
+                globalDefaults = this.props.globalDefault;
+                value = currentPanel[i].disease_mode;
+                if (value !== cutoffs.disease_mode && value !== globalDefaults.disease_mode) {
+                    gene.disease_mode = currentPanel[i].disease_mode;
+                }
+
+                value = currentPanel[i].last_exon_important;
+                if (value !== cutoffs.last_exon_important && value !== globalDefaults.last_exon_important) {
+                    gene.last_exon_important = currentPanel[i].last_exon_important;
+                }
+
+                newConfig.data.genes[i] = gene;
+            }
+        }
+
+        API.saveNewPanelConfig(newConfig);
+    }
+
     render() {
 
         var genes = [];
@@ -486,6 +557,7 @@ export default class Panel extends React.Component {
                 <ToolsPanel toggleModified={this.toggleModified.bind(this)}
                             changeSearch={this.changeSearch.bind(this)}
                             searchValue={this.state.searchValue}
+                            savePanel={this.savePanel.bind(this)}
                 />
                 <div className="extended_genes">
                     <table>
