@@ -17,6 +17,7 @@ export default class App extends React.Component {
                    panelConfig={API.getGenePanelConfig2()}
                    globalDefault={API.getGlobalDefault()}
                    geneList={API.getGeneList()}
+                   // geneList={API.testLargeAmountOfGenes()} // uses a list of 2700+ genes
                />
             </div>
         );

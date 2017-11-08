@@ -457,9 +457,6 @@ export default class Panel extends React.Component {
     }
 
     savePanel() {
-        console.log(this.state);
-        console.log(this.props);
-
         const config = JSON.parse(JSON.stringify(this.props.panelConfig));
         const newConfig = JSON.parse(JSON.stringify(config));
         const currentPanel = this.state.currentGenePanel;
@@ -523,7 +520,6 @@ export default class Panel extends React.Component {
                 newConfig.data.genes[i] = gene;
             }
         }
-
         API.saveNewPanelConfig(newConfig);
     }
 
