@@ -66,6 +66,25 @@ export default class Panel extends React.Component {
             this.createGeneComponents();
         });
     }
+    
+    changeOption(event) {
+        const info = event.target.id.split(";");
+        const dmLei = info[0];
+        const geneId = info[1];
+        const genes = this.state.currentGenePanel;
+
+         if (dmLei === "dm") {
+             genes[geneId].disease_mode = event.target.value;
+         } else {
+             genes[geneId].last_exon_important = event.target.value;
+         }
+
+        this.setState({
+            currentGenePanel: genes
+        }, function() {
+            this.createGeneComponents();
+        });
+    }
 
     changeSearch(event) {
         // console.log(event.target.value);
@@ -197,7 +216,14 @@ export default class Panel extends React.Component {
 
         for (const i in this.state.currentGenePanel) {
             gene = this.state.currentGenePanel[i];
-            allGenes[gene.key] = <Gene className="gene" key={gene.key} values={gene} defaultValues={defaultValues} groupValues={groupValues} changeValue={this.changeGeneValue.bind(this)}/>;
+            allGenes[gene.key] = <Gene className="gene"
+                                       key={gene.key}
+                                       values={gene}
+                                       defaultValues={defaultValues}
+                                       groupValues={groupValues}
+                                       changeValue={this.changeGeneValue.bind(this)}
+                                       changeOption={this.changeOption.bind(this)}
+            />;
         }
         this.setState({
             allGenes: allGenes

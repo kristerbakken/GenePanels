@@ -84,10 +84,10 @@ export default class Gene extends React.Component {
 
         for (var i = 0; i < ids.length; i++) {
 
-            if (currentValues[i] === ("" + groupDefaults[i])) {
-                color = "red";
-            } else if (currentValues[i] === ("" + globalDefaults[i])){
+            if (currentValues[i] === ("" + globalDefaults[i])) {
                 color = "white";
+            } else if (currentValues[i] === ("" + groupDefaults[i])){
+                color = "red";
             } else {
                 color = "yellow"
             }
@@ -97,7 +97,7 @@ export default class Gene extends React.Component {
             );
         }
 
-        // console.log(currentValues[4] + " " + groupDefaults[4] + " " + (currentValues[4] === groupDefaults[4]));
+        // console.log(currentValues[4] + " " + groupDefaults[4] + " " + globalDefaults[4] + " " + (currentValues[4] === groupDefaults[4]));
         if (currentValues[4] === globalDefaults[4]){
             color = "white";
         } else if (currentValues[4] === groupDefaults[4]) {
@@ -107,12 +107,13 @@ export default class Gene extends React.Component {
         }
 
         freqs.push(
-            <td className={"color_" + color}><select>
-                <option value={gene.disease_mode}>{gene.disease_mode}</option>
-                <option value="ANY">ANY</option>
-                <option value="LOF">LOF</option>
-                <option value="MISS">MISS</option>
-            </select></td>
+            <td className={"color_" + color}>
+                <select id={"dm;" + gene.name} value={gene.disease_mode} onChange={this.props.changeOption}>
+                    <option value="ANY">ANY</option>
+                    <option value="LOF">LOF</option>
+                    <option value="MISS">MISS</option>
+                </select>
+            </td>
         );
 
         // console.log(currentValues[5] + " " + groupDefaults[5] + " " + (currentValues[5] === groupDefaults[5]));
@@ -126,11 +127,12 @@ export default class Gene extends React.Component {
         }
 
         freqs.push(
-            <td className={"color_" + color}><select>
-                <option value={gene.last_exon_important}>{gene.last_exon_important}</option>
-                <option value="LENI">LENI</option>
-                <option value="LEI">LEI</option>
-            </select></td>
+            <td className={"color_" + color}>
+                <select id={"lei;" + gene.name} value={gene.last_exon_important} onChange={this.props.changeOption}>
+                    <option value="LENI">LENI</option>
+                    <option value="LEI">LEI</option>
+            </select>
+            </td>
         );
 
         freqs.push(
