@@ -42,20 +42,22 @@ export default class Panel extends React.Component {
         const exIn = info[0];
         const hiLo = info[1];
         const geneId = info[2];
-        const value = Number(event.target.value);
         const genes = this.state.currentGenePanel;
+        // var value = event.target.value;
 
-        // console.log(info);
-        // console.log(genes);
+        var value = event.target.value.replace(",", ".");
+        var pattern = new RegExp("([0-9.,]){" + value.length + "}");
+        if (pattern.test(value) && !Number.isNaN(Number(value))) {
 
-        if (exIn === "ex" && hiLo === "Hi") {
-            genes[geneId].external.hi_freq_cutoff = value;
-        } else if (exIn === "ex" && hiLo === "Lo") {
-            genes[geneId].external.lo_freq_cutoff = value;
-        } else if (exIn === "in" && hiLo === "Hi") {
-            genes[geneId].internal.hi_freq_cutoff = value;
-        } else if (exIn === "in" && hiLo === "Lo") {
-            genes[geneId].internal.lo_freq_cutoff = value;
+            if (exIn === "ex" && hiLo === "Hi") {
+                genes[geneId].external.hi_freq_cutoff = value;
+            } else if (exIn === "ex" && hiLo === "Lo") {
+                genes[geneId].external.lo_freq_cutoff = value;
+            } else if (exIn === "in" && hiLo === "Hi") {
+                genes[geneId].internal.hi_freq_cutoff = value;
+            } else if (exIn === "in" && hiLo === "Lo") {
+                genes[geneId].internal.lo_freq_cutoff = value;
+            }
         }
 
         this.setState({
@@ -167,11 +169,7 @@ export default class Panel extends React.Component {
 
         for (const x in genes) {
             const inheritance = (panel[x].inheritance === "AD") ? "AD" : "default";
-            const cutoffs = config.freq_cutoff_groups[inheritance]; // se under // DENNE MÅ BYTTES HVIS GENENE ER NOE ANNET ENN BARE AD
-
-            // if (panel[x].inheritance === "AD") {
-            //     cutoffs = config.groups.default.config.freq_cutoffs.AD;
-            // }
+            const cutoffs = config.freq_cutoff_groups[inheritance];
 
             panel[x].internal = cutoffs.internal;
             panel[x].external = cutoffs.external;
@@ -195,11 +193,10 @@ export default class Panel extends React.Component {
         const allGenes = [];
         var gene;
         const defaultValues = this.props.globalDefault;
+        const groupValues = this.props.panelConfig.data;
 
         for (const i in this.state.currentGenePanel) {
             gene = this.state.currentGenePanel[i];
-            const inheritance = (gene.inheritance === "AD") ? "AD" : "default";
-            const groupValues = this.props.panelConfig.data.freq_cutoff_groups[inheritance];
             allGenes[gene.key] = <Gene className="gene" key={gene.key} values={gene} defaultValues={defaultValues} groupValues={groupValues} changeValue={this.changeGeneValue.bind(this)}/>;
         }
         this.setState({
@@ -394,7 +391,7 @@ export default class Panel extends React.Component {
             var freqs1 = [];
 
             var gene = tester[a];
-            console.log(gene);
+            // console.log(gene);
             const currentValues = [
                 gene.cutoffs.AD.external.hi_freq_cutoff,
                 gene.cutoffs.AD.internal.hi_freq_cutoff,

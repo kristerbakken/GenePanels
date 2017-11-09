@@ -45,10 +45,10 @@ export default class Gene extends React.Component {
 
         const gene = this.props.values;
 
-        const exHi = gene.external.hi_freq_cutoff;
-        const inHi = gene.internal.hi_freq_cutoff;
-        const exLo = gene.external.lo_freq_cutoff;
-        const inLo = gene.internal.lo_freq_cutoff;
+        const exHi = "" + gene.external.hi_freq_cutoff;
+        const inHi = "" + gene.internal.hi_freq_cutoff;
+        const exLo = "" + gene.external.lo_freq_cutoff;
+        const inLo = "" + gene.internal.lo_freq_cutoff;
 
         const currentValues = [
             exHi,
@@ -59,24 +59,24 @@ export default class Gene extends React.Component {
             gene.last_exon_important
         ];
 
-        // de to under må byttes fra AD til whatever er riktig
+        const inheritance = (gene.inheritance === "AD") ? "AD" : "default";
         const globalDefaults = [
-            this.props.defaultValues.freq_cutoffs.AD.external.hi_freq_cutoff,
-            this.props.defaultValues.freq_cutoffs.AD.internal.hi_freq_cutoff,
-            this.props.defaultValues.freq_cutoffs.AD.external.lo_freq_cutoff,
-            this.props.defaultValues.freq_cutoffs.AD.internal.lo_freq_cutoff,
+            this.props.defaultValues.freq_cutoffs[inheritance].external.hi_freq_cutoff,
+            this.props.defaultValues.freq_cutoffs[inheritance].internal.hi_freq_cutoff,
+            this.props.defaultValues.freq_cutoffs[inheritance].external.lo_freq_cutoff,
+            this.props.defaultValues.freq_cutoffs[inheritance].internal.lo_freq_cutoff,
             this.props.defaultValues.disease_mode,
             this.props.defaultValues.last_exon_important,
         ];
         const groupDefaults = [
-            this.props.groupValues.external.hi_freq_cutoff,
-            this.props.groupValues.internal.hi_freq_cutoff,
-            this.props.groupValues.external.lo_freq_cutoff,
-            this.props.groupValues.internal.lo_freq_cutoff,
+            this.props.groupValues.freq_cutoff_groups[inheritance].external.hi_freq_cutoff,
+            this.props.groupValues.freq_cutoff_groups[inheritance].internal.hi_freq_cutoff,
+            this.props.groupValues.freq_cutoff_groups[inheritance].external.lo_freq_cutoff,
+            this.props.groupValues.freq_cutoff_groups[inheritance].internal.lo_freq_cutoff,
             this.props.groupValues.disease_mode,
             this.props.groupValues.last_exon_important,
         ];
-        
+
         const ids = ["ex;Hi;", "in;Hi;", "ex;Lo;", "in;Lo;"];
 
         const freqs = [];
@@ -84,16 +84,16 @@ export default class Gene extends React.Component {
 
         for (var i = 0; i < ids.length; i++) {
 
-            if (currentValues[i] === groupDefaults[i]) {
+            if (currentValues[i] === ("" + groupDefaults[i])) {
                 color = "red";
-            } else if (currentValues[i] === globalDefaults[i]){
+            } else if (currentValues[i] === ("" + globalDefaults[i])){
                 color = "white";
             } else {
                 color = "yellow"
             }
 
             freqs.push(
-                <td className={"color_" + color}><input id={ids[i] + gene.name} type="number" value={currentValues[i]} onChange={this.props.changeValue}/></td>
+                <td className={"color_" + color}><input id={ids[i] + gene.name} type="text" value={currentValues[i]} onChange={this.props.changeValue}/></td>
             );
         }
 
