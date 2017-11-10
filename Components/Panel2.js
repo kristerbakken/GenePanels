@@ -43,10 +43,9 @@ export default class Panel extends React.Component {
         const hiLo = info[1];
         const geneId = info[2];
         const genes = this.state.currentGenePanel;
-        // var value = event.target.value;
 
-        var value = event.target.value.replace(",", ".");
-        var pattern = new RegExp("([0-9.,]){" + value.length + "}");
+        const value = event.target.value.replace(",", ".");
+        const pattern = new RegExp("([0-9.,]){" + value.length + "}");
         if (pattern.test(value) && !Number.isNaN(Number(value))) {
 
             if (exIn === "ex" && hiLo === "Hi") {
@@ -160,21 +159,14 @@ export default class Panel extends React.Component {
     }
 
     createGenes() {
-        /*Create the genes based on the list of genes */
-        //should change it so it takes the ID of the gene and assigns it instead
-        // console.log(this.props.geneList);
         const list = this.props.geneList;
         var genes = [];
         for (const i in list){
-            // console.log(i);
-            // console.log(list[i]);
-            // console.log(list[i][1]);
             genes[i] = this.createGene(i, list[i]);
         }
         this.setState({
             currentGenePanel: genes
         }, function() {
-            // console.log(this.state);
             this.adaptToConfig();
         });
     }
@@ -390,8 +382,34 @@ export default class Panel extends React.Component {
         return searched;
     }
 
-    createGlobalAndPanelGene() {
+    changePanelConfig(event) {
+        const info = event.target.id.split(";");
+        const exIn = info[0];
+        const hiLo = info[1];
+        const geneId = info[2];
+        const inheritance = info[3];
+        const genes = this.props.panelConfig.data.freq_cutoff_groups[inheritance];
 
+        if (geneId === "panelConfig") {
+            const value = event.target.value.replace(",", ".");
+            const pattern = new RegExp("([0-9.,]){" + value.length + "}");
+            if (pattern.test(value) && !Number.isNaN(Number(value))) {
+
+                if (exIn === "ex" && hiLo === "Hi") {
+                    genes.external.hi_freq_cutoff = value;
+                } else if (exIn === "ex" && hiLo === "Lo") {
+                    genes.external.lo_freq_cutoff = value;
+                } else if (exIn === "in" && hiLo === "Hi") {
+                    genes.internal.hi_freq_cutoff = value;
+                } else if (exIn === "in" && hiLo === "Lo") {
+                    genes.internal.lo_freq_cutoff = value;
+                }
+            }
+            this.createGeneComponents();
+        }
+    }
+
+    createGlobalAndPanelGene() {
         const tester = {
             "globalValues": {
                 "key": 0,
@@ -408,16 +426,12 @@ export default class Panel extends React.Component {
                 "last_exon_important": this.props.panelConfig.data.last_exon_important
             }
         }
-        // const globalGene = <ExtendedGene key="globalGene" values={globalValues} changeValue={this.changeGeneValue.bind(this)}/>;
-        // const panelGene = <ExtendedGene key="panelGene" values={panelValues} changeValue={this.changeGeneValue.bind(this)}/>;
 
         const tessst = [];
         for (const a in tester) {
 
-            var freqs1 = [];
-
-            var gene = tester[a];
-            // console.log(gene);
+            const gene = tester[a];
+            const freqs1 = [];
             const currentValues = [
                 gene.cutoffs.AD.external.hi_freq_cutoff,
                 gene.cutoffs.AD.internal.hi_freq_cutoff,
@@ -426,22 +440,22 @@ export default class Panel extends React.Component {
                 gene.disease_mode,
                 gene.last_exon_important
             ];
-
             const ids = ["ex;Hi;", "in;Hi;", "ex;Lo;", "in;Lo;"];
             var color = (gene.name === "globalDefault") ? "white" : "red";
 
             for (var i = 0; i < 4; i++) {
-
                 freqs1.push(
-                    <td className={"color_" + color}><input id={ids[i] + gene.name} type="number"
-                                                            value={currentValues[i]} onChange={this.props.changeValue}/>
+                    <td className={"color_" + color}>
+                        <input id={ids[i] + gene.name + ";AD"}
+                               type="text"
+                               value={currentValues[i]}
+                               onChange={this.changePanelConfig.bind(this)}
+                        />
                     </td>
                 );
             }
 
-            const freqs2 = [];
-
-            const test =
+            tessst.push(
                 <tr>
                     <td className={"glopan"} rowSpan="2">{gene.name}</td>
                     <td className={"glopan"} rowSpan="2">{gene.key}</td>
@@ -449,7 +463,10 @@ export default class Panel extends React.Component {
                     {freqs1}
                     <td rowSpan="2" className={"color_" + color + " glopan"}>{gene.disease_mode}</td>
                     <td rowSpan="2" className={"color_" + color + " glopan"}>{gene.last_exon_important}</td>
-                </tr>;
+                </tr>
+            );
+
+            const freqs2 = [];
             const currentValues2 = [
                 gene.cutoffs.default.external.hi_freq_cutoff,
                 gene.cutoffs.default.internal.hi_freq_cutoff,
@@ -458,24 +475,24 @@ export default class Panel extends React.Component {
             ];
 
             for (var i = 0; i < 4; i++) {
-
                 freqs2.push(
-                    <td className={"color_" + color + " glopan"}><input id={ids[i] + gene.name} type="number"
-                                                            value={currentValues2[i]}
-                                                            onChange={this.props.changeValue}/></td>
+                    <td className={"color_" + color + " glopan"}>
+                        <input id={ids[i] + gene.name + "default"}
+                               type="text"
+                               value={currentValues2[i]}
+                               onChange={this.changePanelConfig.bind(this)}
+                        />
+                    </td>
                 );
             }
 
-            const test2 =
+            tessst.push(
                 <tr>
                     <td className={"glopan"}>default</td>
                     {freqs2}
-                </tr>;
-
-            tessst.push(test);
-            tessst.push(test2);
+                </tr>
+            );
         }
-        // return [globalGene, panelGene]
         return tessst;
     }
 
