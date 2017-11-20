@@ -532,6 +532,72 @@ export default class API {
         }
     }
 
+    static getModifiedPanel() {
+        return {
+            "meta": {
+                "source": "fooo",
+                "version": "1.0",
+                "schemaVersion": "2",
+                "updatedBy": "Erik",
+                "updatedAt": "2017-11-01T10:36:00+01:00"
+            },
+            "data": {
+                "last_exon_important": "LENI",
+                "disease_mode": "ANY",
+                "freq_cutoff_groups": {
+                    "AD": {
+                        "external": {"hi_freq_cutoff": 0.008, "lo_freq_cutoff": 0.0005},
+                        "internal": {"hi_freq_cutoff": 0.018, "lo_freq_cutoff": 0.085}
+                    },
+                    "default": {
+                        "external": {"hi_freq_cutoff": 0.01, "lo_freq_cutoff": 1},
+                        "internal": {"hi_freq_cutoff": 0.05, "lo_freq_cutoff": 1}
+                    }
+                },
+                "genes": {
+                    "APC": {
+                        "comment": "Use the InSiGHT critieria: http://insight-group.org/criteria/ The exception is synonymous variants and intron variants outside the consensus region (ACMG BSxBP7), which can be classified as class 2 as for other genes."
+                    },
+                    "BRCA1": {
+                        "external": {"hi_freq_cutoff": 0.0006, "lo_freq_cutoff": 0.0004},
+                        "disease_mode": "LOF"
+                    },
+                    "BRCA2": {
+                        "external": {"hi_freq_cutoff": 0.000006, "lo_freq_cutoff": 0.000006},
+                        "internal": {"hi_freq_cutoff": 0.000001, "lo_freq_cutoff": 0.000001},
+                        "disease_mode": "MISS",
+                        "last_exon_important": "LEI"
+                    },
+                    "HOXB13": {
+                        "external": {"hi_freq_cutoff": 0.005, "lo_freq_cutoff": 0.001},
+                        "internal": {"hi_freq_cutoff": 0.05, "lo_freq_cutoff": 1}
+                    },
+                    "MSH2": {
+                        "external": {"hi_freq_cutoff": 0.0055, "lo_freq_cutoff": 0.0015},
+                        "internal": {"hi_freq_cutoff": 0.055, "lo_freq_cutoff": 15},
+                        "disease_mode": "LOF"
+                    },
+                    "PALB2": {
+                        "external": {"hi_freq_cutoff": 0.0054, "lo_freq_cutoff": 0.001},
+                        "internal": {"lo_freq_cutoff": 1},
+                        "last_exon_important": "LEI"
+                    },
+                    "PMS2": {
+                        "external": {"hi_freq_cutoff": 0.005, "lo_freq_cutoff": 0.001},
+                        "internal": {"hi_freq_cutoff": 0.054, "lo_freq_cutoff": 1},
+                        "last_exon_important": "LEI"
+                    },
+                    "POLD1": {
+                        "external": {"hi_freq_cutoff": 0.005, "lo_freq_cutoff": 0.001},
+                        "internal": {"hi_freq_cutoff": 0.05, "lo_freq_cutoff": 1},
+                        "disease_mode": "LOF",
+                        "last_exon_important": "LEI"
+                    }
+                }
+            }
+        }
+    }
+
     static getConfig() {
         return {
             "config": {

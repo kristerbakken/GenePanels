@@ -5,6 +5,7 @@ import SelectionPanel from "./SelectionPanel";
 import SearchBar from "./SearchBar";
 import API from "../api";
 import ToolsPanel from "./ToolsPanel";
+import CommentModal from "./CommentModal";
 
 export default class Panel extends React.Component {
 
@@ -17,7 +18,10 @@ export default class Panel extends React.Component {
             globalDefault: JSON.parse(JSON.stringify(this.props.globalDefault)),
             searchValue: "",
             sortColumn: ["name", true],
-            showModified: true
+            showModified: true,
+            showCommentModal: false,
+            currentComment: "",
+            currentCommentName: ""
 
         };
 
@@ -90,6 +94,31 @@ export default class Panel extends React.Component {
         this.setState({
             searchValue: event.target.value.toUpperCase()
         })
+    }
+
+    showCommentModal(name) {
+        this.setState({
+            currentComment: this.state.currentGenePanel[name].comment,
+            currentCommentName: name,
+            showCommentModal: true
+        });
+    }
+
+    hideCommentModal() {
+        this.setState({
+            showCommentModal: false
+        });
+    }
+
+    saveComment() {
+        const genes = this.state.currentGenePanel;
+        genes[this.state.currentCommentName].comment = this.state.currentComment;
+
+        this.setState({
+            currentGenePanel: genes
+        }, function() {
+            this.createGeneComponents();
+        });
     }
 
     createHeadings() {
@@ -172,8 +201,6 @@ export default class Panel extends React.Component {
     }
 
     adaptToConfig() {
-        console.log(this.state);
-
         const genes = JSON.parse(JSON.stringify(this.props.panelConfig.data.genes));
         const panel = this.state.currentGenePanel;
         const config = JSON.parse(JSON.stringify(this.props.panelConfig.data));
@@ -188,8 +215,15 @@ export default class Panel extends React.Component {
             panel[x].last_exon_important = config.last_exon_important;
 
             for (const y in genes[x]){
-                this.state.currentGenePanel[x][y] = genes[x][y];
                 panel[x][y] = genes[x][y];
+                if (y === "internal" || y === "external") {
+                    if (panel[x][y].hi_freq_cutoff === undefined) {
+                        panel[x][y].hi_freq_cutoff = cutoffs[y].hi_freq_cutoff;
+                    }
+                    if (panel[x][y].lo_freq_cutoff === undefined) {
+                        panel[x][y].lo_freq_cutoff = cutoffs[y].lo_freq_cutoff;
+                    }
+                }
             }
         }
         this.setState({
@@ -215,6 +249,8 @@ export default class Panel extends React.Component {
                                        groupValues={groupValues}
                                        changeValue={this.changeGeneValue.bind(this)}
                                        changeOption={this.changeOption.bind(this)}
+                                       showCommentModal={this.showCommentModal.bind(this, gene.name)}
+                                       hideCommentModal={this.hideCommentModal.bind(this)}
             />;
         }
         this.setState({
@@ -294,25 +330,6 @@ export default class Panel extends React.Component {
         console.log(this.state.currentGenePanel);
 
 
-        // const panel = {};
-        // for (var gene in this.state.currentGenePanel) {
-        //     console.log(gene + " " + this.state.currentGenePanel[gene].external.hi_freq_cutoff);
-        //     panel[gene] = this.state.currentGenePanel[gene];
-        //     console.log(gene + " " + panel[gene].external.hi_freq_cutoff);
-        //
-        // }
-        // // const genes = this.state.currentGenePanel["PMS2"];
-        // // console.log(genes);
-        // // genes.external.hi_freq_cutoff = 0.15;
-        // panel["PMS2"].external.hi_freq_cutoff = 0.15;
-        // for (var gene in this.state.currentGenePanel) {
-        //     console.log(gene + " " + this.state.currentGenePanel[gene].external.hi_freq_cutoff);
-        //     console.log(gene + " " + panel[gene].external.hi_freq_cutoff);
-        // }
-        // console.log(this.state);
-        // console.log(this.props);
-
-
     }
 
     toggleModified() {
@@ -322,12 +339,53 @@ export default class Panel extends React.Component {
     }
 
     isModified(gene) {
+        // const inheritance = (gene.props.values.inheritance === "AD") ? "AD" : "default";
+        // const currentValues = [
+        //     Number(gene.props.values.external.hi_freq_cutoff),
+        //     Number(gene.props.values.internal.hi_freq_cutoff),
+        //     Number(gene.props.values.external.lo_freq_cutoff),
+        //     Number(gene.props.values.internal.lo_freq_cutoff),
+        //     gene.props.values.disease_mode,
+        //     gene.props.values.last_exon_important
+        // ];
+        // const globalDefaults = [
+        //     this.props.globalDefault.freq_cutoffs[inheritance].external.hi_freq_cutoff,
+        //     this.props.globalDefault.freq_cutoffs[inheritance].internal.hi_freq_cutoff,
+        //     this.props.globalDefault.freq_cutoffs[inheritance].external.lo_freq_cutoff,
+        //     this.props.globalDefault.freq_cutoffs[inheritance].internal.lo_freq_cutoff,
+        //     this.props.globalDefault.disease_mode,
+        //     this.props.globalDefault.last_exon_important,
+        // ];
+        // const groupDefaults = [
+        //     this.props.panelConfig.data.freq_cutoff_groups[inheritance].external.hi_freq_cutoff,
+        //     this.props.panelConfig.data.freq_cutoff_groups[inheritance].internal.hi_freq_cutoff,
+        //     this.props.panelConfig.data.freq_cutoff_groups[inheritance].external.lo_freq_cutoff,
+        //     this.props.panelConfig.data.freq_cutoff_groups[inheritance].internal.lo_freq_cutoff,
+        //     this.props.panelConfig.data.disease_mode,
+        //     this.props.panelConfig.data.last_exon_important,
+        // ];
+        //
+        // var modified = false;
+        //
+        // for (const i in currentValues) {
+        //     // console.log(gene.props.values.name);
+        //     // console.log(currentValues[i] + " " + globalDefaults[i] + " " + groupDefaults[i]);
+        //     // console.log(typeof(currentValues[i]) + " " + typeof(globalDefaults[i]) + " " + typeof(groupDefaults[i]));
+        //     if (currentValues[i] !== globalDefaults[i] && currentValues[i] !== groupDefaults[i]) {
+        //         modified = true;
+        //     }
+        // }
+        // return modified;
+        return (this.isDifferentThanGlobal(gene) && this.isDifferentThanConfig(gene));
+    }
+
+    isDifferentThanGlobal(gene) {
         const inheritance = (gene.props.values.inheritance === "AD") ? "AD" : "default";
         const currentValues = [
-            gene.props.values.external.hi_freq_cutoff,
-            gene.props.values.internal.hi_freq_cutoff,
-            gene.props.values.external.lo_freq_cutoff,
-            gene.props.values.internal.lo_freq_cutoff,
+            Number(gene.props.values.external.hi_freq_cutoff),
+            Number(gene.props.values.internal.hi_freq_cutoff),
+            Number(gene.props.values.external.lo_freq_cutoff),
+            Number(gene.props.values.internal.lo_freq_cutoff),
             gene.props.values.disease_mode,
             gene.props.values.last_exon_important
         ];
@@ -339,6 +397,26 @@ export default class Panel extends React.Component {
             this.props.globalDefault.disease_mode,
             this.props.globalDefault.last_exon_important,
         ];
+
+        var modified = false;
+        for (const i in currentValues) {
+            if (currentValues[i] !== globalDefaults[i]) {
+                modified = true;
+            }
+        }
+        return modified;
+    }
+
+    isDifferentThanConfig(gene) {
+        const inheritance = (gene.props.values.inheritance === "AD") ? "AD" : "default";
+        const currentValues = [
+            Number(gene.props.values.external.hi_freq_cutoff),
+            Number(gene.props.values.internal.hi_freq_cutoff),
+            Number(gene.props.values.external.lo_freq_cutoff),
+            Number(gene.props.values.internal.lo_freq_cutoff),
+            gene.props.values.disease_mode,
+            gene.props.values.last_exon_important
+        ];
         const groupDefaults = [
             this.props.panelConfig.data.freq_cutoff_groups[inheritance].external.hi_freq_cutoff,
             this.props.panelConfig.data.freq_cutoff_groups[inheritance].internal.hi_freq_cutoff,
@@ -349,10 +427,8 @@ export default class Panel extends React.Component {
         ];
 
         var modified = false;
-
         for (const i in currentValues) {
-            // console.log(currentValues[i] + " " + globalDefaults[i] + " " + groupDefaults[i]);
-            if (currentValues[i] !== globalDefaults[i] && currentValues[i] !== groupDefaults[i]) {
+            if (currentValues[i] !== groupDefaults[i]) {
                 modified = true;
             }
         }
@@ -509,52 +585,50 @@ export default class Panel extends React.Component {
             if (this.isModified(this.state.allGenes[currentPanel[i].key])) {
                 const inheritance = (currentPanel[i].inheritance === "AD") ? "AD" : "default";
                 const gene = {};
-
                 var cutoffs = config.data.freq_cutoff_groups[inheritance];
-                var globalDefaults = this.props.globalDefault.freq_cutoffs[inheritance];
 
-                var value = currentPanel[i].external.hi_freq_cutoff;
-                if (value !== cutoffs.external.hi_freq_cutoff && value !== globalDefaults.external.frequency_hi_external) {
+                var value = Number(currentPanel[i].external.hi_freq_cutoff);
+                if (value !== cutoffs.external.hi_freq_cutoff) {
                     if (!gene.hasOwnProperty("external")) {
                         gene.external = {};
                     }
-                    gene.external.hi_freq_cutoff = currentPanel[i].external.hi_freq_cutoff;
+                    gene.external.hi_freq_cutoff = value;
                 }
 
-                value = currentPanel[i].external.lo_freq_cutoff;
-                if (value !== cutoffs.external.lo_freq_cutoff && value !== globalDefaults.external.lo_freq_cutoff) {
+                value = Number(currentPanel[i].external.lo_freq_cutoff);
+                if (value !== cutoffs.external.lo_freq_cutoff) {
                     if (!gene.hasOwnProperty("external")) {
                         gene.external = {};
                     }
-                    gene.external.lo_freq_cutoff = currentPanel[i].external.lo_freq_cutoff;
+                    gene.external.lo_freq_cutoff = value;
                 }
 
-                value = currentPanel[i].internal.hi_freq_cutoff;
-                if (value !== cutoffs.internal.hi_freq_cutoff && value !== globalDefaults.internal.hi_freq_cutoff) {
+                value = Number(currentPanel[i].internal.hi_freq_cutoff);
+                if (value !== cutoffs.internal.hi_freq_cutoff) {
                     if (!gene.hasOwnProperty("internal")) {
                         gene.internal = {};
                     }
-                    gene.internal.hi_freq_cutoff = currentPanel[i].internal.hi_freq_cutoff;
+                    gene.internal.hi_freq_cutoff = value;
                 }
 
-                value = currentPanel[i].internal.lo_freq_cutoff;
-                if (value !== cutoffs.internal.lo_freq_cutoff && value !== globalDefaults.internal.lo_freq_cutoff) {
+                value = Number(currentPanel[i].internal.lo_freq_cutoff);
+                if (value !== cutoffs.internal.lo_freq_cutoff) {
                     if (!gene.hasOwnProperty("internal")) {
                         gene.internal = {};
                     }
-                    gene.internal.lo_freq_cutoff = currentPanel[i].internal.lo_freq_cutoff;
+                    gene.internal.lo_freq_cutoff = value;
                 }
 
                 cutoffs = config.data;
-                globalDefaults = this.props.globalDefault;
+                // globalDefaults = this.props.globalDefault;
                 value = currentPanel[i].disease_mode;
-                if (value !== cutoffs.disease_mode && value !== globalDefaults.disease_mode) {
-                    gene.disease_mode = currentPanel[i].disease_mode;
+                if (value !== cutoffs.disease_mode) {
+                    gene.disease_mode = value;
                 }
 
                 value = currentPanel[i].last_exon_important;
-                if (value !== cutoffs.last_exon_important && value !== globalDefaults.last_exon_important) {
-                    gene.last_exon_important = currentPanel[i].last_exon_important;
+                if (value !== cutoffs.last_exon_important) {
+                    gene.last_exon_important = value;
                 }
 
                 newConfig.data.genes[i] = gene;
@@ -592,8 +666,8 @@ export default class Panel extends React.Component {
                 {/*<SelectionPanel geneList={this.state.geneList} searchValue={this.state.searchValue} onChange={this.toggleGene.bind(this)}/>*/}
                 <ToolsPanel toggleModified={this.toggleModified.bind(this)}
                             changeSearch={this.changeSearch.bind(this)}
-                            searchValue={this.state.searchValue}
                             savePanel={this.savePanel.bind(this)}
+                            searchValue={this.state.searchValue}
                 />
                 <div className="extended_genes">
                     <table>
@@ -609,6 +683,13 @@ export default class Panel extends React.Component {
                     </table>
                 </div>
                 <button onClick={this.testClick}>test</button>
+                <CommentModal
+                    onClose={this.hideCommentModal.bind(this)}
+                    saveComment={this.saveComment.bind(this)}
+                    show={this.state.showCommentModal}
+                >
+                    {this.state.currentComment}
+                </CommentModal>
 
             </div>
 

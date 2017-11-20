@@ -3,7 +3,16 @@
 * { box-sizing: border-box; }
 html { font-size: 62.5%; }
 body { font-size: 1.2rem; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; font-family: $full; background-color: hsl(0,0,100); line-height: 1.42857143; color: #333; }
-input { font-family: $slim; border: none; background-color: transparent; padding: 0.3rem; height: 2.6rem; font-weight: 400; text-overflow: ellipsis; width: 10rem;
+input {
+  font-family: $slim;
+  border: none;
+  background-color: transparent;
+  padding: 0.3rem;
+  height: 2.6rem;
+  font-weight: 400;
+  text-overflow: ellipsis;
+  text-align: center;
+  width: 10rem;
   &:focus { border-bottom: 1px solid Transparent; box-shadow: 0px 0.3rem 0px $blue-50; outline: none; transition: all 0.3s ease-in-out; }
   &::placeholder { font-family: $full; letter-spacing: 0.1rem; word-spacing: 0.2rem; font-weight: 500; }
   &.white { color: white; border-bottom: 1px solid rgba(255,255,0,0.5);
@@ -106,6 +115,9 @@ p { font-family: $full; font-weight: 300; font-size: 1.4rem; letter-spacing: -0.
 .genes td{
   height: 2.6rem;
   width: 10%;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 .genes, .extended_genes td {
@@ -130,7 +142,7 @@ p { font-family: $full; font-weight: 300; font-size: 1.4rem; letter-spacing: -0.
 }
 
 .extended_genes input select {
-  text-align: center;
+  //text-align: center;
 }
 
 .test {
@@ -141,6 +153,18 @@ p { font-family: $full; font-weight: 300; font-size: 1.4rem; letter-spacing: -0.
   border-bottom: 5px solid #ffffff;
 
 }
+
+.comment button{
+  width: inherit;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.comment td {
+  width: 100%;
+}
+
 
 .color_red {
   background-color: $red-50 !important;

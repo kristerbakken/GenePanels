@@ -42,6 +42,7 @@ export default class Gene extends React.Component {
     // }
 
     render() {
+        console.log(this.props);
 
         const gene = this.props.values;
 
@@ -120,7 +121,7 @@ export default class Gene extends React.Component {
         // console.log(this.props);
         if (currentValues[5] === globalDefaults[5]){
             color = "white";
-        } else if (currentValues[5] !== groupDefaults[5]) {
+        } else if (currentValues[5] === groupDefaults[5]) {
             color = "red";
         } else {
             color = "yellow"
@@ -136,8 +137,11 @@ export default class Gene extends React.Component {
         );
 
         freqs.push(
-            <td>
-                <p>{gene.comment}</p>
+            <td className="comment">
+                {/*<p>{gene.comment}</p>*/}
+                <button onClick={this.props.showCommentModal}>test</button>
+                {/*<input id={"comment;" + gene.name} type="text" value={this.props.values.comment} onChange={this.props.changeValue}/>*/}
+                {/*<textarea placeholder={"a comment"}>{this.props.values.comment}</textarea>*/}
             </td>
 
         );
