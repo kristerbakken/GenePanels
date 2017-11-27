@@ -149,7 +149,7 @@ export default class Gene extends React.Component {
 // skal det til clipboard isteden?
         return (
             <tr>
-                <td>{gene.name}</td>
+                <td className="gene_name">{gene.name}</td>
                 <td><a href={"https://www.genenames.org/cgi-bin/gene_symbol_report?hgnc_id=HGNC:" + gene.key}>{gene.key}</a></td>
                 <td>{gene.inheritance}</td>
                 {freqs}

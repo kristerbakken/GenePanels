@@ -21,7 +21,7 @@ export default class ToolsPanel extends React.Component {
 
         return (
             <div className='tools_panel'>
-                <h1>Tools</h1>
+                {/*<h3>Tools:</h3>*/}
                 <input type="text" placeholder="search" onChange={this.props.changeSearch} value={this.props.searchValue}/>
                 <div className="toggle">
                     <label>
@@ -31,7 +31,7 @@ export default class ToolsPanel extends React.Component {
                             defaultChecked={true}
                             onChange={this.props.toggleModified}
                         />
-                        <span>show modified</span>
+                        <span>Show modified</span>
                     </label>
                 </div>
                 <button onClick={this.props.savePanel}>Save panel</button>

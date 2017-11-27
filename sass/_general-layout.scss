@@ -33,7 +33,7 @@ p { font-family: $full; font-weight: 300; font-size: 1.4rem; letter-spacing: -0.
 .ok {color: $green !important; }
 
 
-.main_panel, .selection_panel, .tools_panel, .genes, .extended_genes {
+.main_panel, .selection_panel, .tools_panel, .genes, .extended_genes, .toggle, .search_bar{
   float: left;
 
 }
@@ -49,27 +49,31 @@ p { font-family: $full; font-weight: 300; font-size: 1.4rem; letter-spacing: -0.
 }
 
 .tools_panel {
-  height: 600px;
-  width: 20%;
-  background-color: $blue-50;
+  width: 100%;
+  background-color: $blue-25;
 }
 
+.gene_name {
+  font-weight: bold;
+}
+
+//ikke i bruk
 .search_bar {
-  width:75%;
-  background-color: $green-50;
+  width: 15%;
 }
 
 .toggle label {
-  float: left;
-  width: 100%;
   overflow:auto;
+  margin: auto;
 }
 
 .toggle label span {
+  //width: 15%;
   height: 2.6rem;
   line-height: 2.6rem;
   text-align:center;
   display:block;
+  padding: 0rem 1rem;
 }
 
 .toggle label input {
@@ -81,10 +85,14 @@ p { font-family: $full; font-weight: 300; font-size: 1.4rem; letter-spacing: -0.
 }
 
 .genes {
-  width: 80%;
-  background-color: $white-50;
+  width: 100%;
+  //background-color: $white-50;
   height: 600px;
   overflow: auto
+}
+
+.genes::-webkit-scrollbar {
+  display: none;
 }
 
 .genes tr:nth-child(even) {
@@ -96,11 +104,12 @@ p { font-family: $full; font-weight: 300; font-size: 1.4rem; letter-spacing: -0.
 }
 
 .extended_genes {
-  width: 78%;
+  width: 100%;
 }
 
 .genes table {
   border-spacing: 0;
+  width: 100%;
 }
 
 .extended_genes table{
@@ -121,16 +130,17 @@ p { font-family: $full; font-weight: 300; font-size: 1.4rem; letter-spacing: -0.
 }
 
 .genes, .extended_genes td {
-  background-color: $pink-05;
+  //background-color: $pink-05;
   display: table-cell;
   text-align: center;
   vertical-align: middle;
 
 }
 
-.genes th {
+.extended_genes th {
   width: auto;
   background-color: $green-25;
+  vertical-align: middle;
 }
 
 .genes select {
@@ -175,7 +185,7 @@ p { font-family: $full; font-weight: 300; font-size: 1.4rem; letter-spacing: -0.
 }
 
 .color_yellow {
-  background-color: $yellow !important;
+  background-color: $yellow-50 !important;
 }
 
 select { border: none; box-shadow: none; background: transparent; height: 100%; width: 100%; outline: none; padding-right: 2.6rem; -moz-appearance: none; &:-moz-focusring { color: transparent; text-shadow: 0 0 0 #000; } -webkit-appearance: none; &:focus { border-color: inherit; } }
