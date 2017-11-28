@@ -139,8 +139,8 @@ export default class Gene extends React.Component {
         freqs.push(
             <td className="comment">
                 {/*<p>{gene.comment}</p>*/}
-                <button onClick={this.props.showCommentModal}>test</button>
-                {/*<input id={"comment;" + gene.name} type="text" value={this.props.values.comment} onChange={this.props.changeValue}/>*/}
+                {/*<button onClick={this.props.showCommentModal}>test</button>*/}
+                <input id={"comment;" + gene.name} type="text" value={this.props.values.comment} onChange={this.props.changeValue}/>
                 {/*<textarea placeholder={"a comment"}>{this.props.values.comment}</textarea>*/}
             </td>
 

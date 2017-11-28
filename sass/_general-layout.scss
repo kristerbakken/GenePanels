@@ -118,12 +118,12 @@ p { font-family: $full; font-weight: 300; font-size: 1.4rem; letter-spacing: -0.
 
 .extended_genes td{
   height: 2.6rem;
-  width: 10%;
+  width: 7%;
 }
 
 .genes td{
   height: 2.6rem;
-  width: 10%;
+  width: 7%;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
@@ -161,18 +161,18 @@ p { font-family: $full; font-weight: 300; font-size: 1.4rem; letter-spacing: -0.
 
 .glopan {
   border-bottom: 5px solid #ffffff;
-
+  width: 7%;
 }
 
-.comment button{
-  width: inherit;
+.comment input{
+  width: 100%;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
 }
 
-.comment td {
-  width: 100%;
+td.comment  {
+  width: auto;
 }
 
 
