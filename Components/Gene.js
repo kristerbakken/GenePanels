@@ -140,7 +140,7 @@ export default class Gene extends React.Component {
             <td className="comment">
                 {/*<p>{gene.comment}</p>*/}
                 {/*<button onClick={this.props.showCommentModal}>test</button>*/}
-                <input id={"comment;" + gene.name} type="text" value={this.props.values.comment} onChange={this.props.changeValue}/>
+                <input id={"comment;" + gene.name} type="text" value={this.props.values.comment} onChange={this.props.changeComment}/>
                 {/*<textarea placeholder={"a comment"}>{this.props.values.comment}</textarea>*/}
             </td>
 

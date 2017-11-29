@@ -69,6 +69,21 @@ export default class Panel extends React.Component {
             this.createGeneComponents();
         });
     }
+
+    changeComment(event) {
+        const info = event.target.id.split(";");
+        const geneId = info[1];
+        const genes = this.state.currentGenePanel;
+        const value = event.target.value;
+
+        genes[geneId].comment = value;
+
+        this.setState({
+            currentGenePanel: genes
+        }, function() {
+            this.createGeneComponents();
+        });
+    }
     
     changeOption(event) {
         const info = event.target.id.split(";");
@@ -249,6 +264,7 @@ export default class Panel extends React.Component {
                                        groupValues={groupValues}
                                        changeValue={this.changeGeneValue.bind(this)}
                                        changeOption={this.changeOption.bind(this)}
+                                       changeComment={this.changeComment.bind(this)}
                                        showCommentModal={this.showCommentModal.bind(this, gene.name)}
                                        hideCommentModal={this.hideCommentModal.bind(this)}
             />;
@@ -380,6 +396,7 @@ export default class Panel extends React.Component {
     }
 
     isDifferentThanGlobal(gene) {
+        console.log(gene.props.values.comment === undefined);
         const inheritance = (gene.props.values.inheritance === "AD") ? "AD" : "default";
         const currentValues = [
             Number(gene.props.values.external.hi_freq_cutoff),
@@ -387,7 +404,8 @@ export default class Panel extends React.Component {
             Number(gene.props.values.external.lo_freq_cutoff),
             Number(gene.props.values.internal.lo_freq_cutoff),
             gene.props.values.disease_mode,
-            gene.props.values.last_exon_important
+            gene.props.values.last_exon_important,
+            (gene.props.values.comment !== undefined) ? gene.props.values.comment : ""
         ];
         const globalDefaults = [
             this.props.globalDefault.freq_cutoffs[inheritance].external.hi_freq_cutoff,
@@ -396,6 +414,7 @@ export default class Panel extends React.Component {
             this.props.globalDefault.freq_cutoffs[inheritance].internal.lo_freq_cutoff,
             this.props.globalDefault.disease_mode,
             this.props.globalDefault.last_exon_important,
+            ""
         ];
 
         var modified = false;
@@ -408,6 +427,7 @@ export default class Panel extends React.Component {
     }
 
     isDifferentThanConfig(gene) {
+        console.log(gene.props.values.comment + "2");
         const inheritance = (gene.props.values.inheritance === "AD") ? "AD" : "default";
         const currentValues = [
             Number(gene.props.values.external.hi_freq_cutoff),
@@ -415,7 +435,8 @@ export default class Panel extends React.Component {
             Number(gene.props.values.external.lo_freq_cutoff),
             Number(gene.props.values.internal.lo_freq_cutoff),
             gene.props.values.disease_mode,
-            gene.props.values.last_exon_important
+            gene.props.values.last_exon_important,
+            (gene.props.values.comment !== undefined) ? gene.props.values.comment : ""
         ];
         const groupDefaults = [
             this.props.panelConfig.data.freq_cutoff_groups[inheritance].external.hi_freq_cutoff,
@@ -424,6 +445,7 @@ export default class Panel extends React.Component {
             this.props.panelConfig.data.freq_cutoff_groups[inheritance].internal.lo_freq_cutoff,
             this.props.panelConfig.data.disease_mode,
             this.props.panelConfig.data.last_exon_important,
+            ""
         ];
 
         var modified = false;
@@ -629,6 +651,11 @@ export default class Panel extends React.Component {
                 value = currentPanel[i].last_exon_important;
                 if (value !== cutoffs.last_exon_important) {
                     gene.last_exon_important = value;
+                }
+
+                value = currentPanel[i].comment;
+                if (value !== "") {
+                    gene.comment = value;
                 }
 
                 newConfig.data.genes[i] = gene;
