@@ -472,7 +472,7 @@ export default class Panel extends React.Component {
         var searched = false;
 
         for (const i in currentValues) {
-            if ((""+ currentValues[i]).includes(this.state.searchValue)) {
+            if ((""+ currentValues[i]).indexOf(this.state.searchValue) !== -1) {
                 searched = true;
             }
         }
