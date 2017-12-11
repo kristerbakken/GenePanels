@@ -71,6 +71,8 @@ export default class Panel extends React.Component {
     }
 
     changeComment(event) {
+        console.log("ID " + event.target.id);
+        console.log(event.target.value);
         const info = event.target.id.split(";");
         const geneId = info[1];
         const genes = this.state.currentGenePanel;

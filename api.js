@@ -555,13 +555,8 @@ export default class API {
                     }
                 },
                 "genes": {
-                    "APC": {
-                        "comment": "Use the InSiGHT critieria: http://insight-group.org/criteria/ The exception is synonymous variants and intron variants outside the consensus region (ACMG BSxBP7), which can be classified as class 2 as for other genes."
-                    },
-                    "BRCA1": {
-                        "external": {"hi_freq_cutoff": 0.0006, "lo_freq_cutoff": 0.0004},
-                        "disease_mode": "LOF"
-                    },
+                    "APC": {"comment": "Use the InSiGHT critieria: http://insight-group.org/criteria/ The exception is synonymous variants and intron variants outside the consensus region (ACMG BSxBP7), which can be classified as class 2 as for other genes."},
+                    "BRCA1": {"external": {"hi_freq_cutoff": 0.0006, "lo_freq_cutoff": 0.0004}, "disease_mode": "LOF"},
                     "BRCA2": {
                         "external": {"hi_freq_cutoff": 0.000006, "lo_freq_cutoff": 0.000006},
                         "internal": {"hi_freq_cutoff": 0.000001, "lo_freq_cutoff": 0.000001},
@@ -575,7 +570,7 @@ export default class API {
                     "MSH2": {
                         "external": {"hi_freq_cutoff": 0.0055, "lo_freq_cutoff": 0.0015},
                         "internal": {"hi_freq_cutoff": 0.055, "lo_freq_cutoff": 15},
-                        "disease_mode": "LOF"
+                        "disease_mode": "LOF",
                     },
                     "PALB2": {
                         "external": {"hi_freq_cutoff": 0.0054, "lo_freq_cutoff": 0.001},
