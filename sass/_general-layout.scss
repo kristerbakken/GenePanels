@@ -166,6 +166,7 @@ p { font-family: $full; font-weight: 300; font-size: 1.4rem; letter-spacing: -0.
 .genes, .extended_genes td {
   display: table-cell;
   text-align: center;
+  vertical-align: middle;
 
 }
 
@@ -176,10 +177,11 @@ p { font-family: $full; font-weight: 300; font-size: 1.4rem; letter-spacing: -0.
 
 .genes select {
   padding: 0;
+  text-align: right;
 }
 
 .genes input select{
-  text-align: center;
+  //text-align: center;
 }
 
 .extended_genes input select {
@@ -190,6 +192,7 @@ p { font-family: $full; font-weight: 300; font-size: 1.4rem; letter-spacing: -0.
   display: none
 }
 
+//global and panel genes bottom borders
 .glopan {
   border-bottom: 5px solid #ffffff;
   width: 7%;
@@ -203,6 +206,7 @@ p { font-family: $full; font-weight: 300; font-size: 1.4rem; letter-spacing: -0.
   //position: absolute;
 }
 
+//needs cleanup
 .comment textarea {
   border-bottom: 0px;
   //vertical-align: middle;
@@ -248,7 +252,6 @@ p { font-family: $full; font-weight: 300; font-size: 1.4rem; letter-spacing: -0.
 }
 
 td.comment  {
-
   vertical-align: bottom;
   height: 2.6rem;
   width: auto;
@@ -258,6 +261,7 @@ td.comment  {
   //z-index: 10;
 }
 
+//not used
 .comment_div {
   height: 2.6rem;
   //z-index: 0;

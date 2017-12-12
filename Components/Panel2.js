@@ -70,9 +70,8 @@ export default class Panel extends React.Component {
         });
     }
 
+    // \n is added to the comment because of textarea, but it works as far as I've tested it.
     changeComment(event) {
-        console.log("ID " + event.target.id);
-        console.log(event.target.value);
         const info = event.target.id.split(";");
         const geneId = info[1];
         const genes = this.state.currentGenePanel;
