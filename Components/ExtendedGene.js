@@ -1,6 +1,8 @@
 import React from 'react';
 import API from "../api"
 
+
+//IS NOT USED IN CURRENT VERSION
 export default class ExtendedGene extends React.Component {
 
     constructor(props) {

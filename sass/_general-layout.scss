@@ -20,57 +20,16 @@ input {
     &:focus { border-bottom: 1px solid white; box-shadow: 0px 1px 0px white; outline: none; transition: all 0.3s ease-in-out; }
   }
 }
-
-textarea.comment {
-  font-size: 1.4rem;
-  font-family: $slim;
-  //line-height: 2rem;
-  padding: 0 0.3rem;
-  width: 100%;
-  //min-height: 3.6rem;
-  height: 2.6rem;
-  max-height: 50rem;
-  border: none;
-  background-color: transparent;
-  border-bottom: 1px solid $black-50;
-  border-radius: 0;
-  outline: none;
-  box-shadow: none;
-  resize: vertical;
-  &:focus {
-    position: absolute;
-    height: 15rem;
-    min-height: 15rem;
-    //border-bottom: 1px solid Transparent;
-    //box-shadow: 0px 0.3rem 0px $blue-50;
-    outline: none;
-    transition: all 0.3s ease-in-out;
-    z-index: 11;
-  }
-  &::placeholder {
-    font-family: $full;
-    font-size: 1.4rem;
-    letter-spacing: 0.1rem;
-    word-spacing: 0.2rem;
-    font-weight: 500;
-    //line-height: 2rem;
-    color: $black-25;
-    z-index: 10;
-  }
-}
-
 h1 { font-family: $full; background-color: $blue-50; font-weight: 300; font-size: 2.8rem; letter-spacing: -0.025rem; color: $black; text-align: center; padding: 0px;}
 p { font-family: $full; font-weight: 300; font-size: 1.4rem; letter-spacing: -0.025rem; color: $black; }
-
 
 .inputerror { border-bottom: 3px solid $red-75 !important; }
 .error {color: $red !important; }
 .ok {color: $green !important; }
 
-
+//remove unused
 .main_panel, .selection_panel, .tools_panel, .genes, .extended_genes, .toggle, .search_bar{
   float: left;
-
 }
 
 .main_panel {
@@ -78,23 +37,9 @@ p { font-family: $full; font-weight: 300; font-size: 1.4rem; letter-spacing: -0.
   background-color: $white;
 }
 
-.selection_panel {
-  width: 25%;
-  background-color: $blue-50;
-}
-
 .tools_panel {
   width: 100%;
   background-color: $blue-25;
-}
-
-.gene_name {
-  font-weight: bold;
-}
-
-//ikke i bruk
-.search_bar {
-  width: 15%;
 }
 
 .toggle label {
@@ -124,6 +69,14 @@ p { font-family: $full; font-weight: 300; font-size: 1.4rem; letter-spacing: -0.
   overflow: auto
 }
 
+.extended_genes {
+  width: 100%;
+}
+
+.gene_name {
+  font-weight: bold;
+}
+
 .genes::-webkit-scrollbar {
   display: none;
 }
@@ -136,10 +89,6 @@ p { font-family: $full; font-weight: 300; font-size: 1.4rem; letter-spacing: -0.
   background-color: $gray-25;
 }
 
-.extended_genes {
-  width: 100%;
-}
-
 .genes table {
   border-spacing: 0;
   width: 100%;
@@ -149,25 +98,23 @@ p { font-family: $full; font-weight: 300; font-size: 1.4rem; letter-spacing: -0.
   border-spacing: 0;
 }
 
-.extended_genes td{
-  height: 2.6rem;
-  width: 7%;
-}
-
 .genes td{
   height: auto;
-  //height: 2.6rem;
   width: 7%;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
 }
 
+.extended_genes td{
+  height: 2.6rem;
+  width: 7%;
+}
+
 .genes, .extended_genes td {
   display: table-cell;
   text-align: center;
   vertical-align: middle;
-
 }
 
 .extended_genes th {
@@ -178,18 +125,6 @@ p { font-family: $full; font-weight: 300; font-size: 1.4rem; letter-spacing: -0.
 .genes select {
   padding: 0;
   text-align: right;
-}
-
-.genes input select{
-  //text-align: center;
-}
-
-.extended_genes input select {
-  //text-align: center;
-}
-
-.test {
-  display: none
 }
 
 //global and panel genes bottom borders
@@ -203,7 +138,6 @@ p { font-family: $full; font-weight: 300; font-size: 1.4rem; letter-spacing: -0.
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
-  //position: absolute;
 }
 
 //needs cleanup
@@ -251,6 +185,45 @@ p { font-family: $full; font-weight: 300; font-size: 1.4rem; letter-spacing: -0.
   }
 }
 
+//cleanup
+textarea.comment {
+  font-size: 1.4rem;
+  font-family: $slim;
+  //line-height: 2rem;
+  padding: 0 0.3rem;
+  width: 100%;
+  //min-height: 3.6rem;
+  height: 2.6rem;
+  max-height: 50rem;
+  border: none;
+  background-color: transparent;
+  border-bottom: 1px solid $black-50;
+  border-radius: 0;
+  outline: none;
+  box-shadow: none;
+  resize: vertical;
+  &:focus {
+    position: absolute;
+    height: 15rem;
+    min-height: 15rem;
+    //border-bottom: 1px solid Transparent;
+    //box-shadow: 0px 0.3rem 0px $blue-50;
+    outline: none;
+    transition: all 0.3s ease-in-out;
+    z-index: 11;
+  }
+  &::placeholder {
+    font-family: $full;
+    font-size: 1.4rem;
+    letter-spacing: 0.1rem;
+    word-spacing: 0.2rem;
+    font-weight: 500;
+    //line-height: 2rem;
+    color: $black-25;
+    z-index: 10;
+  }
+}
+
 td.comment  {
   vertical-align: bottom;
   height: 2.6rem;
@@ -258,18 +231,6 @@ td.comment  {
   position: relative;
   overflow: hidden;
   white-space: pre-wrap;
-  //z-index: 10;
-}
-
-//not used
-.comment_div {
-  height: 2.6rem;
-  //z-index: 0;
-  overflow: hidden;
-  position: relative;
-  white-space: pre-wrap;
-  //opacity: 0.99;
-
 }
 
 td.comment:focus-within {
@@ -279,7 +240,6 @@ td.comment:focus-within {
 }
 
 td.comment:focus-within textarea {
-  //height: 15rem;
   background-color: lightgray;
 }
 
@@ -287,78 +247,9 @@ td.comment:focus-within textarea {
   position: absolute;
   top: 0;
   margin-top: -1.6rem;
-  //height: 15rem;
   background: transparent;
   width: 100%;
-  //z-index: 101;
-
 }
-
-.inner p {
-  width: 100%;
-}
-
-//td.comment  {
-//
-//  vertical-align: bottom;
-//  height: auto;
-//  width: auto;
-//  position: relative;
-//  //z-index: 10;
-//}
-//
-//.comment_div {
-//  height: 2.6rem;
-//  //z-index: 0;
-//  overflow: hidden;
-//  position: relative;
-//  white-space: pre-wrap;
-//  //opacity: 0.99;
-//
-//}
-//
-//.comment_div:focus {
-//  overflow: visible;
-//  //z-index: 100;
-//}
-//
-//.comment_div:focus .inner {
-//  //z-index: 100;
-//  height: 15rem;
-//  background-color: blue;
-//  z-index: 999;
-//}
-//
-//.inner {
-//  position: absolute;
-//  //height: 15rem;
-//  background: white;
-//  //z-index: 101;
-//
-//}
-
-//.comment div{
-//  height: 2.6rem;
-//  //text-overflow: ellipsis;
-//  overflow: hidden;
-//  white-space: pre-wrap;
-//  z-index: 9;
-//
-//  &:focus {
-//    //height: 15rem;
-//    position: relative;
-//    overflow: visible;
-//    //top: 0;
-//    //right: 0;
-//    z-index: 99;
-//  }
-//}
-//
-//.comment p {
-//  position: absolute;
-//  background: blue;
-//  //height: 15rem;
-//}
 
 select::-ms-expand {
   display: none;
@@ -375,6 +266,43 @@ select::-ms-expand {
 .color_yellow {
   background-color: $yellow-50 !important;
 }
+
+//Unused below
+
+//.inner p {
+//  width: 100%;
+//}
+
+//.selection_panel {
+//  width: 25%;
+//  background-color: $blue-50;
+//}
+
+//.search_bar {
+//  width: 15%;
+//}
+
+//.genes input select{
+//  //text-align: center;
+//}
+//
+//.extended_genes input select {
+//  //text-align: center;
+//}
+//
+//.test {
+//  display: none
+//}
+
+//.comment_div {
+//  height: 2.6rem;
+//  //z-index: 0;
+//  overflow: hidden;
+//  position: relative;
+//  white-space: pre-wrap;
+//  //opacity: 0.99;
+//
+//}
 
 select { border: none; box-shadow: none; background: transparent; height: 100%; width: 100%; outline: none; padding-right: 2.6rem; -moz-appearance: none; &:-moz-focusring { color: transparent; text-shadow: 0 0 0 #000; } -webkit-appearance: none; &:focus { border-color: inherit; } }
 

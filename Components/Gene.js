@@ -5,62 +5,23 @@ import API from "../api"
 Should specify more, i.e. adding proptypes
  */
 export default class Gene extends React.Component {
-
-    /*
-        Inheritance: velge mellom AD/AR/XD/XR  - enum?
-        Frequency: value, typ 0.005
-        Disease mode: true/false?
-        Last exon important: true/false
-        Free text: string(s)
-         */
     constructor(props) {
         super(props);
-
-        this.handleClick = this.handleClick.bind(this);
-        // this.onChange = this.onChange.bind(this);
-
     }
-
-    // componentDidMount() {
-    //
-    //     console.log(this.props);
-    // }
-
-    // componentWillReceiveProps(nextProps) {
-    //     console.log("nye");
-    //     console.log(nextProps);
-    // }
-    handleClick() {
-        console.log("clicked");
-    }
-
-    // onChange(event) {
-    //     console.log(event.target.id);
-    //     // console.log(event.target.value);
-    //     this.props.changeValue();
-    //     // this.props.changeValue(key, ex, hi, event.target.value);
-    // }
 
     render() {
-        console.log(this.props);
-
         const gene = this.props.values;
-
-        const exHi = "" + gene.external.hi_freq_cutoff;
-        const inHi = "" + gene.internal.hi_freq_cutoff;
-        const exLo = "" + gene.external.lo_freq_cutoff;
-        const inLo = "" + gene.internal.lo_freq_cutoff;
+        const inheritance = (gene.inheritance === "AD") ? "AD" : "default";
+        const ids = ["ex;Hi;", "in;Hi;", "ex;Lo;", "in;Lo;"];
 
         const currentValues = [
-            exHi,
-            inHi,
-            exLo,
-            inLo,
+            "" + gene.external.hi_freq_cutoff,
+            "" + gene.internal.hi_freq_cutoff,
+            "" + gene.external.lo_freq_cutoff,
+            "" + gene.internal.lo_freq_cutoff,
             gene.disease_mode,
             gene.last_exon_important
         ];
-
-        const inheritance = (gene.inheritance === "AD") ? "AD" : "default";
         const globalDefaults = [
             this.props.defaultValues.freq_cutoffs[inheritance].external.hi_freq_cutoff,
             this.props.defaultValues.freq_cutoffs[inheritance].internal.hi_freq_cutoff,
@@ -77,8 +38,6 @@ export default class Gene extends React.Component {
             this.props.groupValues.disease_mode,
             this.props.groupValues.last_exon_important,
         ];
-
-        const ids = ["ex;Hi;", "in;Hi;", "ex;Lo;", "in;Lo;"];
 
         const freqs = [];
         var color = "white";
@@ -98,7 +57,6 @@ export default class Gene extends React.Component {
             );
         }
 
-        // console.log(currentValues[4] + " " + groupDefaults[4] + " " + globalDefaults[4] + " " + (currentValues[4] === groupDefaults[4]));
         if (currentValues[4] === globalDefaults[4]){
             color = "white";
         } else if (currentValues[4] === groupDefaults[4]) {
@@ -117,8 +75,6 @@ export default class Gene extends React.Component {
             </td>
         );
 
-        // console.log(currentValues[5] + " " + groupDefaults[5] + " " + (currentValues[5] === groupDefaults[5]));
-        // console.log(this.props);
         if (currentValues[5] === globalDefaults[5]){
             color = "white";
         } else if (currentValues[5] === groupDefaults[5]) {
@@ -138,14 +94,13 @@ export default class Gene extends React.Component {
 
         freqs.push(
             <td className="comment">
+                <div className="inner"> <textarea id={"comment;" + gene.name} onBlur={this.props.changeComment} value={this.props.values.comment}/></div>
                 {/*<input id={"comment;" + gene.name} type="text" value={this.props.values.comment} onChange={this.props.changeComment}/>*/}
-                <div className="inner"> <textarea id={"comment;" + gene.name} onBlur={this.props.changeComment}>{this.props.values.comment}</textarea></div>
                 {/*<div className="inner" contentEditable={true}><p>{this.props.values.comment}</p></div>*/}
             </td>
 
         );
 
-// skal det til clipboard isteden?
         return (
             <tr>
                 <td className="gene_name">{gene.name}</td>
@@ -153,7 +108,6 @@ export default class Gene extends React.Component {
                 <td>{gene.inheritance}</td>
                 {freqs}
             </tr>
-
         )
     };
 }

@@ -750,7 +750,6 @@ export default class API {
     static saveNewPanelConfig(newConfig) {
         console.log(JSON.stringify(newConfig));
 
-
         var filename = "GenePanel " + newConfig.meta.source + " " + newConfig.meta.version + ".txt";
         var pom = document.createElement('a');
         pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(JSON.stringify(newConfig)));

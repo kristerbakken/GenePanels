@@ -1,5 +1,6 @@
 import React from 'react';
 
+//NOT USED IN CURRENT VERSION
 export default class CommentModal extends React.Component {
     constructor(props) {
         super(props);
