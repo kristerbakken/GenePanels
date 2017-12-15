@@ -138,7 +138,7 @@ p { font-family: $full; font-weight: 300; font-size: 1.4rem; letter-spacing: -0.
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
-}
+} //unused
 
 //needs cleanup
 .comment textarea {
@@ -233,13 +233,13 @@ td.comment  {
   white-space: pre-wrap;
 }
 
-td.comment:focus-within {
+td.comment_test {
   overflow: visible;
   z-index: 100;
   background: white;
 }
 
-td.comment:focus-within textarea {
+td.comment_test textarea {
   background-color: lightgray;
 }
 

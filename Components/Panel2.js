@@ -1,11 +1,7 @@
 import React from 'react';
 import Gene from "./Gene";
-import ExtendedGene from "./ExtendedGene";
-import SelectionPanel from "./SelectionPanel";
-import SearchBar from "./SearchBar";
 import API from "../api";
 import ToolsPanel from "./ToolsPanel";
-import CommentModal from "./CommentModal";
 
 export default class Panel extends React.Component {
 
@@ -127,6 +123,8 @@ export default class Panel extends React.Component {
     
     // \n is added to the comment because of textarea, but it works as far as I've tested it.
     changeComment(event) {
+        // console.log(event.target.id);
+        // console.log(event.target.value);
         const info = event.target.id.split(";");
         const geneId = info[1];
         const genes = this.state.currentGenePanel;

@@ -1,12 +1,26 @@
 import React from 'react';
-import API from "../api"
 
-/*
-Should specify more, i.e. adding proptypes
- */
 export default class Gene extends React.Component {
     constructor(props) {
         super(props);
+
+        this.state = {
+            commentClass: "comment"
+        }
+
+        this.changeCommentClass = this.changeCommentClass.bind(this);
+        this.blurComment = this.blurComment.bind(this);
+    }
+
+    changeCommentClass() {
+        this.setState({
+            commentClass: (this.state.commentClass === "comment") ? "comment comment_test" : "comment"
+        });
+    }
+
+    blurComment(event) {
+        this.changeCommentClass();
+        this.props.changeComment(event);
     }
 
     render() {
@@ -93,8 +107,9 @@ export default class Gene extends React.Component {
         );
 
         freqs.push(
-            <td className="comment">
-                <div className="inner"> <textarea id={"comment;" + gene.name} onBlur={this.props.changeComment} value={this.props.values.comment}/></div>
+            <td className={this.state.commentClass}>
+            {/*<td className="comment">*/}
+                <div className="inner"> <textarea id={"comment;" + gene.name} onFocus={this.changeCommentClass} onBlur={this.blurComment} defaultValue={this.props.values.comment}/></div>
                 {/*<input id={"comment;" + gene.name} type="text" value={this.props.values.comment} onChange={this.props.changeComment}/>*/}
                 {/*<div className="inner" contentEditable={true}><p>{this.props.values.comment}</p></div>*/}
             </td>
