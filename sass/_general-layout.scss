@@ -120,11 +120,11 @@ p { font-family: $full; font-weight: 300; font-size: 1.4rem; letter-spacing: -0.
 .extended_genes th {
   width: auto;
   background-color: $green-25;
+  vertical-align: middle;
 }
 
 .genes select {
-  padding: 0;
-  text-align: right;
+  padding-left: 3rem;
 }
 
 //global and panel genes bottom borders
@@ -266,6 +266,8 @@ select::-ms-expand {
 .color_yellow {
   background-color: $yellow-50 !important;
 }
+
+
 
 //Unused below
 

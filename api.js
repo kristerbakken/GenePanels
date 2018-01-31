@@ -750,20 +750,57 @@ export default class API {
     static saveNewPanelConfig(newConfig) {
         console.log(JSON.stringify(newConfig));
 
+        this.saveTest(newConfig);
+        // var filename = "GenePanel " + newConfig.meta.source + " " + newConfig.meta.version + ".txt";
+        // var pom = document.createElement('a');
+        // pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(JSON.stringify(newConfig)));
+        // pom.setAttribute('download', filename);
+        //
+        // if (document.createEvent) {
+        //     var event = document.createEvent('MouseEvents');
+        //     event.initEvent('click', true, true);
+        //     pom.dispatchEvent(event);
+        // }
+        // else {
+        //     pom.click();
+        // }
+
+    }
+
+    /**
+     * Solution foun here: https://stackoverflow.com/questions/18755750/saving-text-in-a-local-file-in-internet-explorer-10
+     * @param newConfig
+     */
+    static saveTest(newConfig) {
         var filename = "GenePanel " + newConfig.meta.source + " " + newConfig.meta.version + ".txt";
-        var pom = document.createElement('a');
-        pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(JSON.stringify(newConfig)));
-        pom.setAttribute('download', filename);
+        /* Saves a text string as a blob file*/
+        var ie = navigator.userAgent.match(/MSIE\s([\d.]+)/),
+            ie11 = navigator.userAgent.match(/Trident\/7.0/) && navigator.userAgent.match(/rv:11/),
+            ieEDGE = navigator.userAgent.match(/Edge/g),
+            ieVer=(ie ? ie[1] : (ie11 ? 11 : (ieEDGE ? 12 : -1)));
 
-        if (document.createEvent) {
-            var event = document.createEvent('MouseEvents');
-            event.initEvent('click', true, true);
-            pom.dispatchEvent(event);
-        }
-        else {
-            pom.click();
+        if (ie && ieVer<10) {
+            console.log("No blobs on IE ver<10");
+            return;
         }
 
+        var textToWrite = JSON.stringify(newConfig);
+        var textFileAsBlob = new Blob([textToWrite], {
+            type: 'text/plain'
+        });
+
+        if (ieVer>-1) {
+            window.navigator.msSaveBlob(textFileAsBlob, filename);
+
+        } else {
+            var downloadLink = document.createElement("a");
+            downloadLink.download = filename;
+            downloadLink.href = window.URL.createObjectURL(textFileAsBlob);
+            downloadLink.onclick = function(e) { document.body.removeChild(e.target); };
+            downloadLink.style.display = "none";
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+        }
     }
 
     static testLargeAmountOfGenes() {

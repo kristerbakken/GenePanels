@@ -82,7 +82,7 @@ export default class Panel extends React.Component {
 
         const value = event.target.value.replace(",", ".");
         const pattern = new RegExp("([0-9.,]){" + value.length + "}");
-        if (pattern.test(value) && !Number.isNaN(Number(value))) {
+        if (pattern.test(value) && !isNaN(Number(value))) {
 
             if (exIn === "ex" && hiLo === "Hi") {
                 genes[geneId].external.hi_freq_cutoff = value;
