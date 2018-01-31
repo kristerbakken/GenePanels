@@ -619,6 +619,7 @@ export default class Panel extends React.Component {
                 {/*<SearchBar value={this.state.searchValue} onChange={this.changeSearch.bind(this)}/>*/}
                 {/*<SelectionPanel geneList={this.state.geneList} searchValue={this.state.searchValue} onChange={this.toggleGene.bind(this)}/>*/}
                 <ToolsPanel toggleModified={this.toggleModified.bind(this)}
+                            showModified={this.state.showModified}
                             changeSearch={this.changeSearch.bind(this)}
                             savePanel={this.savePanel.bind(this)}
                             searchValue={this.state.searchValue}

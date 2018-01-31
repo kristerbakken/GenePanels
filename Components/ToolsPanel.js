@@ -6,6 +6,8 @@ export default class ToolsPanel extends React.Component {
     }
 
     render() {
+
+        var modifiedLabel = (this.props.showModified) ? "   Show all genes  " : "Show modified genes";
         return (
             <div className='tools_panel'>
                 <input type="text" placeholder="search" onChange={this.props.changeSearch} value={this.props.searchValue}/>
@@ -14,10 +16,10 @@ export default class ToolsPanel extends React.Component {
                         <input
                             type="checkbox"
                             value="Modified"
-                            defaultChecked={true}
+                            defaultChecked={this.props.showModified}
                             onChange={this.props.toggleModified}
                         />
-                        <span>Show modified</span>
+                        <span>{modifiedLabel}</span>
                     </label>
                 </div>
                 <button onClick={this.props.savePanel}>Save panel</button>
