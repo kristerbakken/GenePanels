@@ -3,8 +3,15 @@ import Gene from "./Gene";
 import API from "../api";
 import ToolsPanel from "./ToolsPanel";
 
+/**
+ * React component that handles most parts of the application
+ */
 export default class Panel extends React.Component {
 
+    /**
+     * Initiates the state of the component
+     * @param props gene list, global default and panel config
+     */
     constructor(props) {
         super(props);
         this.state = {
@@ -27,6 +34,9 @@ export default class Panel extends React.Component {
         this.testClick = this.testClick.bind(this);
     }
 
+    /**
+     * Starts the creation of the other components
+     */
     componentDidMount() {
         this.createHeadings();
         this.createGenes();
@@ -39,6 +49,10 @@ export default class Panel extends React.Component {
 
     }
 
+    /**
+     * Changes the search value
+     * @param event
+     */
     changeSearch(event) {
         // console.log(event.target.value);
         this.setState({
@@ -46,6 +60,11 @@ export default class Panel extends React.Component {
         })
     }
 
+    /**
+     * Changes to values of the panel config
+     * This is for the panelConfig gene
+     * @param event input from the browser
+     */
     changePanelConfig(event) {
         const info = event.target.id.split(";");
         const exIn = info[0];
@@ -55,10 +74,13 @@ export default class Panel extends React.Component {
         const genes = this.props.panelConfig.data.freq_cutoff_groups[inheritance];
 
         if (geneId === "panelConfig") {
+
+            // Checks that the entered value is a valid number
             const value = event.target.value.replace(",", ".");
             const pattern = new RegExp("([0-9.,]){" + value.length + "}");
             if (pattern.test(value) && !Number.isNaN(Number(value))) {
 
+                // Changes the appropriate value
                 if (exIn === "ex" && hiLo === "Hi") {
                     genes.external.hi_freq_cutoff = value;
                 } else if (exIn === "ex" && hiLo === "Lo") {
@@ -69,10 +91,17 @@ export default class Panel extends React.Component {
                     genes.internal.lo_freq_cutoff = value;
                 }
             }
+
+            //recalculates the components to represent the modified panel config
             this.createGeneComponents();
         }
     }
-    
+
+    /**
+     * Changes a specific value of a specific gene
+     * This is for all regular genes
+     * @param event input from the browser
+     */
     changeGeneValue(event) {
         const info = event.target.id.split(";");
         const exIn = info[0];
@@ -80,10 +109,13 @@ export default class Panel extends React.Component {
         const geneId = info[2];
         const genes = this.state.currentGenePanel;
 
+
+        // Checks that the entered value is a valid number
         const value = event.target.value.replace(",", ".");
         const pattern = new RegExp("([0-9.,]){" + value.length + "}");
         if (pattern.test(value) && !isNaN(Number(value))) {
 
+            // Changes the appropriate value
             if (exIn === "ex" && hiLo === "Hi") {
                 genes[geneId].external.hi_freq_cutoff = value;
             } else if (exIn === "ex" && hiLo === "Lo") {
@@ -95,6 +127,7 @@ export default class Panel extends React.Component {
             }
         }
 
+        // Updates the value
         this.setState({
             currentGenePanel: genes
         }, function() {
@@ -102,18 +135,25 @@ export default class Panel extends React.Component {
         });
     }
 
+    /**
+     * Changes the chosen option for disease mode or last exon important for a specific gene
+     * This is for the regular genes
+     * @param event input from the browser
+     */
     changeOption(event) {
         const info = event.target.id.split(";");
         const dmLei = info[0];
         const geneId = info[1];
         const genes = this.state.currentGenePanel;
 
+        // Checks if it is disease mode or last exon important that should be changed
         if (dmLei === "dm") {
             genes[geneId].disease_mode = event.target.value;
         } else {
             genes[geneId].last_exon_important = event.target.value;
         }
 
+        // updates the value
         this.setState({
             currentGenePanel: genes
         }, function() {
@@ -122,15 +162,21 @@ export default class Panel extends React.Component {
     }
     
     // \n is added to the comment because of textarea, but it works as far as I've tested it.
+    /**
+     * Changes the comment value for a specific gene
+     * @param event input from the browser
+     */
     changeComment(event) {
         // console.log(event.target.id);
         // console.log(event.target.value);
         const info = event.target.id.split(";");
         const geneId = info[1];
         const genes = this.state.currentGenePanel;
-        
+
+        // Changes the value
         genes[geneId].comment = event.target.value;
 
+        // Updates the value
         this.setState({
             currentGenePanel: genes
         }, function() {
@@ -138,6 +184,9 @@ export default class Panel extends React.Component {
         });
     }
 
+    /**
+     * Creates the table headings
+     */
     createHeadings() {
         const values = {
             "name": "Gene name",
@@ -152,7 +201,7 @@ export default class Panel extends React.Component {
             "comment": "Comment"
         };
 
-        /*Creates a heading for each entry in "values" */
+        // Creates a heading for each entry in "values"
         const headings = [];
         for (const i in values) {
             headings.push(<th onClick={this.sortTable.bind(this, i)}>{values[i]}</th>);
@@ -162,6 +211,10 @@ export default class Panel extends React.Component {
         });
     }
 
+    /**
+     * Changes the column used for sorting the genes based on which heading is clicked
+     * @param column the table header that was clicked in the browser
+     */
     sortTable(column) {
         var order = true;
         if (this.state.sortColumn[0] === column && this.state.sortColumn[1]) {
@@ -172,10 +225,17 @@ export default class Panel extends React.Component {
         });
     }
 
+    /**
+     * Sorts the given genes based on the sortColumn variable
+     * @param genes Genes to be sorted
+     * @returns {*} the same genes sorted in the correct order
+     */
     sortByColumn(genes) {
         const column = this.state.sortColumn[0];
 
         if (genes[0] != undefined) {
+
+            // checks if the column contains text or numbers, and sorts accordingly
             if (/freq|key/.test(column)){
                 if (/key/.test(column)) {
                     return genes.sort(function(a, b) {
@@ -204,6 +264,9 @@ export default class Panel extends React.Component {
         }
     }
 
+    /**
+     * Creates an array of genes based on the imported gene list
+     */
     createGenes() {
         const list = this.props.geneList;
         var genes = [];
@@ -217,6 +280,9 @@ export default class Panel extends React.Component {
         });
     }
 
+    /**
+     * Modifies the gene values based on the imported gene panel config
+     */
     adaptToConfig() {
         const genes = JSON.parse(JSON.stringify(this.props.panelConfig.data.genes));
         const panel = this.state.currentGenePanel;
@@ -250,13 +316,16 @@ export default class Panel extends React.Component {
         });
     }
 
+    /**
+     * Creates the gene components
+     */
     createGeneComponents() {
-        /*Create the gene components */
         const allGenes = [];
         var gene;
         const defaultValues = this.props.globalDefault;
         const groupValues = this.props.panelConfig.data;
 
+        // Iterates through all genes and creates a component for each of them
         for (const i in this.state.currentGenePanel) {
             gene = this.state.currentGenePanel[i];
             allGenes[gene.key] = <Gene className="gene"
@@ -282,6 +351,9 @@ export default class Panel extends React.Component {
         });
     }
 
+    /**
+     * Creates a gene based on the given gene name and information
+     */
     createGene(name, geneInfo) {
         const gene = JSON.parse(JSON.stringify(this.props.globalDefault));
 
@@ -300,9 +372,14 @@ export default class Panel extends React.Component {
             "internal": internal,
             "disease_mode": disease_mode,
             "last_exon_important": last_exon_important
-        }
+        };
     }
 
+
+    /**
+     * Creates the elements for the special genes Global default and gene panel default
+     * @returns {Array} Table data elements
+     */
     createGlobalAndPanelGene() {
         const globalAndPanelConfig = {
             "globalValues": {
@@ -319,7 +396,7 @@ export default class Panel extends React.Component {
                 "disease_mode": this.props.panelConfig.data.disease_mode,
                 "last_exon_important": this.props.panelConfig.data.last_exon_important
             }
-        }
+        };
 
         const genes = [];
         for (const geneName in globalAndPanelConfig) {
@@ -389,12 +466,21 @@ export default class Panel extends React.Component {
         return genes;
     }
 
+
+    /**
+     * Toggles the state variable handling if all or onlye modified genes should be shown
+     */
     toggleModified() {
         this.setState({
             showModified: (!this.state.showModified)
         })
     }
 
+    /**
+     * Checks if the provided gene differs from both the global and gene panel default
+     * @param gene the gene to be checked
+     * @returns {boolean} true if gene differs from both
+     */
     isModified(gene) {
         // const inheritance = (gene.props.values.inheritance === "AD") ? "AD" : "default";
         // const currentValues = [
@@ -436,6 +522,11 @@ export default class Panel extends React.Component {
         return (this.isDifferentThanGlobal(gene) && this.isDifferentThanConfig(gene));
     }
 
+    /**
+     * Checks if the provided gene differs from the global default
+     * @param gene the gene to be checked
+     * @returns {boolean} true if the gene differs from the global default
+     */
     isDifferentThanGlobal(gene) {
         // console.log(gene.props.values.comment === undefined);
         const inheritance = (gene.props.values.inheritance === "AD") ? "AD" : "default";
@@ -467,6 +558,11 @@ export default class Panel extends React.Component {
         return modified;
     }
 
+    /**
+     * Checks if the provided gene differ from the gene panel config default
+     * @param gene the gene to be checked
+     * @returns {boolean} true if the gene differs from the gene panel config default
+     */
     isDifferentThanConfig(gene) {
         // console.log(gene.props.values.comment + "2");
         const inheritance = (gene.props.values.inheritance === "AD") ? "AD" : "default";
@@ -498,6 +594,11 @@ export default class Panel extends React.Component {
         return modified;
     }
 
+    /**
+     * Checks if any of the values of a gene matches whatever is typed in the search box
+     * @param gene the gene to be checked
+     * @returns {boolean} true if it matches any of the values of the gene
+     */
     isSearched(gene) {
         const currentValues = [
             gene.props.values.name,
@@ -517,10 +618,12 @@ export default class Panel extends React.Component {
                 searched = true;
             }
         }
-
         return searched;
     }
 
+    /**
+     * Generates a new config with new values based on user input and saves them through the API
+     */
     savePanel() {
         const config = JSON.parse(JSON.stringify(this.props.panelConfig));
         const newConfig = JSON.parse(JSON.stringify(config));
@@ -591,6 +694,11 @@ export default class Panel extends React.Component {
         API.saveNewPanelConfig(newConfig);
     }
 
+
+    /**
+     * Computes what to render and renders it
+     * @returns {XML} web page components/elements
+     */
     render() {
 
         var genes = [];

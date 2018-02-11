@@ -1,33 +1,45 @@
 import React from 'react';
 
+/**
+ * React component for displaying values for a given gene.
+ */
 export default class Gene extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
             commentClass: "comment"
-        }
-
+        };
         this.changeCommentClass = this.changeCommentClass.bind(this);
         this.blurComment = this.blurComment.bind(this);
     }
 
+    /**
+     * Changes the CSS class of the comment-element for appearance purposes
+     */
     changeCommentClass() {
         this.setState({
             commentClass: (this.state.commentClass === "comment") ? "comment comment_test" : "comment"
         });
     }
 
+    /**
+     * Triggers the change of the comment when the element loses focus
+     */
     blurComment(event) {
         this.changeCommentClass();
         this.props.changeComment(event);
     }
 
+    /**
+     * Computes what to render and renders it
+     */
     render() {
         const gene = this.props.values;
         const inheritance = (gene.inheritance === "AD") ? "AD" : "default";
         const ids = ["ex;Hi;", "in;Hi;", "ex;Lo;", "in;Lo;"];
 
+        // Values used for comparing global, panel and current gene
         const currentValues = [
             "" + gene.external.hi_freq_cutoff,
             "" + gene.internal.hi_freq_cutoff,
@@ -53,11 +65,13 @@ export default class Gene extends React.Component {
             this.props.groupValues.last_exon_important,
         ];
 
+        let color = "white";
         const freqs = [];
-        var color = "white";
 
-        for (var i = 0; i < ids.length; i++) {
+        // Creates the elements for frequency elements
+        for (let i = 0; i < ids.length; i++) {
 
+            // Decides which color the element should have
             if (currentValues[i] === ("" + globalDefaults[i])) {
                 color = "white";
             } else if (currentValues[i] === ("" + groupDefaults[i])){
@@ -66,11 +80,13 @@ export default class Gene extends React.Component {
                 color = "yellow"
             }
 
+            // Adds the frequency elements
             freqs.push(
                 <td className={"color_" + color}><input id={ids[i] + gene.name} type="text" value={currentValues[i]} onChange={this.props.changeValue}/></td>
             );
         }
 
+        // Decides which color the element should have
         if (currentValues[4] === globalDefaults[4]){
             color = "white";
         } else if (currentValues[4] === groupDefaults[4]) {
@@ -79,6 +95,7 @@ export default class Gene extends React.Component {
             color = "yellow"
         }
 
+        // Adds disease mode element
         freqs.push(
             <td className={"color_" + color}>
                 <select id={"dm;" + gene.name} value={gene.disease_mode} onChange={this.props.changeOption}>
@@ -89,6 +106,7 @@ export default class Gene extends React.Component {
             </td>
         );
 
+        // Decides which color the element should have
         if (currentValues[5] === globalDefaults[5]){
             color = "white";
         } else if (currentValues[5] === groupDefaults[5]) {
@@ -97,6 +115,7 @@ export default class Gene extends React.Component {
             color = "yellow"
         }
 
+        // Adds last exon important element
         freqs.push(
             <td className={"color_" + color}>
                 <select id={"lei;" + gene.name} value={gene.last_exon_important} onChange={this.props.changeOption}>
@@ -106,14 +125,11 @@ export default class Gene extends React.Component {
             </td>
         );
 
+        // Adds comment element
         freqs.push(
             <td className={this.state.commentClass}>
-            {/*<td className="comment">*/}
                 <div className="inner"> <textarea id={"comment;" + gene.name} onFocus={this.changeCommentClass} onBlur={this.blurComment} defaultValue={this.props.values.comment}/></div>
-                {/*<input id={"comment;" + gene.name} type="text" value={this.props.values.comment} onChange={this.props.changeComment}/>*/}
-                {/*<div className="inner" contentEditable={true}><p>{this.props.values.comment}</p></div>*/}
             </td>
-
         );
 
         return (

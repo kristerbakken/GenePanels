@@ -1,10 +1,14 @@
 /**
- should contain connections to an api for recieving and sending information
- will probably be hardcoded with the info for now
+ * An API class for handling importing/exporting data
+ * Contains mostly hardcoded objects/"files" with the values needed for the project
+ * Should be modified with handling actual import/export of files in the future
  */
-
 export default class API {
 
+    /**
+     * The global default values
+     * @returns {object}
+     */
     static getGlobalDefault() {
         return {
             "intronic_region": [-20, 6],
@@ -46,6 +50,10 @@ export default class API {
         }
     }
 
+    /**
+     * The list of genes
+     * @returns {object}
+     */
     static getGeneList() {
         var genes = {
             "APC": {
@@ -160,6 +168,7 @@ export default class API {
         return genes;
     }
 
+    // NOT USED
     static getGenes() {
 
         return {
@@ -349,6 +358,10 @@ export default class API {
         }
     }
 
+    /**
+     * The gene panel configuration values
+     * @returns {object}
+     */
     static getGenePanelConfig() {
         return {
             "config": {
@@ -473,6 +486,10 @@ export default class API {
         }
     }
 
+    /**
+     * Another gene panel configuration
+     * @returns {object}
+     */
     static getGenePanelConfig2() {
         return {
             "meta": {
@@ -532,6 +549,10 @@ export default class API {
         }
     }
 
+    /**
+     * A modified gene panel configuration
+     * @returns {object}
+     */
     static getModifiedPanel() {
         return {
             "meta": {
@@ -593,6 +614,7 @@ export default class API {
         }
     }
 
+    // NOT USED
     static getConfig() {
         return {
             "config": {
@@ -768,7 +790,8 @@ export default class API {
     }
 
     /**
-     * Solution foun here: https://stackoverflow.com/questions/18755750/saving-text-in-a-local-file-in-internet-explorer-10
+     * Saves the provided config to a file, and prints it to console
+     * Saving solution found here: https://stackoverflow.com/questions/18755750/saving-text-in-a-local-file-in-internet-explorer-10
      * @param newConfig
      */
     static saveTest(newConfig) {
@@ -803,6 +826,10 @@ export default class API {
         }
     }
 
+    /**
+     * Gene list with ~2700 genes. For performance testing purposes
+     * @returns {object}
+     */
     static testLargeAmountOfGenes() {
         var genes ={
             "APC": {
