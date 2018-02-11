@@ -25,12 +25,7 @@ input {
 h1 { font-family: $full; background-color: $blue-50; font-weight: 300; font-size: 2.8rem; letter-spacing: -0.025rem; color: $black; text-align: center; padding: 0px;}
 p { font-family: $full; font-weight: 300; font-size: 1.4rem; letter-spacing: -0.025rem; color: $black; }
 
-.inputerror { border-bottom: 3px solid $red-75 !important; }
-.error {color: $red !important; }
-.ok {color: $green !important; }
-
-//remove unused
-.main_panel, .selection_panel, .tools_panel, .genes, .extended_genes, .toggle, .search_bar{
+.main_panel, .tools_panel, .genes, .extended_genes, .toggle{
   float: left;
 }
 
@@ -135,28 +130,15 @@ p { font-family: $full; font-weight: 300; font-size: 1.4rem; letter-spacing: -0.
   width: 7%;
 }
 
-.comment input{
-  width: 100%;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-} //unused
-
-//needs cleanup
 .comment textarea {
   border-bottom: 0px;
-  //vertical-align: middle;
-  //line-height: 0px;
   width: 100%;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: pre-wrap;
-  //position: absolute;
   font-size: 1.4rem;
   font-family: $slim;
-  //line-height: 2rem;
   padding: 0 0.3rem;
-  //min-height: 3.6rem;
   height: 2.6rem;
   max-height: 50rem;
   border: none;
@@ -166,11 +148,8 @@ p { font-family: $full; font-weight: 300; font-size: 1.4rem; letter-spacing: -0.
   box-shadow: none;
   resize: vertical;
   &:focus {
-    //position: absolute;
     height: 15rem;
     min-height: 15rem;
-    //border-bottom: 1px solid Transparent;
-    //box-shadow: 0px 0.3rem 0px $blue-50;
     outline: none;
     transition: all 0.3s ease-in-out;
     z-index: 11;
@@ -181,46 +160,6 @@ p { font-family: $full; font-weight: 300; font-size: 1.4rem; letter-spacing: -0.
     letter-spacing: 0.1rem;
     word-spacing: 0.2rem;
     font-weight: 500;
-    //line-height: 2rem;
-    color: $black-25;
-    z-index: 10;
-  }
-}
-
-//cleanup
-textarea.comment {
-  font-size: 1.4rem;
-  font-family: $slim;
-  //line-height: 2rem;
-  padding: 0 0.3rem;
-  width: 100%;
-  //min-height: 3.6rem;
-  height: 2.6rem;
-  max-height: 50rem;
-  border: none;
-  background-color: transparent;
-  border-bottom: 1px solid $black-50;
-  border-radius: 0;
-  outline: none;
-  box-shadow: none;
-  resize: vertical;
-  &:focus {
-    position: absolute;
-    height: 15rem;
-    min-height: 15rem;
-    //border-bottom: 1px solid Transparent;
-    //box-shadow: 0px 0.3rem 0px $blue-50;
-    outline: none;
-    transition: all 0.3s ease-in-out;
-    z-index: 11;
-  }
-  &::placeholder {
-    font-family: $full;
-    font-size: 1.4rem;
-    letter-spacing: 0.1rem;
-    word-spacing: 0.2rem;
-    font-weight: 500;
-    //line-height: 2rem;
     color: $black-25;
     z-index: 10;
   }
@@ -269,45 +208,6 @@ select::-ms-expand {
   background-color: $yellow-50 !important;
 }
 
-
-
-//Unused below
-
-//.inner p {
-//  width: 100%;
-//}
-
-//.selection_panel {
-//  width: 25%;
-//  background-color: $blue-50;
-//}
-
-//.search_bar {
-//  width: 15%;
-//}
-
-//.genes input select{
-//  //text-align: center;
-//}
-//
-//.extended_genes input select {
-//  //text-align: center;
-//}
-//
-//.test {
-//  display: none
-//}
-
-//.comment_div {
-//  height: 2.6rem;
-//  //z-index: 0;
-//  overflow: hidden;
-//  position: relative;
-//  white-space: pre-wrap;
-//  //opacity: 0.99;
-//
-//}
-
 select { border: none; box-shadow: none; background: transparent; height: 100%; width: 100%; outline: none; padding-right: 2.6rem; -moz-appearance: none; &:-moz-focusring { color: transparent; text-shadow: 0 0 0 #000; } -webkit-appearance: none; &:focus { border-color: inherit; } }
 
 button, select, .bttn { font-family: $full; font-size: 1.2rem; font-weight: 500; letter-spacing: 0.1rem; word-spacing: 0.2rem; text-transform: uppercase; padding: 0.25rem 0.75rem; padding-top: 0.4rem; color: $black-75; white-space: nowrap; border-radius: 0;
@@ -336,96 +236,12 @@ button, .dropdown, .bttn { height: 2.6rem; box-shadow: 0 0.3rem 0 $black-05; bac
 button.normal { background-color: $blue-05 !important; color: $black-75 !important;
   &:hover:not([disabled]) { background-color: $white !important; }
 }
-.tag {
-  background-color: $black-05; font-family: $full; font-size: 1.2rem; font-weight: 500; letter-spacing: 0.1rem; word-spacing: 0.2rem; text-transform: uppercase; margin-right: 0.3rem; padding: 0.25rem 0.75rem; padding-top: 0.4rem; color: $black-75; white-space: nowrap; border-radius: 0;
-}
 
-.dropdown { position: relative;
-  &:after { content: ' '; position: absolute; top: 0; width: 0; height: 0; right: 10px; bottom: 0; margin: auto; border-style: solid; border-width: 5px 5px 0 5px; border-color: $black-75 transparent transparent transparent; pointer-events: none; }
-  &[disabled] { border: 1px solid $black-50; color: $black-75; opacity: 0.25; background-color: inherit; select:hover { cursor: default; } }
-}
-
-
-//select {&:open {color: red;}};
-//
-//ui-select-container, ui-select-search {
-//  @extend .bttn;
-//}
-
-
-
-// interpretation-button button { height: 100%; } // fixes a browser quirk - edit, seems to have gone away with some other changes
 .button ~ .button, button ~ button, button ~ interpretation-button, checkable-button ~ checkable-button, checkable-button ~ button, .dropdown ~ button { margin-left: 1.3rem; }
 button { outline: none; border: 1px solid Transparent;
   &:disabled { border: 1px solid $black-50; box-shadow: none; color: $black-75; opacity: 0.25; background-color: inherit; &:hover { cursor: default; } }
   // We use svg in buttons for significantly more control over spacing/color/boldness, and to not rely on UTF8 chars in our markup.
   // These are awesome and extremely small: https://github.com/danklammer/bytesize-icons
 }
-.buttonmark { width: 1.5rem; height: 0.8rem; stroke-width: 14%; }
 
-%button-status {width: 0.6rem; height: 0.6rem; margin-left: 0.3rem; margin-right: -0.4rem}
-.button-status-green {@extend %button-status; fill: $green-75;}
-.button-status-red {@extend %button-status; fill: $red-75}
-
-.max-width { width: 100%; }
-
-// APP-WIDE STYLE
-.main {
-  //display: flex;
-  width: 100%;
-  min-height: calc(100vh - 11rem);
-  height: 100%;
-
-  .sidenavbar { color: $white-75; width: 4rem; background-color: $blue-50; margin-right: 3rem; font-family: $slim; font-weight: 700; letter-spacing: 0.1; text-transform: uppercase; min-height: calc(100vh - 11rem); position: fixed;
-    .item-row { width: 100%; transform: rotate(-90deg);  transform-origin: 0 0; display: flex; margin-top: 29.5rem;
-      .item {   height: 4rem; font-size: 2rem; padding-left: 3rem; padding-right: 3rem; line-height: 4rem;
-        &.active {
-          background-color: $blue-25;
-        }
-        &:hover {
-          background-color: $blue-25;
-          color: $white;
-          cursor: pointer;
-        }
-      }
-    }
-  }
-  .container { margin-left: 2.0rem; margin-top: 4rem; margin-right: 2.0rem; margin-bottom: 2.6rem; width: 100%; }
-  .container.no-secondary-nav { margin-top: 12rem; }
-  .container.with-sidenavbar { margin-left: 9rem; }
-  .container.inner { width: 100%; margin-left: 46.2rem; padding-left: 3.9rem; margin-right: 0; border-left: 1px dotted $blue-25; }
-
-
-  // View specific stuff
-  .logout-btn { margin-left: auto; }
-  .overviewcontainer { display: flex; }
-  .dashboard {
-    display: flex;
-    .profile section { width: 50rem; }
-  }
-
-}
-.app .search-area { margin-left: 42rem; }
-.single-sample-analysis-container { display: flex; flex-direction: row; margin-right: 1.3rem; }
-.full-width { width: 100%; }
-.nowrap {white-space: nowrap; }
-
-
-
-
-#toast-container { position: fixed; z-index: 999999; bottom: 0; right: 0; left: 0; width: 100%;
-  & > :hover { cursor: pointer; }
-  .toast { position: relative; overflow: hidden; padding: 1.3rem 3.9rem 1.3rem 2.6rem; width: 100vw; margin: 0 auto; background-position: 15px center; background-repeat: no-repeat; color: hsla; opacity: 0.99; }
-  .toast { background-color: #030303; }
-  .toast:before { color: white; font-size: 1.1rem; font-family: $full; letter-spacing: 0.1rem; }
-  .toast-success { background-color: $green; &:before { content: "HOORAY"; } }
-  .toast-error { background-color: $red; &:before { content: "ERROR"; } }
-  .toast-info { background-color: $purple-50; &:before { content: "INFORMATION"; } }
-  .toast-warning { background-color: $yellow; &:before { content: "WARNING"; } }
-  .toast-message { word-wrap: break-word; font-size: 1.7rem; font-family: $slim; font-weight: 600; text-transform: uppercase; color: white; padding-top: 0.3rem; }
-  .toast.ng-enter { max-height: 0px ; transition: all 0.6s ease-in-out; }
-  .toast.ng-enter.ng-enter-active { max-height: 1000px; }
-  .toast.ng-leave { max-height: 1000px; transition: all 0.6s ease-in-out; }
-  .toast.ng-leave.ng-leave-active { max-height: 0px; }
-}
 

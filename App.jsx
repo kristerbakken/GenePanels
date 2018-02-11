@@ -1,19 +1,17 @@
 import React from 'react';
 import API from "./api";
+import Panel from "./Components/Panel";
 import './sass/style.scss';
 
-
-import Panel2 from "./Components/Panel2";
-import SelectionPanel from "./Components/SelectionPanel";
-
+/**
+ * Main class importing data and initiating the application
+ */
 export default class App extends React.Component {
-
-
     render() {
         return (
             <div>
-
-               <Panel2
+               <Panel //comment/uncomment to get the wanted panel/gene list
+                   //panelConfig={API.getGenePanelConfig()}
                    //panelConfig={API.getGenePanelConfig2()}
                    panelConfig={API.getModifiedPanel()}
                    globalDefault={API.getGlobalDefault()}
@@ -24,5 +22,3 @@ export default class App extends React.Component {
         );
     }
 }
-
-//export default App;

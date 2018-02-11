@@ -1,7 +1,7 @@
 {
   "name": "genepanels",
   "version": "1.0.0",
-  "description": "",
+  "description": "User interface for configuring gene panels",
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server --hot"

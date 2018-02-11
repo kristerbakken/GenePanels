@@ -29,7 +29,6 @@ export default class ToolsPanel extends React.Component {
                 </div>
                 <button onClick={this.props.savePanel}>Save panel</button>
             </div>
-
         )
     };
 }
