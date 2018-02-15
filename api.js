@@ -169,6 +169,7 @@ export default class API {
     }
 
     /**
+     * Old version!
      * The gene panel configuration values
      * @returns {object}
      */
