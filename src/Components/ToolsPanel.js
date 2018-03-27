@@ -5,10 +5,6 @@ import React from 'react';
  */
 export default class ToolsPanel extends React.Component {
 
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         // Controls the text on the "show all"-button
         let modifiedLabel = (this.props.showModified) ? "   Show all genes  " : "Show modified genes";

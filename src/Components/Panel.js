@@ -215,7 +215,7 @@ export default class Panel extends React.Component {
     sortByColumn(genes) {
         const column = this.state.sortColumn[0];
 
-        if (genes[0] != undefined) {
+        if (genes[0] !== undefined) {
 
             // checks if the column contains text or numbers, and sorts accordingly
             if (/freq|key/.test(column)){
