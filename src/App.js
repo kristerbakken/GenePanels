@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 // import logo from './logo.svg';
-import './App.scss';
 import API from "./api";
 import Panel from "./Components/Panel";
-import './sass/style.scss';
 
 class App extends Component {
   render() {
