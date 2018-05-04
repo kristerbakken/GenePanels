@@ -16,7 +16,6 @@ export default class Panel extends React.Component {
         super(props);
         this.state = {
             currentGenePanel: [],
-            group: "default",
             geneList: this.props.geneList,
             globalDefault: JSON.parse(JSON.stringify(this.props.globalDefault)),
             searchValue: "",
@@ -349,7 +348,6 @@ export default class Panel extends React.Component {
         };
     }
 
-
     /**
      * Creates the elements for the special genes Global default and gene panel default
      * @returns {Array} Table data elements
@@ -441,7 +439,7 @@ export default class Panel extends React.Component {
     }
 
     /**
-     * Toggles the state letiable handling if all or onlye modified genes should be shown
+     * Toggles the state variable handling if all or only modified genes should be shown
      */
     toggleModified() {
         this.setState({

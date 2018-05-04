@@ -1,9 +1,9 @@
 @charset "utf-8";
 
-@import '../../sass/colors';
-@import '../../sass/fonts';
+@import '_colors';
+@import '_fonts';
 
-@import '../../sass/general-layout';
+@import '_general-layout';
 
 .App {
   text-align: center;
