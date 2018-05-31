@@ -21,30 +21,30 @@ export default class Gene2 extends Component {
 
                     {/* frequency fields*/}
                     <td className={"color_" + this.props.color.exHi}>
-                        <input id={"ex;Hi" + this.props.name}
+                        <input id={"ex;Hi;" + this.props.name}
                                type="text"
-                               value={this.props.freqs.exHi}
+                               value={this.props.freqExHi}
                                onChange={this.props.changeValue}
                         />
                     </td>
                     <td className={"color_" + this.props.color.inHi}>
-                        <input id={"in;Hi" + this.props.name}
+                        <input id={"in;Hi;" + this.props.name}
                                type="text"
-                               value={this.props.freqs.inHi}
+                               value={this.props.freqInHi}
                                onChange={this.props.changeValue}
                         />
                     </td>
                     <td className={"color_" + this.props.color.exLo}>
-                        <input id={"ex;Lo" + this.props.name}
+                        <input id={"ex;Lo;" + this.props.name}
                                type="text"
-                               value={this.props.freqs.exLo}
+                               value={this.props.freqExLo}
                                onChange={this.props.changeValue}
                         />
                     </td>
                     <td className={"color_" + this.props.color.inLo}>
-                        <input id={"in;Lo" + this.props.name}
+                        <input id={"in;Lo;" + this.props.name}
                                type="text"
-                               value={this.props.freqs.inLo}
+                               value={this.props.freqInLo}
                                onChange={this.props.changeValue}
                         />
                     </td>
